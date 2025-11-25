@@ -49,23 +49,10 @@ const __dirname = path.dirname(__filename);
 
 app.use(cors());
 app.use(express.json({ limit: '50mb' }));
-// app.js (Inmediatamente después de app.use(express.json());)
-// Opcional: Aumentar el límite para datos codificados de URL, por si acaso
+
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
-// 🚨 NUEVO MIDDLEWARE DE DIAGNÓSTICO
-//app.use((req, res, next) => {
- //   if (req.url.includes('/api/chat/no-leidos/')) {
-   //     console.log("-----------------------------------------");
-     //   console.log(`[DIAGNOSTICO - ${new Date().toLocaleTimeString()}]`);
- //       console.log("Método:", req.method);
- //       console.log("Ruta solicitada:", req.url);
- //       console.log("Parámetros (Si existen):", req.params); 
- //       console.log("-----------------------------------------");
-  //  }
- //   next(); // Permite que la solicitud continúe
-//});
-//// 🚨 FIN MIDDLEWARE DE DIAGNÓSTICO
+
 
 app.use("/api/auth", authRoutes);
 app.use("/api/sintomas", sintomaRoutes);
