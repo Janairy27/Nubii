@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer";
+import path from 'path';
 
 export const sendNotificacion = async (email, nombrePaciente, nombreProfesional) => {
     const transporter = nodemailer.createTransport({
@@ -9,7 +10,7 @@ export const sendNotificacion = async (email, nombrePaciente, nombreProfesional)
     });
 
     // Ruta absoluta del logo (ajústar si se cambia la ubicación)
-      const logoPath = path.resolve("/Volumes/Janairy/Estadia/Nubii/frontend/public/logo.png");
+      const logoPath = path.resolve("F:\\Estadia\\Nubii\\frontend\\public\\logo.png");
     
       // Contenido HTML del correo
   const htmlContent = `

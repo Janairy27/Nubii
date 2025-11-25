@@ -11,7 +11,7 @@ export const sendInicioSesion = async (email, nombreUsuario) => {
   });
 
   // Ruta absoluta del logo
-  const logoPath = path.resolve("/Volumes/Janairy/Estadia/Nubii/frontend/public/logo.png");
+  const logoPath = path.resolve("F:\\Estadia\\Nubii\\frontend\\public\\logo.png");
 
   // Contenido HTML del correo
   const htmlContent = `

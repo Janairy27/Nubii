@@ -45,23 +45,23 @@ export const deleteEvidencia = async(idEvidencia) => {
 
 // Devolución de las evidencias registradas de forma descendente
 export const getEvidenciaByPacienteDesc = async(idPaciente) => {
-    const [rows] = await db.query("SELECT * FROM Evidencia WHERE idPaciente = ? ORDER BY DESC");
+    const [rows] = await db.query("SELECT * FROM Evidencia WHERE idPaciente = ? ORDER BY DESC", [idPaciente]);
     return rows[0];
 };
 
-// Busqueda de evidencias de forma dinamica
-export const getEvidenciasByAtrribute = async(filtros = {}) => {
+// Busqueda de evidencias de forma dinamica para los pacientes 
+export const getEvidenciasByAtrribute = async(filtros = {}, idPaciente) => {
     let query = `
-    SELECT e.*, CONCAT(u.Nombre, ' ', u.aPaterno, ' ', IFNULL(aMaterno, ' ')) AS nombrePaciente,
+    SELECT e.*, CONCAT(u.Nombre, ' ', u.aPaterno, ' ', IFNULL(u.aMaterno, ' ')) AS nombrePaciente,
     CONCAT(a.nombreAct, ' ', a.duracion_minutos, ' min') AS nombreActividad
     FROM Evidencia e
     INNER JOIN Actividad a ON e.idActividad = a.idActividad
-    INNER JOIN Paciente p ON e.idPaciente = p.idPaciente
+    INNER JOIN Paciente p ON e.idPaciente = p.idPaciente 
     INNER JOIN Usuario u ON p.idUsuario = u.idUsuario
-    WHERE 1 = 1
+    WHERE p.idPaciente = ?
     `;
 
-    const parametros = [];
+    const parametros = [idPaciente];
     if(filtros.nombreActividad){
         query += "AND CONCAT(a.nombreAct, ' ', a.duracion_minutos) LIKE ?";
         parametros.push(`%${filtros.nombreActividad}%`);
@@ -88,6 +88,50 @@ export const getEvidenciasByAtrribute = async(filtros = {}) => {
     }
 
     query += " ORDER BY idEvidencia DESC";
+
+    try{
+        const [rows] = await db.query(query, parametros);
+        return rows;
+    }catch(err){
+        console.log("Error al consultar evidencia:", err);
+        throw err;
+    }
+};
+
+// Función de búsqueda dinamica para los profesionales
+export const getEvidenciasByAtrributeProf = async(filtros = {}, idProfesional) => {
+    let query = `
+    SELECT e.*, CONCAT(u.Nombre, ' ', u.aPaterno, ' ', IFNULL(u.aMaterno, ' ')) AS nombrePaciente,
+    CONCAT(a.nombreAct, ' ', a.duracion_minutos, ' min') AS nombreActividad
+    FROM Evidencia e
+    INNER JOIN Actividad a ON e.idActividad = a.idActividad AND a.idProfesional = ?
+    INNER JOIN Paciente p ON e.idPaciente = p.idPaciente
+    INNER JOIN Usuario u ON p.idUsuario = u.idUsuario
+    WHERE e.completada = 2 
+    `;
+
+    const parametros = [idProfesional];
+    if(filtros.nombrePaciente){
+        query += "AND CONCAT(u.Nombre, ' ', u.aPaterno, ' ', u.aMaterno) LIKE ? ";
+        parametros.push(`%${filtros.nombrePaciente}%`);
+    }
+
+    if(filtros.nombreActividad){
+        query += "AND CONCAT(a.nombreAct, ' ', a.duracion_minutos) LIKE ? ";
+        parametros.push(`%${filtros.nombreActividad}%`);
+    }
+
+    if(filtros.fecha_realizada){
+        query += "AND e.fecha_realizada = ? ";
+        parametros.push(filtros.fecha_realizada);
+    }
+
+    if(filtros.satisfaccion){
+        query += "AND e.satisfaccion = ? ";
+        parametros.push(filtros.satisfaccion);
+    }
+
+    query += "ORDER BY idEvidencia DESC ";
 
     try{
         const [rows] = await db.query(query, parametros);

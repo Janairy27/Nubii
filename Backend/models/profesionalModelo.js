@@ -32,3 +32,23 @@ export const findProfesionalByUsuario = async(idUsuario) => {
         WHERE u.idUsuario = ?`, [idUsuario]);
     return rows[0];
 };
+
+// Obtener id, especialidad y nombre de todos los profesionales
+export const FindProfesionales = async(especialidad) => {
+    const[rows] = await db.query(`
+        SELECT pr.idProfesional, CONCAT(u.Nombre, ' ', u.aPaterno, ' ', IFNULL(aMaterno, ' ')) AS nombreProfesional,
+        pr.especialidad
+        FROM Usuario u 
+        INNER JOIN Profesional pr ON u.idUsuario = pr.idUsuario
+        WHERE pr.especialidad = ?`, [especialidad]);
+    return rows;
+};
+
+export const getUsuarioByProfesional = async (idProfesional) => {
+    const [rows] = await db.query(
+        `SELECT idUsuario FROM Profesional WHERE idProfesional = ?`,
+        [idProfesional]
+    );
+    if (rows.length === 0) return null;
+    return rows[0].idUsuario;
+};

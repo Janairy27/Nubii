@@ -1,7 +1,7 @@
 import express from "express";
 import {
     registrarSintoma, ActualizarSintoma, EliminarSintoma,
-    getSintomasByidPaciente, getSintomasByAttribute, getSintomasByAttributePaciente
+    getSintomasByidPaciente, getSintomasByAttributeProf, getSintomasByAttributePaciente
 } from "../controllers/sintomaController.js";
 
 const router = express.Router();
@@ -13,6 +13,6 @@ router.get("/by-idPaciente/:idPaciente", getSintomasByidPaciente);
 // ruta de busqueda especifica para pacientes
 router.get("/by-attribute/:atributo/:valor/:idPaciente", getSintomasByAttributePaciente);
 // ruta que hace busqueda en las vistas admin y profesional
-
+router.get("/by-filter", getSintomasByAttributeProf);
 
 export default router;

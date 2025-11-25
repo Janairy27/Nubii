@@ -88,25 +88,25 @@ export function validarDomicilio(estado, municipio, calle){
         errores.push("Municipio inválido");
     }
     if(calle && !CALLE_ExpReg.test(calle)){
-        errores.push("Calle inválida (Debe contener letras y un numero)");
+        errores.push("Calle inválida (Debe contener letras y  números)");
     }
     return errores;
 }
 
 export function validarCedula(cedula){
     const errores = [];
-    if(!cedula) errores.push("La cedula es obligatoria");
+    if(!cedula) errores.push("La cédula es obligatoria");
     if(cedula && !CEDULA_ExpReg.test(cedula)){
-        errores.push("cedula inválida");
+        errores.push("Cédula inválida");
     }
     return errores;
 }
 
 export function validardetonante(detonante){
     const errores =[];
-    if(!detonante) errores.push("El detonante es obligatorio");
+    if(!detonante) errores.push("El detonante del síntoma es obligatorio");
     if(detonante && !SOLO_LETRAS_ExpReg.test(detonante)){
-        errores.push("El detonante debe ser no debe contener puntos y saltos de línea");
+        errores.push("El detonante del síntoma no debe contener puntos y saltos de línea");
     }
     return errores;
 }
@@ -115,16 +115,16 @@ export function validarUbicacion(ubicacion){
     const errores =[];
     if(!ubicacion) errores.push("La ubicación es obligatoria");
     if(ubicacion && !SOLO_LETRAS_ExpReg.test(ubicacion)){
-        errores.push("La ubicación debe ser no debe contener puntos y saltos de línea");
+        errores.push("La ubicación no debe contener puntos y saltos de línea");
     }
     return errores;
 }
 
 export function validarActReciente(actividad){
     const errores =[];
-    if(!actividad) errores.push("La actividad es obligatoria");
+    if(!actividad) errores.push("La actividad reciente es obligatoria");
     if(actividad && !SOLO_LETRAS_ExpReg.test(actividad)){
-        errores.push("La actividad debe ser no debe contener puntos y saltos de línea");
+        errores.push("La actividad reciente no debe contener puntos y saltos de línea");
     }
     return errores;
 }
@@ -139,7 +139,7 @@ export function validarParrafos(parrafo){
 
 export function validarActividad(nombre, descripcion, objetivo){
     const errores =[];
-    if(!nombre) errores.push("Nombre obligatorio");
+    if(!nombre) errores.push("El nombre de la actividad es obligatorio");
     if(!descripcion) errores.push("La descripción es obligatoria");
     if(!objetivo) errores.push("El objetivo es obligatorio");
 
@@ -162,14 +162,18 @@ export function validarRecordatorio(mensaje, hora){
     if(mensaje && !SOLO_LETRAS_ExpReg.test(mensaje)){
         errores.push("El titulo debe ser tipo texto");
     }
-    if(hora && !ExpReg_HORA.test(hora)){
-        errores.push("Hora inválida");
-    }
+    //if(hora && !ExpReg_HORA.test(hora)){
+      //  errores.push("Hora inválida");
+   // }
     return errores;
 }
 
-export function validarResultados(interpret, recom){
+export function validarResultados(idPaciente,tipo_test,puntaje,categ_resultado,interpret, recom){
     const errores = [];
+    if(!idPaciente) errores.push( "Paciente obligatorio");
+    if(!tipo_test) errores.push( "Tipo de test obligatorio");
+     if(!puntaje) errores.push( "Puntaje obligatorio");
+    if(!categ_resultado) errores.push( "Categoria de resultados obligatorio");    
     if(!interpret) errores.push("Interpretación obligatoria");
     if(interpret && !PARRAFOS_GRANDES_ExpReg.test(interpret)){
         errores.push("Favor de cumplir con el formato");
@@ -179,3 +183,25 @@ export function validarResultados(interpret, recom){
     }
     return errores;
 }
+
+export const transaccionvalida = (estadoActual, nuevoEstado, rol) => {
+    const transaccionesPorRol= {
+        3: {
+            1: [5],
+        },
+        2: {
+            1: [2, 10, 11,9],
+            2: [3, 6, 9],
+            3: [4, 7],
+        }
+    };
+    const transacciones = transaccionesPorRol[rol] || {};
+
+    if(estadoActual === null){
+        return nuevoEstado === 1 && rol === 2;
+    }
+
+    const permitidos = transacciones[estadoActual] || [];
+    return permitidos.includes(nuevoEstado);
+
+};

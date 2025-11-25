@@ -1,5 +1,6 @@
 import {db} from "../config/db.js";
 
+
 // Creación de recordatorios
 export const createRecordatorio = async(RecordatorioData) => {
     console.log("Datos recibidos para insertar:", RecordatorioData);
@@ -94,7 +95,15 @@ export const obtenerPendientes = async() => {
         SELECT r.*, CONCAT(u.Nombre, ' ', u.aPaterno, ' ', IFNULL(u.aMaterno, ' ')) AS nombreUsuario,
         u.email FROM Recordatorio r 
         INNER JOIN Usuario u ON r.idUsuario = u.idUsuario
-        WHERE culminado = 1 AND enviado = 0`
+       WHERE 
+            (r.culminado = 0 OR r.culminado IS NULL) AND  
+            TIME(r.hora) <= TIME(NOW()) AND                 
+            (
+                r.frecuencia > 1 OR                         
+                (r.enviado = 0 OR r.enviado IS NULL)     
+            )
+        `
+
     );
     return rows;
 };
@@ -107,8 +116,9 @@ export const marcadoEnviado = async(idRecordatorio) => {
 };
 
 // Creación de la notificación
-export const notificacionInterna = async(idUsuario, mensaje) => {
+{/*export const notificacionInterna = async(idUsuario, mensaje) => {
     await db.query(`
         INSERT INTO Notificacion (idUsuario, mensaje, leído, fecha)
         VALUES (?, ?, 0, NOW())`,[idUsuario, mensaje]);
-};
+};*/}
+

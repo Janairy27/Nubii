@@ -68,16 +68,55 @@ export const getSintomasByPacienteDesc = async(idPaciente) => {
     return rows;
 };
 
-// Busqueda de sintomas dependiento del criterio de busqueda para los administradores y profesionales
-export const findSintomaByAttribute = async(attributo, valor) => {
-    const query = (`SELECT CONCAT(u.Nombre, ' ', u.aPaterno, ' ', IFNULL(u.aMaterno, ' ')) AS nombre,
-        s.* FROM Usuario u INNER JOIN Paciente p ON u.idUsuario = p.idUsuario
-        INNER JOIN Sintoma s ON p.idPaciente = s.idPaciente WHERE ${attributo} LIKE ?`);
+// Busqueda dinamica de sintomas para la vista de profesionales
+export const findSintomaByAttribute = async(filtros = {}) => {
+    let query = `
+    SELECT s.*, CONCAT(u.Nombre, ' ', u.aPaterno, ' ', IFNULL(aMaterno, ' ')) AS nombrePaciente,
+    p.nivel_estres
+    FROM Sintoma s
+    INNER JOIN Paciente p ON p.idPaciente = s.idPaciente
+    INNER JOIN Usuario u ON p.idUsuario = u.idUsuario
+    WHERE 1 = 1 
+    `;
+
+    const parametros = [];
+    if(filtros.nombrePaciente){
+        query += "AND CONCAT(u.Nombre, ' ', u.aPaterno, ' ', u.aMaterno) LIKE ? ";
+        parametros.push(`%${filtros.nombrePaciente}%`);
+    }
+
+    if(filtros.nivel_estres){
+        query += "AND p.nivel_estres = ? ";
+        parametros.push(filtros.nivel_estres);
+    }
+
+    if(filtros.fecha){
+        query += "AND s.fecha = ? ";
+        parametros.push(filtros.fecha);
+    }
+
+    if(filtros.emocion){
+        query += "AND s.emocion = ? ";
+        parametros.push(filtros.emocion);
+    }
+
+    if(filtros.intensidad){
+        query += "AND s.intensidad = ? ";
+        parametros.push(filtros.intensidad);
+    }
+
+    if(filtros.clima){
+        query += "AND s.clima = ? ";
+        parametros.push(filtros.clima);
+    }
+
+    query += "ORDER BY idSintoma DESC";
+
     try{
-        const [rows] = await db.query(query, [`%${valor}%`]);
+        const [rows] = await db.query(query, parametros);
         return rows;
     }catch(err){
-        console.error("Error en consulta:", err);
+        console.log("Error al consultar sintomas:", err);
         throw err;
     }
 };
@@ -93,4 +132,7 @@ export const findSintomaByAttributePaciente = async(attributo, valor, idPaciente
         throw err;
     }
 };
+
+
+
 

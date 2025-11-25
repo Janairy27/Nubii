@@ -31,3 +31,20 @@ export const findPacienteByUsuario = async(idUsuario) => {
         WHERE u.idUsuario = ?`, [idUsuario]);
     return rows[0];
 };
+// Obtener id y nombre de todos los pacientes
+export const FindPacientes = async() => {
+    const[rows] = await db.query(`
+        SELECT p.idPaciente, CONCAT(u.Nombre, ' ', u.aPaterno, ' ', IFNULL(aMaterno, ' ')) AS nombrePaciente 
+        FROM Usuario u 
+        INNER JOIN Paciente p ON u.idUsuario = p.idUsuario`);
+    return rows;
+};
+
+export const getUsuarioByPaciente = async (idPaciente) => {
+    const [rows] = await db.query(
+        `SELECT idUsuario FROM Paciente WHERE idPaciente = ?`,
+        [idPaciente]
+    );
+    if (rows.length === 0) return null;
+    return rows[0].idUsuario;
+};

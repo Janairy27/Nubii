@@ -1,42 +1,45 @@
-const momento = require('moment');
+import moment from "moment";
 
-function diaLaboral(fecha){
-    const dia = fecha.isoWeekday();
-    return dia >= 1 && dia <= 5;
+// Días laborales: lunes a viernes
+function diaLaboral(fecha) {
+  const dia = fecha.isoWeekday();
+  return dia >= 1 && dia <= 5;
 }
 
-function finSemana(fecha){
-    const dia = fecha.isoWeekday();
-    return dia === 6 || dia === 7;
+// Fin de semana: sábado y domingo
+function finSemana(fecha) {
+  const dia = fecha.isoWeekday();
+  return dia === 6 || dia === 7;
 }
 
-function Ejecutarse(frecuencia, fechaEnvio){
-    const hoy = momento();
-    const ultimo = momento(fechaEnvio);
+// Determina si debe ejecutarse según la frecuencia
+export function Ejecutarse(frecuencia, fechaEnvio) {
+  const hoy = moment();
+  const ultimo = fechaEnvio ? moment(fechaEnvio) : null;
 
-    switch(frecuencia){
-        case 1: // Una sola vez
-            return !fechaEnvio;
+  switch (frecuencia) {
+    case 1: // Una sola vez
+      return !fechaEnvio; // Solo si no se ha enviado antes
 
-        case 2: // diario
-            return !fechaEnvio.isSame(hoy, 'day');
+    case 2: // Diario
+      return !ultimo || !ultimo.isSame(hoy, "day");
 
-        case 3: // dias laborales
-            return diaLaboral(hoy) && !ultimo.isSame(hoy, 'day');
+    case 3: // Días laborales
+      return diaLaboral(hoy) && (!ultimo || !ultimo.isSame(hoy, "day"));
 
-        case 4: // fin de semana
-            return finSemana(hoy) && !ultimo.isSame(hoy, "day");
+    case 4: // Fin de semana
+      return finSemana(hoy) && (!ultimo || !ultimo.isSame(hoy, "day"));
 
-        case 5: // semanal
-            return hoy.diff(ultimo, 'days') >= 7;
+    case 5: // Semanal
+      return !ultimo || hoy.diff(ultimo, "days") >= 7;
 
-        case 6: // quincenal
-            return hoy.diff(ultimo, 'days') >= 15;
+    case 6: // Quincenal
+      return !ultimo || hoy.diff(ultimo, "days") >= 15;
 
-        case 7: // mensual
-            return hoy.diff(ultimo, 'months') >= 1;
+    case 7: // Mensual
+      return !ultimo || hoy.diff(ultimo, "months") >= 1;
 
-        default:
-            return false;
-    }
-};
+    default:
+      return false;
+  }
+}

@@ -4,8 +4,8 @@ import {
     getUserByEmail,  forgotPassword, resetPassword, getUserByAttribute, getFullUserById,
     getUsuariosByFilter
 } from "../controllers/authController.js";
-import { getPacienteByidUsuario } from "../controllers/pacienteController.js";
-import { getProfesionalByidUsuario } from "../controllers/profesionalController.js";
+import { getPacienteByidUsuario, getPacientes } from "../controllers/pacienteController.js";
+import { getProfesionalByidUsuario, getProfesionales } from "../controllers/profesionalController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
@@ -30,9 +30,11 @@ router.get("/by-filter", getUsuariosByFilter);
 
 // Ruta para obtener informacion personal del paciente 
 router.get("/paciente/:idUsuario", getPacienteByidUsuario);
+router.get("/pacientes", getPacientes);
 
 // Ruta para obtener informacion personal del profesional
 router.get("/profesional/:idUsuario", getProfesionalByidUsuario);
+router.get("/profesionales/:especialidad", getProfesionales);
 
 export default router;
 

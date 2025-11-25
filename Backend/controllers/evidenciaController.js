@@ -1,18 +1,9 @@
 import{
     createEvidencia, updateEvidencia, deleteEvidencia, getEvidenciaByPacienteDesc,
-    getEvidenciasByAtrribute,
+    getEvidenciasByAtrribute, getEvidenciasByAtrributeProf
 } from "../models/evidenciaModel.js";
 
-const PARRAFOS_GRANDES_ExpReg = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ\s.,\n]+$/;
-
-// Función para validar unicamente el comentario en caso de existir
-function validar(comentario_Evidencia){
-    const errores = [];
-    if(comentario_Evidencia && !PARRAFOS_GRANDES_ExpReg){
-        errores.push("El comentario debe ser textual");
-    }
-    return errores;
-}
+import { validarParrafos } from "../utils/validaciones.js";
 
 // Registro de evidencias
 export const registrarEvidencia = async(req, res) => {
@@ -32,13 +23,15 @@ export const registrarEvidencia = async(req, res) => {
         }
 
         // Validar formato de comentario
-        const errores = validar(comentario_Evidencia);
+        const errores = validarParrafos(comentario_Evidencia);
         if(errores > 0){
             return res.status(400).json({message: "Favor de cumplir con el formato solicitado", errores});
         }
 
         try{
-            if(!completada ){
+            if(completada === 2){
+                fecha_realizada = new Date().toISOString().split('T')[0];
+            }else{
                 fecha_realizada = null;
             }
             // Almacenar la información
@@ -70,7 +63,7 @@ export const ActualizarEvidencia = async(req, res) => {
     console.log("Informacion obtenida de la evidencia:", req.body);
 
     try{
-        const errores = validar(comentario_Evidencia);
+        const errores = validarParrafos(comentario_Evidencia);
         if(errores.length > 0){
             return res.status(400).json({message: "Errores de validación", errores});
         }
@@ -125,10 +118,10 @@ export const getEvidenciasByPaciente = async(req, res) => {
     }
 };
 
-// función para hacer busqueda de evidencias de forma dinamica
+// Función para hacer búsqueda de evidencias de forma dinámica
 export const getEvidenciasByFilter = async(req, res) => {
     try{
-        const{nombreActividad, fecha_sugerida, fecha_realizada, completada, satisfaccion} = req.query;
+        const{idPaciente, nombreActividad, fecha_sugerida, fecha_realizada, completada, satisfaccion} = req.query;
         console.log("Parametros recibidos:", req.query);
 
         const filtros = {
@@ -139,11 +132,30 @@ export const getEvidenciasByFilter = async(req, res) => {
             satisfaccion: satisfaccion ? parseInt(satisfaccion): undefined
         };
 
-        const resultado = await getEvidenciasByAtrribute(filtros);
+        const resultado = await getEvidenciasByAtrribute(filtros, parseInt(idPaciente));
         res.json(resultado);
     }catch(err){
         console.log("Error en la obtención de evidencias filtradas:", err);
         res.status(500).json({error: err.message});
     }
 };
+// Función para hacer búsqueda de evidencias de forma dinámica en los profesionales
+export const getEvidenciasByFilterProf = async(req, res) => {
+    try{
+        const{idProfesional, nombrePaciente, nombreActividad, fecha_realizada, satisfaccion} = req.query;
+        console.log("Parametros recibidos:", req.query);
 
+        const filtros = {
+            nombrePaciente: nombrePaciente || undefined,
+            nombreActividad: nombreActividad || undefined,
+            fecha_realizada: fecha_realizada || undefined,
+            satisfaccion: satisfaccion ? parseInt(satisfaccion): undefined
+        };
+
+        const resultado = await getEvidenciasByAtrributeProf(filtros, parseInt(idProfesional));
+        res.json(resultado);
+    }catch(err){
+        console.log("Error en la obtención de evidencias filtradas:", err);
+        res.status(500).json({error: err.message});
+    }
+};
