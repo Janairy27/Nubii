@@ -25,19 +25,19 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Grid
+  Grid,
 } from "@mui/material";
 import {
- Search,
-    Psychology as PsychologyIcon,
-    FilterList,
-    RestartAlt,
-    Close,
-    Event as EventIcon, 
-    AccessTime as AccessTimeIcon, 
-    WorkOutline as WorkOutlineIcon, 
-    ModeComment as ModeCommentIcon, 
-    CheckCircleOutline as CheckCircleOutlineIcon,
+  Search,
+  Psychology as PsychologyIcon,
+  FilterList,
+  RestartAlt,
+  Close,
+  Event as EventIcon,
+  AccessTime as AccessTimeIcon,
+  WorkOutline as WorkOutlineIcon,
+  ModeComment as ModeCommentIcon,
+  CheckCircleOutline as CheckCircleOutlineIcon,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -50,9 +50,9 @@ import HealingIcon from "@mui/icons-material/Healing";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
-import PersonIcon from '@mui/icons-material/Person';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
+import PersonIcon from "@mui/icons-material/Person";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
 import SchoolIcon from "@mui/icons-material/School";
 import ComputerIcon from "@mui/icons-material/Computer";
 import EditIcon from "@mui/icons-material/Edit";
@@ -65,14 +65,10 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 
-
-
-
-
 export default function CitasAdmin() {
   const [idUsuario, setIdUsuario] = useState(null);
   const [idPaciente, setIdPaciente] = useState(null);
-  const [Nombre, setNombre] = useState('');
+  const [Nombre, setNombre] = useState("");
 
   const [idProfesional, setIdProfesional] = useState(null);
   const [profesionales, setProfesionales] = useState([]);
@@ -107,52 +103,103 @@ export default function CitasAdmin() {
 
   const [valoresFiltro, setValoresFiltro] = useState({
     profesional: "",
-    paciente: "", 
+    paciente: "",
     fecha: "",
     modalidad: "",
     comentario: "",
     enviado: "",
   });
   const modalidadMap = [
-    { value: 1, nombre: "Presencial", color: "#4CAF50", icon: <SchoolIcon />, },
-    { value: 2, nombre: "Virtual", color: "#2196F3", icon: <ComputerIcon />, },
+    { value: 1, nombre: "Presencial", color: "#4CAF50", icon: <SchoolIcon /> },
+    { value: 2, nombre: "Virtual", color: "#2196F3", icon: <ComputerIcon /> },
   ];
 
   const envioMap = [
-    { value: 1, nombre: "Borrador", color: "#FFC107", icon: <EditIcon />, },
-    { value: 2, nombre: "Solicitud", color: "#9C27B0", icon: <SendIcon />, },
+    { value: 1, nombre: "Borrador", color: "#FFC107", icon: <EditIcon /> },
+    { value: 2, nombre: "Solicitud", color: "#9C27B0", icon: <SendIcon /> },
   ];
 
   const especialidadMap = [
-    { value: 1, nombre: "Psicólogo", icono: <PsychologyIcon />, color: "#ab47bc" },
-    { value: 2, nombre: "Psiquiatra", icono: <MedicalServicesIcon />, color: "#42a5f5" },
+    {
+      value: 1,
+      nombre: "Psicólogo",
+      icono: <PsychologyIcon />,
+      color: "#ab47bc",
+    },
+    {
+      value: 2,
+      nombre: "Psiquiatra",
+      icono: <MedicalServicesIcon />,
+      color: "#42a5f5",
+    },
     { value: 3, nombre: "Terapeuta", icono: <HealingIcon />, color: "#26a69a" },
-    { value: 4, nombre: "Neurólogo", icono: <LocalHospitalIcon />, color: "#ef5350" },
-    { value: 5, nombre: "Médico General", icono: <FavoriteIcon />, color: "#66bb6a" },
-    { value: 6, nombre: "Psicoterapeuta", icono: <SelfImprovementIcon />, color: "#ffa726" },
-    { value: 7, nombre: "Psicoanalista", icono: <EmojiObjectsIcon />, color: "#8d6e63" },
-    { value: 8, nombre: "Consejero en salud mental", icono: <SupportAgentIcon />, color: "#29b6f6" },
-    { value: 9, nombre: "Trabajador social clínico", icono: <SupervisorAccountIcon />, color: "#ffa726" },
+    {
+      value: 4,
+      nombre: "Neurólogo",
+      icono: <LocalHospitalIcon />,
+      color: "#ef5350",
+    },
+    {
+      value: 5,
+      nombre: "Médico General",
+      icono: <FavoriteIcon />,
+      color: "#66bb6a",
+    },
+    {
+      value: 6,
+      nombre: "Psicoterapeuta",
+      icono: <SelfImprovementIcon />,
+      color: "#ffa726",
+    },
+    {
+      value: 7,
+      nombre: "Psicoanalista",
+      icono: <EmojiObjectsIcon />,
+      color: "#8d6e63",
+    },
+    {
+      value: 8,
+      nombre: "Consejero en salud mental",
+      icono: <SupportAgentIcon />,
+      color: "#29b6f6",
+    },
+    {
+      value: 9,
+      nombre: "Trabajador social clínico",
+      icono: <SupervisorAccountIcon />,
+      color: "#ffa726",
+    },
   ];
 
-
- const camposDetalle = [
-        ["nombrePaciente", "Paciente", <PersonIcon sx={{ color: '#092181' }} />],
-        ["nombreProfesional", "Profesional", <SupervisorAccountIcon sx={{ color: '#092181' }} />],
-        ["especialidad", "Especialidad",],
-        ["fecha_cita", "Fecha de la cita", <EventIcon sx={{ color: '#092181' }} />],
-        ["duracion_horas", "Tiempo de duración", <AccessTimeIcon sx={{ color: '#092181' }} />],
-        ["modalidad", "Modalidad",], 
-        ["enlace", "Enlace de acceso", <LaptopMacIcon sx={{ color: '#092181' }} />],
-        ["comentario", "Comentarios recibidos", <ModeCommentIcon sx={{ color: '#092181' }} />],
-        ["enviado", "Estado de Solicitud", ]
-    ];
+  const camposDetalle = [
+    ["nombrePaciente", "Paciente", <PersonIcon sx={{ color: "#092181" }} />],
+    [
+      "nombreProfesional",
+      "Profesional",
+      <SupervisorAccountIcon sx={{ color: "#092181" }} />,
+    ],
+    ["especialidad", "Especialidad"],
+    ["fecha_cita", "Fecha de la cita", <EventIcon sx={{ color: "#092181" }} />],
+    [
+      "duracion_horas",
+      "Tiempo de duración",
+      <AccessTimeIcon sx={{ color: "#092181" }} />,
+    ],
+    ["modalidad", "Modalidad"],
+    ["enlace", "Enlace de acceso", <LaptopMacIcon sx={{ color: "#092181" }} />],
+    [
+      "comentario",
+      "Comentarios recibidos",
+      <ModeCommentIcon sx={{ color: "#092181" }} />,
+    ],
+    ["enviado", "Estado de Solicitud"],
+  ];
 
   const vista = 2;
 
-  const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState(null);
+  const [especialidadSeleccionada, setEspecialidadSeleccionada] =
+    useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
-
 
   const [openConfirm, setOpenConfirm] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
@@ -162,14 +209,18 @@ export default function CitasAdmin() {
       if (key === "enlace") {
         return CitaSeleccionada?.modalidad === 2;
       }
-      return ["fecha_cita", "duracion_horas", "modalidad", "comentario"].includes(key);
-    } if (vista === 1) {
+      return [
+        "fecha_cita",
+        "duracion_horas",
+        "modalidad",
+        "comentario",
+      ].includes(key);
+    }
+    if (vista === 1) {
       return !["duracion_horas", "enlace", "comentario"].includes(key);
     }
     return true;
   });
-
-
 
   const mostrarMensaje = (msg, severity = "info") => {
     setMensajeSnackbar(msg);
@@ -182,16 +233,15 @@ export default function CitasAdmin() {
     setOpenSnackbar(false);
   };
 
-
   useEffect(() => {
     obtenerCitas();
   }, []);
 
-
-
   const obtenerCitas = async () => {
     try {
-      const res = await axios.get(`http://localhost:4000/api/citas/by-filterAdmin`);
+      const res = await axios.get(
+        `http://localhost:4000/api/citas/by-filterAdmin`
+      );
       setCitas(res.data);
       setCitaSeleccionada(null);
     } catch (err) {
@@ -208,7 +258,7 @@ export default function CitasAdmin() {
       filtrosAplicados.nombreProfesional = valoresFiltro.profesional;
     }
     if (filtrosActivos.paciente && valoresFiltro.paciente.trim()) {
-      filtrosAplicados.nombrePaciente = valoresFiltro.paciente; 
+      filtrosAplicados.nombrePaciente = valoresFiltro.paciente;
     }
     if (filtrosActivos.fecha && valoresFiltro.fecha) {
       const fechaBusqueda = format(new Date(valoresFiltro.fecha), "yyyy-MM-dd");
@@ -232,7 +282,9 @@ export default function CitasAdmin() {
     const queryParams = new URLSearchParams(filtrosAplicados).toString();
 
     try {
-      const res = await axios.get(`http://localhost:4000/api/citas/by-filterAdmin?${queryParams}`);
+      const res = await axios.get(
+        `http://localhost:4000/api/citas/by-filterAdmin?${queryParams}`
+      );
 
       if (res.data && res.data.length > 0) {
         setCitas(res.data);
@@ -265,7 +317,7 @@ export default function CitasAdmin() {
       fecha: "",
       modalidad: "",
       comentario: "",
-      enviado: ""
+      enviado: "",
     });
 
     obtenerCitas();
@@ -278,7 +330,7 @@ export default function CitasAdmin() {
 
   const handleCloseDetalleModal = () => {
     setOpenDetalleModal(false);
-    setCitaSeleccionada(null); 
+    setCitaSeleccionada(null);
   };
   const themeColors = {
     primary: "#092181",
@@ -308,11 +360,15 @@ export default function CitasAdmin() {
           label={item.nombre}
           sx={chipSx(item.color)}
         />
-      ) : "N/A";
+      ) : (
+        "N/A"
+      );
     }
 
     if (key === "fecha_cita" && valor) {
-      return format(new Date(valor), "EEEE, d 'de' MMMM yyyy h:mm a", { locale: es });
+      return format(new Date(valor), "EEEE, d 'de' MMMM yyyy h:mm a", {
+        locale: es,
+      });
     }
 
     if (key === "enlace") {
@@ -332,12 +388,13 @@ export default function CitasAdmin() {
         >
           Ir al Enlace
         </Button>
-      ) : "N/A";
+      ) : (
+        "N/A"
+      );
     }
 
     return valor || "N/A";
   };
-
 
   const textFieldEstilo = {
     width: "100%",
@@ -415,16 +472,27 @@ export default function CitasAdmin() {
                 sx={{
                   p: 2,
                   borderRadius: 2,
-                  borderLeft: '4px solid #092181',
+                  borderLeft: "4px solid #092181",
                   backgroundColor: "#f8f9ff",
                 }}
               >
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                                    {IconComponent}
-                    
-                <Typography variant="subtitle2" color="text.secondary" fontWeight={600}>
-                  {label}
-                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    mb: 0.5,
+                  }}
+                >
+                  {IconComponent}
+
+                  <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    fontWeight={600}
+                  >
+                    {label}
+                  </Typography>
                 </Box>
                 <Box mt={0.5}>
                   <Typography variant="body1">
@@ -439,12 +507,10 @@ export default function CitasAdmin() {
     );
   };
 
-
-
-
   return (
     <Layout>
-      <Container maxWidth="md"
+      <Container
+        maxWidth="md"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -455,17 +521,19 @@ export default function CitasAdmin() {
         }}
       >
         {/* Header Principal */}
-        <Paper sx={{
-          p: { xs: 3, md: 4 },
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#F4F6F8",
-          width: "100%",
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}>
+        <Paper
+          sx={{
+            p: { xs: 3, md: 4 },
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F4F6F8",
+            width: "100%",
+            mx: "auto",
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
+        >
           {/* Título */}
           <Box
             sx={{
@@ -509,12 +577,14 @@ export default function CitasAdmin() {
               boxShadow: "0 4px 12px rgba(9, 33, 129, 0.1)",
             }}
           >
-            <Box sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ mb: 3, display: "flex", alignItems: "center" }}>
               <FilterList sx={{ mr: 1, color: "#092181" }} />
-              <Typography variant="h6"
+              <Typography
+                variant="h6"
                 fontWeight="bold"
                 color="#092181"
-                sx={{ flex: 1 }}>
+                sx={{ flex: 1 }}
+              >
                 Filtros de Búsqueda
               </Typography>
             </Box>
@@ -537,12 +607,12 @@ export default function CitasAdmin() {
                       onChange={() =>
                         setFiltrosActivos((prev) => ({
                           ...prev,
-                          [key]: !prev[key]
+                          [key]: !prev[key],
                         }))
                       }
                       sx={{
                         color: "#092181",
-                        '&.Mui-checked': {
+                        "&.Mui-checked": {
                           color: "#092181",
                         },
                       }}
@@ -569,7 +639,10 @@ export default function CitasAdmin() {
                   label="Nombre del profesional"
                   value={valoresFiltro.profesional || ""}
                   onChange={(e) =>
-                    setValoresFiltro({ ...valoresFiltro, profesional: e.target.value })
+                    setValoresFiltro({
+                      ...valoresFiltro,
+                      profesional: e.target.value,
+                    })
                   }
                 />
               )}
@@ -579,13 +652,19 @@ export default function CitasAdmin() {
                   label="Nombre del paciente"
                   value={valoresFiltro.paciente || ""}
                   onChange={(e) =>
-                    setValoresFiltro({ ...valoresFiltro, paciente: e.target.value })
+                    setValoresFiltro({
+                      ...valoresFiltro,
+                      paciente: e.target.value,
+                    })
                   }
                 />
               )}
 
               {filtrosActivos.fecha && (
-                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={es}
+                >
                   <DatePicker
                     label="Fecha de la cita"
                     value={valoresFiltro.fecha}
@@ -610,14 +689,25 @@ export default function CitasAdmin() {
                   <Select
                     value={valoresFiltro.modalidad || ""}
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, modalidad: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        modalidad: e.target.value,
+                      })
                     }
                     label="Modalidad de la cita"
                   >
                     {modalidadMap.map((mo) => (
                       <MenuItem key={mo.value} value={mo.value}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                          <Box sx={{ color: mo.color, fontSize: 20 }}>{mo.icon}</Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.5,
+                          }}
+                        >
+                          <Box sx={{ color: mo.color, fontSize: 20 }}>
+                            {mo.icon}
+                          </Box>
                           {mo.nombre}
                         </Box>
                       </MenuItem>
@@ -631,14 +721,25 @@ export default function CitasAdmin() {
                   <Select
                     value={valoresFiltro.enviado || ""}
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, enviado: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        enviado: e.target.value,
+                      })
                     }
                     label="Estado de Solicitud"
                   >
                     {envioMap.map((env) => (
                       <MenuItem key={env.value} value={env.value}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                          <Box sx={{ color: env.color, fontSize: 20 }}>{env.icon}</Box>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.5,
+                          }}
+                        >
+                          <Box sx={{ color: env.color, fontSize: 20 }}>
+                            {env.icon}
+                          </Box>
                           {env.nombre}
                         </Box>
                       </MenuItem>
@@ -653,7 +754,10 @@ export default function CitasAdmin() {
                   label="Comentarios obtenidos"
                   value={valoresFiltro.comentario || ""}
                   onChange={(e) =>
-                    setValoresFiltro({ ...valoresFiltro, comentario: e.target.value })
+                    setValoresFiltro({
+                      ...valoresFiltro,
+                      comentario: e.target.value,
+                    })
                   }
                 />
               )}
@@ -724,7 +828,7 @@ export default function CitasAdmin() {
                 boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
                 //minWidth: { md: "100%" },
                 maxHeight: 700,
-                overflowY: 'auto'
+                overflowY: "auto",
               }}
             >
               <Typography variant="h6" fontWeight="bold" color="#092181" mb={2}>
@@ -734,63 +838,112 @@ export default function CitasAdmin() {
               <AnimatePresence>
                 {Citas.length > 0 ? (
                   <Grid container spacing={3} alignItems="stretch">
-                  {Citas.map((cita) => (
-                    <Grid item xs={12} sm={6} md={6} key={cita.idCita}>
-                    <motion.div
-                      key={cita.idCita}
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Paper
-                        onClick={() => handleSeleccionar(cita)}
-                        sx={{
-                          p: 2.5,
-                          //mb: 1.5,
-                          borderRadius: 2,
-                          cursor: "pointer",
-                          transition: "all 0.3s",
-                          height: '100%',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'space-between',
-                          border: `2px solid ${CitaSeleccionada?.idCita === cita.idCita ? themeColors.primary : "#e0e7ff"
-                            }`,
-                          backgroundColor:
-                            CitaSeleccionada?.idCita === cita.idCita
-                              ? themeColors.primaryLight
-                              : "#fff",
-                          "&:hover": {
-                            boxShadow: "0 2px 8px rgba(9, 33, 129, 0.1)",
-                            transform: "translateY(-2px)",
-                          },
-                        }}
-                      >
-                        <Box>
-                        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 1.5 }}>
-                          <Typography variant="subtitle1" fontWeight="bold" color="#355C7D">
-                            {format(new Date(cita.fecha_cita), "dd MMMM yyyy", { locale: es })}
-                          </Typography>
-                          <Chip
-                            size="small"
-                            label={envioMap.find(e => e.value === cita.enviado)?.nombre || 'Desconocido'}
-                            sx={{ backgroundColor: `${envioMap.find(e => e.value === cita.enviado)?.color}15`, color: '#fff' }}
-                          />
-                        </Box>
-                        <Typography variant="body2" color="text.secondary" mt={0.5} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <PersonIcon fontSize="small" color="action" />
-                          {cita.nombrePaciente}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <PsychologyIcon fontSize="small" color="action" />
-                          {cita.nombreProfesional}
-                        </Typography>
-                        </Box>
-                      </Paper>
-                    </motion.div>
-                    </Grid>
-                  ))}
+                    {Citas.map((cita) => (
+                      <Grid item xs={12} sm={6} md={6} key={cita.idCita}>
+                        <motion.div
+                          key={cita.idCita}
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Paper
+                            onClick={() => handleSeleccionar(cita)}
+                            sx={{
+                              p: 2.5,
+                              //mb: 1.5,
+                              borderRadius: 2,
+                              cursor: "pointer",
+                              transition: "all 0.3s",
+                              height: "100%",
+                              display: "flex",
+                              flexDirection: "column",
+                              justifyContent: "space-between",
+                              border: `2px solid ${
+                                CitaSeleccionada?.idCita === cita.idCita
+                                  ? themeColors.primary
+                                  : "#e0e7ff"
+                              }`,
+                              backgroundColor:
+                                CitaSeleccionada?.idCita === cita.idCita
+                                  ? themeColors.primaryLight
+                                  : "#fff",
+                              "&:hover": {
+                                boxShadow: "0 2px 8px rgba(9, 33, 129, 0.1)",
+                                transform: "translateY(-2px)",
+                              },
+                            }}
+                          >
+                            <Box>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "flex-start",
+                                  mb: 1.5,
+                                }}
+                              >
+                                <Typography
+                                  variant="subtitle1"
+                                  fontWeight="bold"
+                                  color="#355C7D"
+                                >
+                                  {format(
+                                    new Date(cita.fecha_cita),
+                                    "dd MMMM yyyy",
+                                    { locale: es }
+                                  )}
+                                </Typography>
+                                <Chip
+                                  size="small"
+                                  label={
+                                    envioMap.find(
+                                      (e) => e.value === cita.enviado
+                                    )?.nombre || "Desconocido"
+                                  }
+                                  sx={{
+                                    backgroundColor: `${
+                                      envioMap.find(
+                                        (e) => e.value === cita.enviado
+                                      )?.color
+                                    }15`,
+                                    color: "#fff",
+                                  }}
+                                />
+                              </Box>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                mt={0.5}
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 1,
+                                }}
+                              >
+                                <PersonIcon fontSize="small" color="action" />
+                                {cita.nombrePaciente}
+                              </Typography>
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 1,
+                                }}
+                              >
+                                <PsychologyIcon
+                                  fontSize="small"
+                                  color="action"
+                                />
+                                {cita.nombreProfesional}
+                              </Typography>
+                            </Box>
+                          </Paper>
+                        </motion.div>
+                      </Grid>
+                    ))}
                   </Grid>
                 ) : (
                   <Alert severity="info" sx={{ mt: 2 }}>
@@ -799,23 +952,24 @@ export default function CitasAdmin() {
                 )}
               </AnimatePresence>
             </Card>
-            {CitaSeleccionada && (
-              <CitaDetalleModal />
-            )}
-
+            {CitaSeleccionada && <CitaDetalleModal />}
           </Box>
         </Paper>
         {/* Snackbar de Mensajes */}
-        <Snackbar open={openSnackbar}
+        <Snackbar
+          open={openSnackbar}
           autoHideDuration={6000}
           onClose={handleCloseSnackbar}
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
-          <Alert onClose={handleCloseSnackbar}
+          <Alert
+            onClose={handleCloseSnackbar}
             severity={tipoSnackbar}
-             variant="filled"
-             sx={{ width: '100%' }} >
-            {mensajeSnackbar} </Alert>
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {mensajeSnackbar}{" "}
+          </Alert>
         </Snackbar>
       </Container>
     </Layout>

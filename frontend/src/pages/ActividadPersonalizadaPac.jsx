@@ -31,8 +31,8 @@ import { useNavigate } from "react-router-dom";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import SentimentSatisfiedIcon from "@mui/icons-material/SentimentSatisfied";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Cancel';
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
 // Mapa de recomendaciones
 const recomendacionMap = {
   1: { label: "No", color: "#E53935", icon: <Close /> },
@@ -130,15 +130,18 @@ export default function ActividadPersonalizadaPac() {
     console.log("Datos de la recomendación seleccionada:", recomendacion); // <-- ¡Verifica esto!
 
     // Si ya está calificada, mostramos mensaje
-    if (recomendacion.mejoramiento != null && recomendacion.mas_recomendacion != null) {
+    if (
+      recomendacion.mejoramiento != null &&
+      recomendacion.mas_recomendacion != null
+    ) {
       mostrarMensaje("Esta actividad ya fue calificada", "info");
     }
   };
 
-
   const handleActualizar = () => {
     if (!actividadSeleccionada) return;
-    const { idRecomendacion, mejoramiento, mas_recomendacion } = actividadSeleccionada;
+    const { idRecomendacion, mejoramiento, mas_recomendacion } =
+      actividadSeleccionada;
 
     console.log("Datos a enviar:", { mejoramiento, mas_recomendacion });
 
@@ -147,10 +150,14 @@ export default function ActividadPersonalizadaPac() {
     // setOpenSnackbar(true);
     //return;
     //}
-    axios.put(
-      `http://localhost:4000/api/recomendacion/calificar-recomendacion/${actividadSeleccionada.idRecomendacion}`,
-      { mejoramiento: Number(mejoramiento), mas_recomendacion: Number(mas_recomendacion) }
-    )
+    axios
+      .put(
+        `http://localhost:4000/api/recomendacion/calificar-recomendacion/${actividadSeleccionada.idRecomendacion}`,
+        {
+          mejoramiento: Number(mejoramiento),
+          mas_recomendacion: Number(mas_recomendacion),
+        }
+      )
       .then(() => {
         mostrarMensaje("Recomendación actualizada correctamente.", "success");
         setOpenSnackbar(true);
@@ -166,20 +173,25 @@ export default function ActividadPersonalizadaPac() {
           const dataError = err.response.data;
 
           // Verificar que la respuesta 400 tenga datos estructurados
-          if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
+          if (
+            dataError.errores &&
+            Array.isArray(dataError.errores) &&
+            dataError.errores.length > 0
+          ) {
             // Unir los errores de validación en una sola cadena
-            mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-          }
-
-          else if (dataError.message) {
+            mensajeError = `Errores de validación: ${dataError.errores.join(
+              "; "
+            )}`;
+          } else if (dataError.message) {
             mensajeError = dataError.message;
           }
         }
-        // Mostrar el mensaje de error específico o el genérico 
+        // Mostrar el mensaje de error específico o el genérico
         mostrarMensaje(mensajeError, "error");
       });
   };
-  const isFormComplete = actividadSeleccionada &&
+  const isFormComplete =
+    actividadSeleccionada &&
     actividadSeleccionada.mejoramiento &&
     actividadSeleccionada.mas_recomendacion;
 
@@ -279,8 +291,9 @@ export default function ActividadPersonalizadaPac() {
                         letterSpacing: 0.5,
                       }}
                     >
-                      {actividades.length > 0 ?
-                        "Actividades recomendadas :" : "No se han registrado actividades recomendadas aún."}
+                      {actividades.length > 0
+                        ? "Actividades recomendadas :"
+                        : "No se han registrado actividades recomendadas aún."}
                     </Typography>
                   </Box>
                   <Chip
@@ -328,7 +341,8 @@ export default function ActividadPersonalizadaPac() {
                           flexDirection: "column",
                           gap: 2.5,
                           p: 3,
-                        }}>
+                        }}
+                      >
                         <Typography
                           variant="h6"
                           sx={{
@@ -371,7 +385,6 @@ export default function ActividadPersonalizadaPac() {
                 transition: "all 0.3s ease",
               }}
             >
-
               <Typography
                 variant="h5"
                 sx={{
@@ -386,13 +399,16 @@ export default function ActividadPersonalizadaPac() {
 
               <Box display="flex" alignItems="center" gap={1}>
                 <Person2 sx={{ color: "#0A2472", mb: 3 }} />
-                <Typography variant="subtitle1"
+                <Typography
+                  variant="subtitle1"
                   sx={{
                     mb: 3,
                     color: "#4A5568",
                     textAlign: { xs: "center", sm: "left" },
-                  }}>
-                  <strong>Profesional:</strong> {actividadSeleccionada.nombreProfesional}
+                  }}
+                >
+                  <strong>Profesional:</strong>{" "}
+                  {actividadSeleccionada.nombreProfesional}
                 </Typography>
               </Box>
 
@@ -409,14 +425,18 @@ export default function ActividadPersonalizadaPac() {
                   const disabled = isSelect ? estaCalificada : true; // Solo los select se deshabilitan si ya está calificada
 
                   return (
-                    <Box key={key} sx={{
-                      flex: { xs: "1 1 100%", sm: "1 1 47%" },
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 1,
-                    }} >
+                    <Box
+                      key={key}
+                      sx={{
+                        flex: { xs: "1 1 100%", sm: "1 1 47%" },
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 1,
+                      }}
+                    >
                       {isSelect ? (
-                        <FormControl disabled={disabled}
+                        <FormControl
+                          disabled={disabled}
                           sx={{
                             width: "100%",
                             maxWidth: "400px",
@@ -435,12 +455,16 @@ export default function ActividadPersonalizadaPac() {
                               color: "#2D5D7B",
                               fontWeight: "bold",
                             },
-                          }} >
+                          }}
+                        >
                           <InputLabel>{label}</InputLabel>
                           <Select
                             value={value}
                             onChange={(e) =>
-                              setActividadSeleccionada({ ...actividadSeleccionada, [key]: Number(e.target.value) })
+                              setActividadSeleccionada({
+                                ...actividadSeleccionada,
+                                [key]: Number(e.target.value),
+                              })
                             }
                             label={label}
                             sx={{
@@ -448,18 +472,29 @@ export default function ActividadPersonalizadaPac() {
                               "& .MuiSelect-select": { py: 1.2 },
                             }}
                           >
-                            {Object.entries(map).map(([val, { label: l, color, icon }]) => (
-                              <MenuItem key={val} value={val}>
-                                <Box display="flex" alignItems="center" gap={1}>
-                                  <Box sx={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 1, color
-                                  }}>{icon}</Box>
-                                  {l}
-                                </Box>
-                              </MenuItem>
-                            ))}
+                            {Object.entries(map).map(
+                              ([val, { label: l, color, icon }]) => (
+                                <MenuItem key={val} value={val}>
+                                  <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    gap={1}
+                                  >
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 1,
+                                        color,
+                                      }}
+                                    >
+                                      {icon}
+                                    </Box>
+                                    {l}
+                                  </Box>
+                                </MenuItem>
+                              )
+                            )}
                           </Select>
                         </FormControl>
                       ) : (
@@ -498,18 +533,16 @@ export default function ActividadPersonalizadaPac() {
                     </Box>
                   );
                 })}
-
               </Box>
 
-
-
-              <Box sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexWrap: "wrap",
-                gap: 2,
-                mt: 1,
-              }}
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexWrap: "wrap",
+                  gap: 2,
+                  mt: 1,
+                }}
               >
                 <Button
                   variant="contained"
@@ -560,7 +593,7 @@ export default function ActividadPersonalizadaPac() {
           open={openSnackbar}
           autoHideDuration={3000}
           onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert
             onClose={handleCloseSnackbar}

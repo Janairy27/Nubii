@@ -10,13 +10,10 @@ import {
   Container,
   InputAdornment,
   IconButton,
-  Snackbar
+  Snackbar,
 } from "@mui/material";
 import LockResetIcon from "@mui/icons-material/LockReset";
-import {
-  Visibility,
-  VisibilityOff,
-} from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 export default function ResetPassword() {
   const [contrasena, setPassword] = useState("");
@@ -24,8 +21,8 @@ export default function ResetPassword() {
   const [error, setError] = useState(false);
   const token = new URLSearchParams(useLocation().search).get("token");
   const [showPassword, setShowPassword] = useState(false);
-  
-   const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [mensajeSnackbar, setMensajeSnackbar] = useState("");
   const [tipoSnackbar, setTipoSnackbar] = useState("success");
 
@@ -42,28 +39,32 @@ export default function ResetPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
       await axios.post("http://localhost:4000/api/auth/reset-password", {
         token,
         contrasena,
-        
       });
       console.log("Token recibido en frontend:", token);
-      mostrarMensaje("Contraseña actualizada correctamente 🌿","success");
+      mostrarMensaje("Contraseña actualizada correctamente 🌿", "success");
       setError(false);
     } catch (err) {
       console.error("Error completo de Axios:", err);
-    let mensajeError = "Error al actualizar la contraseña.";
-     if (err.response && err.response.data) {
-            const dataError = err.response.data;
-            if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
-                mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-            } 
-            else if (dataError.message) {
-                 mensajeError = dataError.message;
-            }
+      let mensajeError = "Error al actualizar la contraseña.";
+      if (err.response && err.response.data) {
+        const dataError = err.response.data;
+        if (
+          dataError.errores &&
+          Array.isArray(dataError.errores) &&
+          dataError.errores.length > 0
+        ) {
+          mensajeError = `Errores de validación: ${dataError.errores.join(
+            "; "
+          )}`;
+        } else if (dataError.message) {
+          mensajeError = dataError.message;
         }
+      }
       mostrarMensaje(mensajeError, "error");
     }
   };
@@ -156,21 +157,19 @@ export default function ResetPassword() {
             variant="outlined"
             value={contrasena}
             onChange={(e) => setPassword(e.target.value)}
-             InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                <IconButton
-                                  onClick={() => setShowPassword(!showPassword)}
-                                  edge="end"
-                                  sx={{ color: "#2D5D7B" }}
-                                >
-                                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                              </InputAdornment>
-                            ),
-                          }}
-
-
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                    sx={{ color: "#2D5D7B" }}
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
             required
             fullWidth
             sx={{
@@ -208,7 +207,7 @@ export default function ResetPassword() {
           </Button>
         </Box>
 
-         {/*  Snackbar con Alert */}
+        {/*  Snackbar con Alert */}
         <Snackbar
           open={openSnackbar}
           autoHideDuration={4000}

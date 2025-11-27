@@ -1,7 +1,12 @@
-import {db} from "../config/db.js";
+import { db } from "../config/db.js";
 
 // Crear notificación
-export const crearNotificacion = async ({ idUsuario, titulo, mensaje, tipo }) => {
+export const crearNotificacion = async ({
+  idUsuario,
+  titulo,
+  mensaje,
+  tipo,
+}) => {
   const [result] = await db.query(
     `INSERT INTO Notificacion (idUsuario, titulo, mensaje, tipo) VALUES (?, ?, ?, ?)`,
     [idUsuario, titulo, mensaje, tipo]
@@ -19,17 +24,24 @@ export const obtenerNotificaciones = async (idUsuario) => {
 };
 
 export const marcarComoLeido = async (idNotificacion) => {
-  const [result] = await db.query("UPDATE Notificacion SET leida = 1 WHERE idNotificacion = ?", [idNotificacion]);
+  const [result] = await db.query(
+    "UPDATE Notificacion SET leida = 1 WHERE idNotificacion = ?",
+    [idNotificacion]
+  );
   return result;
 };
 
 export const marcarTodasComoLeidas = async (idUsuario) => {
-  const [result] = await db.query("UPDATE Notificacion SET leida = 1 WHERE idUsuario = ?", [idUsuario]);
+  const [result] = await db.query(
+    "UPDATE Notificacion SET leida = 1 WHERE idUsuario = ?",
+    [idUsuario]
+  );
   return result;
 };
 
-
 // Eliminar notificación
 export const eliminarNotificacion = async (idNotificacion) => {
-  await db.query(`DELETE FROM Notificacion  WHERE idNotificacion = ?`, [idNotificacion]);
+  await db.query(`DELETE FROM Notificacion  WHERE idNotificacion = ?`, [
+    idNotificacion,
+  ]);
 };

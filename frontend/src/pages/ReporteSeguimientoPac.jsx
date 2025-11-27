@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
 import Layout from "../components/Layout";
-import axios from 'axios';
-import { Pie } from 'react-chartjs-2';
-import { format } from 'date-fns';
+import axios from "axios";
+import { Pie } from "react-chartjs-2";
+import { format } from "date-fns";
 
 import {
   Box,
@@ -26,7 +26,7 @@ import {
   Snackbar,
 } from "@mui/material";
 
-import PieChartIcon from '@mui/icons-material/PieChart';
+import PieChartIcon from "@mui/icons-material/PieChart";
 
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import TableViewIcon from "@mui/icons-material/TableView";
@@ -41,19 +41,12 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 
+import AutoGraphIcon from "@mui/icons-material/AutoGraph";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
-import TimelineIcon from '@mui/icons-material/Timeline';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js';
+import { Chart as ChartJS, ArcElement, Title, Tooltip, Legend } from "chart.js";
 
 ChartJS.register(ArcElement, Title, Tooltip, Legend);
 
@@ -61,11 +54,11 @@ export default function ReporteSeguimientoPac() {
   const theme = useTheme();
   const [idUsuario, setIdUsuario] = useState(null);
   const [idPaciente, setIdPaciente] = useState(null);
-  const [Nombre, setNombre] = useState('');
+  const [Nombre, setNombre] = useState("");
   const [tipoUsuario, setTipoUsuario] = useState(null);
-  const [fechaInicio, setFechaInicio] = useState('');
-  const [fechaFin, setFechaFin] = useState('');
-  const [tipoReporte, setTipoReporte] = useState('diario');
+  const [fechaInicio, setFechaInicio] = useState("");
+  const [fechaFin, setFechaFin] = useState("");
+  const [tipoReporte, setTipoReporte] = useState("diario");
   const [reportData, setReportData] = useState([]);
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -109,7 +102,11 @@ export default function ReporteSeguimientoPac() {
       emociones: [
         { id: 13, nombre: "Problemas de Sueño", icono: <LocalHotelIcon /> },
         { id: 14, nombre: "Cambios Apetito", icono: <RestaurantIcon /> },
-        { id: 15, nombre: "Dificultad Concentración", icono: <PsychologyIcon /> },
+        {
+          id: 15,
+          nombre: "Dificultad Concentración",
+          icono: <PsychologyIcon />,
+        },
         { id: 16, nombre: "Síntomas Somáticos", icono: <PsychologyIcon /> },
       ],
     },
@@ -119,17 +116,20 @@ export default function ReporteSeguimientoPac() {
     let G = parseInt(color.substring(3, 5), 16);
     let B = parseInt(color.substring(5, 7), 16);
 
-    R = parseInt(R * (100 + percent) / 100);
-    G = parseInt(G * (100 + percent) / 100);
-    B = parseInt(B * (100 + percent) / 100);
+    R = parseInt((R * (100 + percent)) / 100);
+    G = parseInt((G * (100 + percent)) / 100);
+    B = parseInt((B * (100 + percent)) / 100);
 
-    R = (R < 255) ? R : 255;
-    G = (G < 255) ? G : 255;
-    B = (B < 255) ? B : 255;
+    R = R < 255 ? R : 255;
+    G = G < 255 ? G : 255;
+    B = B < 255 ? B : 255;
 
-    const RR = ((R.toString(16).length === 1) ? "0" + R.toString(16) : R.toString(16));
-    const GG = ((G.toString(16).length === 1) ? "0" + G.toString(16) : G.toString(16));
-    const BB = ((B.toString(16).length === 1) ? "0" + B.toString(16) : B.toString(16));
+    const RR =
+      R.toString(16).length === 1 ? "0" + R.toString(16) : R.toString(16);
+    const GG =
+      G.toString(16).length === 1 ? "0" + G.toString(16) : G.toString(16);
+    const BB =
+      B.toString(16).length === 1 ? "0" + B.toString(16) : B.toString(16);
 
     return "#" + RR + GG + BB;
   };
@@ -144,14 +144,13 @@ export default function ReporteSeguimientoPac() {
 
         map[emo.id] = {
           nombre: emo.nombre,
-          color: variedColor, 
-          icono: emo.icono
+          color: variedColor,
+          icono: emo.icono,
         };
       });
     });
     return map;
   }, [emocionesSaludMental]);
-
 
   const mostrarMensaje = (msg, severity = "info") => {
     setMensaje(msg);
@@ -163,7 +162,6 @@ export default function ReporteSeguimientoPac() {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
-
 
   useEffect(() => {
     const storedIdUsuario = localStorage.getItem("idUsuario");
@@ -183,67 +181,90 @@ export default function ReporteSeguimientoPac() {
     }
   }, []);
 
-   useEffect(() => {
+  useEffect(() => {
     if (idPaciente) {
       fetchReport();
     }
-  }, [idPaciente]); 
-
+  }, [idPaciente]);
 
   const fetchReport = async () => {
-    if (!idPaciente) return mostrarMensaje("No se ha encontrado el paciente.", "warning");
+    if (!idPaciente)
+      return mostrarMensaje("No se ha encontrado el paciente.", "warning");
     ///if (!fechaInicio || !fechaFin) return mostrarMensaje("Selecciona un rango de fechas.", "warning");
     setReportData([]);
 
     try {
-      const res = await axios.get(`http://localhost:4000/api/repSeguimiento/info-seguimientoPac`, {
-        params: {
-          idPaciente,
-          fechaInicio,
-          fechaFin,
-          tipoReporte
+      const res = await axios.get(
+        `http://localhost:4000/api/repSeguimiento/info-seguimientoPac`,
+        {
+          params: {
+            idPaciente,
+            fechaInicio,
+            fechaFin,
+            tipoReporte,
+          },
         }
-      });
-       if (res.data.length === 0) {
-        mostrarMensaje(" No hay información disponible  en el rango seleccionado.", "warning");
+      );
+      if (res.data.length === 0) {
+        mostrarMensaje(
+          " No hay información disponible  en el rango seleccionado.",
+          "warning"
+        );
       }
       setReportData(res.data);
     } catch (error) {
-      console.error('Error al obtener el reporte:', error);
+      console.error("Error al obtener el reporte:", error);
     }
   };
 
   const exportPDF = async () => {
     try {
-      if (reportData.length === 0) return mostrarMensaje("Primero genera el reporte.", "error");
+      if (reportData.length === 0)
+        return mostrarMensaje("Primero genera el reporte.", "error");
 
       // Obtener imagen del gráfico
-      const chartCanvas = document.querySelector('canvas');
-      const grafico = chartCanvas ? chartCanvas.toDataURL('image/png') : null;
+      const chartCanvas = document.querySelector("canvas");
+      const grafico = chartCanvas ? chartCanvas.toDataURL("image/png") : null;
 
       const res = await axios.post(
         `http://localhost:4000/api/repSeguimiento/pdf`,
-        { tipoUsuario: 3, datos: reportData, grafico, nombre: Nombre, tipoReporte },
-        { responseType: 'blob' }
+        {
+          tipoUsuario: 3,
+          datos: reportData,
+          grafico,
+          nombre: Nombre,
+          tipoReporte,
+        },
+        { responseType: "blob" }
       );
 
       const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', 'Reporte_Seguimiento.pdf');
+      link.setAttribute("download", "Reporte_Seguimiento.pdf");
       document.body.appendChild(link);
       link.click();
       link.remove();
       mostrarMensaje("Reporte exportado a PDF exitosamente.", "success");
     } catch (error) {
-      console.error('Error al exportar PDF:', error);
+      console.error("Error al exportar PDF:", error);
       mostrarMensaje("Error al exportar el reporte a PDF.", "error");
     }
   };
 
   const PALETA_DISTINTIVA = [
-    '#42A5F5', '#66BB6A', '#FFA726', '#AB47BC', '#EC407A', '#26C6DA',
-    '#FF7043', '#9CCC65', '#EF5350', '#29B6F6', '#E53935', '#A1887F'
+    "#42A5F5",
+    "#66BB6A",
+    "#FFA726",
+    "#AB47BC",
+    "#EC407A",
+    "#26C6DA",
+    "#FF7043",
+    "#9CCC65",
+    "#EF5350",
+    "#29B6F6",
+    "#E53935",
+    "#A1887F",
   ];
 
   // --- Gráfico con emociones ---
@@ -258,15 +279,14 @@ export default function ReporteSeguimientoPac() {
     });
     const emocionIDs = Object.keys(intensidadesPorID);
 
-
-
     const labels = [];
     const data = [];
     const backgroundColors = [];
 
     emocionIDs.forEach((id, index) => {
       const intensidades = intensidadesPorID[id];
-      const promedio = intensidades.reduce((a, b) => a + b, 0) / intensidades.length;
+      const promedio =
+        intensidades.reduce((a, b) => a + b, 0) / intensidades.length;
 
       const info = emocionesMap[id]; // Buscar la información de nombre y color usando el ID
 
@@ -277,79 +297,82 @@ export default function ReporteSeguimientoPac() {
         // Usar el color de la categoría del mapa
         backgroundColors.push(info.color);
       }
-
     });
 
     return {
       labels,
       datasets: [
         {
-          label: 'Promedio de Intensidad por Emoción',
+          label: "Promedio de Intensidad por Emoción",
           data,
           backgroundColor: backgroundColors,
-          borderColor: '#fff',
+          borderColor: "#fff",
           borderWidth: 2,
         },
       ],
     };
-  }, [reportData, emocionesMap]); 
+  }, [reportData, emocionesMap]);
 
   // --- Opciones del gráfico ---
   const chartOptions = {
     responsive: true,
-    maintainAspectRatio: false, 
+    maintainAspectRatio: false,
 
     plugins: {
       title: {
         display: true,
-        text: 'Distribución de Intensidad por Emoción', // Título que informa el contenido
+        text: "Distribución de Intensidad por Emoción", // Título que informa el contenido
         font: {
           size: 16,
-          weight: 'bold'
+          weight: "bold",
         },
         padding: {
           top: 10,
-          bottom: 15
-        }
+          bottom: 15,
+        },
       },
       legend: {
         display: true,
-        position: 'right', 
+        position: "right",
         labels: {
           font: {
-            size: 12
+            size: 12,
           },
           boxWidth: 20,
-        }
+        },
       },
       // Información al pasar el mouse
       tooltip: {
         callbacks: {
           label: function (context) {
-            let label = context.label || '';
+            let label = context.label || "";
             if (label) {
-              label += ': ';
+              label += ": ";
             }
             if (context.parsed !== null) {
-              label += new Intl.NumberFormat('es-ES', { maximumFractionDigits: 2 }).format(context.parsed) + ' promedio';
+              label +=
+                new Intl.NumberFormat("es-ES", {
+                  maximumFractionDigits: 2,
+                }).format(context.parsed) + " promedio";
             }
             return label;
-          }
-        }
-      }
+          },
+        },
+      },
     },
 
     elements: {
       arc: {
-        borderWidth: 1, 
-        borderColor: '#FFFFFF',
-      }
-    }
+        borderWidth: 1,
+        borderColor: "#FFFFFF",
+      },
+    },
   };
 
   return (
     <Layout>
-      <Container maxWidth="md"
+      <Container
+        maxWidth="md"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -359,41 +382,49 @@ export default function ReporteSeguimientoPac() {
           minHeight: "100vh",
         }}
       >
-        <Paper sx={{
-          p: { xs: 2, md: 4 },
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#F4F6F8",
-          width: "100%",
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}>
-          <Box sx={{
-            p: { xs: 2, sm: 3 },
+        <Paper
+          sx={{
+            p: { xs: 2, md: 4 },
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F4F6F8",
+            width: "100%",
+            mx: "auto",
             display: "flex",
             flexDirection: "column",
             gap: 3,
-            maxWidth: "1200px",
-            mx: "auto",
-            width: "100%"
-          }}>
-
-            {/* Header */}
-            <Box ox sx={{
+          }}
+        >
+          <Box
+            sx={{
+              p: { xs: 2, sm: 3 },
               display: "flex",
-              alignItems: "center",
-              gap: 1.5,
-              flex: 1,
-              justifyContent: "center",
-              textAlign: "center",
-            }}>
-              <PieChartIcon sx={{
-                color: "#092181",
-                fontSize: 36,
-                filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
-              }} />
+              flexDirection: "column",
+              gap: 3,
+              maxWidth: "1200px",
+              mx: "auto",
+              width: "100%",
+            }}
+          >
+            {/* Header */}
+            <Box
+              ox
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1.5,
+                flex: 1,
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
+              <PieChartIcon
+                sx={{
+                  color: "#092181",
+                  fontSize: 36,
+                  filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+                }}
+              />
               <Typography
                 variant="h4"
                 sx={{
@@ -403,7 +434,9 @@ export default function ReporteSeguimientoPac() {
                   justifyContent: "center",
                   gap: 1,
                 }}
-              > Reporte de seguimento del Paciente
+              >
+                {" "}
+                Reporte de seguimento del Paciente
               </Typography>
             </Box>
             <Box sx={{ textAlign: "center", mb: 4 }}>
@@ -465,19 +498,25 @@ export default function ReporteSeguimientoPac() {
                     label="Rango"
                   >
                     <MenuItem value="diario">
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <CalendarTodayIcon sx={{ color: "#4CAF50" }} />
                         <Typography>Diario</Typography>
                       </Box>
                     </MenuItem>
                     <MenuItem value="semanal">
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <EventAvailableIcon sx={{ color: "#2196F3" }} />
                         <Typography>Semanal</Typography>
                       </Box>
                     </MenuItem>
                     <MenuItem value="mensual">
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <DateRangeIcon sx={{ color: "#FF9800" }} />
                         <Typography>Mensual</Typography>
                       </Box>
@@ -558,7 +597,6 @@ export default function ReporteSeguimientoPac() {
                 variant="outlined"
                 color="error"
                 onClick={exportPDF}
-
                 sx={{
                   borderRadius: "12px",
                   textTransform: "none",
@@ -577,50 +615,68 @@ export default function ReporteSeguimientoPac() {
                     //filter: "invert(46%) sepia(87%) saturate(368%) hue-rotate(113deg) brightness(97%) contrast(93%)",
                   }}
                 />
-
                 PDF
               </Button>
             </Card>
 
             {reportData.length > 0 ? (
               <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                <Card sx={{
-                  p: 3,
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  cursor: "pointer",
-                  borderRadius: "20px",
-                  border: "1px solid #dbe3ff",
-                  backgroundColor: "#f9fbff",
-                  width: "94%",
-                  //minHeight: "260px",
-                  transition: "all 0.3s ease",
-                  boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
-                  "&:hover": {
-                    transform: "translateY(-6px)",
-                    boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
-                    borderColor: "#092181",
-                  },
-                  overflowX: "auto"
-                }}>
+                <Card
+                  sx={{
+                    p: 3,
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                    borderRadius: "20px",
+                    border: "1px solid #dbe3ff",
+                    backgroundColor: "#f9fbff",
+                    width: "94%",
+                    //minHeight: "260px",
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
+                    "&:hover": {
+                      transform: "translateY(-6px)",
+                      boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
+                      borderColor: "#092181",
+                    },
+                    overflowX: "auto",
+                  }}
+                >
                   <Box display="flex" alignItems="center" gap={1.5} mb={2}>
                     <TableViewIcon sx={{ color: "#092181", fontSize: 28 }} />
-                    <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
+                    <Typography
+                      variant="h6"
+                      fontWeight="bold"
+                      sx={{ color: "#092181" }}
+                    >
                       Vista previa del reporte
                     </Typography>
                   </Box>
-                  <Table sx={{
-                    minWidth: 1000,
-                    borderCollapse: "separate",
-                    borderSpacing: "0 12px",
-                    width: "100%",
-                    tableLayout: 'fixed',
-                  }}>
-                    <TableHead sx={{ backgroundColor: '#e8f0fe' }}>
+                  <Table
+                    sx={{
+                      minWidth: 1000,
+                      borderCollapse: "separate",
+                      borderSpacing: "0 12px",
+                      width: "100%",
+                      tableLayout: "fixed",
+                    }}
+                  >
+                    <TableHead sx={{ backgroundColor: "#e8f0fe" }}>
                       <TableRow>
-                        {["Fecha", "Emoción", "Promedio de  Intensidad", "Frecuencia de la emoción"].map((head) => (
-                          <TableCell key={head} align="center"
-                          sx={{ fontWeight: "bold", color: theme.palette.primary.main }}>
+                        {[
+                          "Fecha",
+                          "Emoción",
+                          "Promedio de  Intensidad",
+                          "Frecuencia de la emoción",
+                        ].map((head) => (
+                          <TableCell
+                            key={head}
+                            align="center"
+                            sx={{
+                              fontWeight: "bold",
+                              color: theme.palette.primary.main,
+                            }}
+                          >
                             {head}
                           </TableCell>
                         ))}
@@ -630,27 +686,55 @@ export default function ReporteSeguimientoPac() {
                       {reportData.map((row, index) => {
                         const emo = emocionesMap[row.emocion] || {};
                         return (
-                          <TableRow key={index} sx={{
-                            backgroundColor: "#ffffff",
-                            borderRadius: "12px",
-                            transition: "all 0.3s ease", // Transición más suave
+                          <TableRow
+                            key={index}
+                            sx={{
+                              backgroundColor: "#ffffff",
+                              borderRadius: "12px",
+                              transition: "all 0.3s ease", // Transición más suave
                               "&:hover": {
                                 // Un color de hover sutil o un ligero azul/gris
                                 backgroundColor: "#f0f8ff", // Azul muy claro al hacer hover
-                                cursor: 'pointer',
+                                cursor: "pointer",
                               },
-                             
-                          }}>
-                            <TableCell align="center">{row.tiempo ? format(new Date(row.tiempo), "yyyy-MM-dd") : "N/A"}</TableCell>
+                            }}
+                          >
+                            <TableCell align="center">
+                              {row.tiempo
+                                ? format(new Date(row.tiempo), "yyyy-MM-dd")
+                                : "N/A"}
+                            </TableCell>
                             <TableCell>
-                              <Box  sx={{ display: "flex", alignItems: "center", gap: 1, color: emo.color, justifyContent: "center", }}>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 1,
+                                  color: emo.color,
+                                  justifyContent: "center",
+                                }}
+                              >
                                 {emo.icono} {emo.nombre || row.emocion}
                               </Box>
                             </TableCell>
-                            <TableCell align="center" sx={{ color: theme.palette.info.main, fontWeight: "bold" }}>
-                              {Number(row.promedio_intensidad).toFixed(2)}</TableCell>
-                            <TableCell align="center" sx={{ color: theme.palette.secondary, fontWeight: "bold" }}>
-                              {row.frecuencia_emocion}</TableCell>
+                            <TableCell
+                              align="center"
+                              sx={{
+                                color: theme.palette.info.main,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {Number(row.promedio_intensidad).toFixed(2)}
+                            </TableCell>
+                            <TableCell
+                              align="center"
+                              sx={{
+                                color: theme.palette.secondary,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {row.frecuencia_emocion}
+                            </TableCell>
                           </TableRow>
                         );
                       })}
@@ -658,30 +742,35 @@ export default function ReporteSeguimientoPac() {
                   </Table>
                 </Card>
 
-                <Card sx={{
-                  p: 3,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  cursor: "pointer",
-                  borderRadius: "20px",
-                  border: "1px solid #dbe3ff",
-                  backgroundColor: "#f9fbff",
-                  width: "94%",
-                  //minHeight: "260px",
-                  transition: "all 0.3s ease",
-                  boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
-                  "&:hover": {
-                    transform: "translateY(-6px)",
-                    boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
-                    borderColor: "#092181",
-                  },
-                }}>
-                  <Box sx={{
-                    height: { xs: 300, sm: 400 }, display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                <Card
+                  sx={{
+                    p: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                    borderRadius: "20px",
+                    border: "1px solid #dbe3ff",
+                    backgroundColor: "#f9fbff",
+                    width: "94%",
+                    //minHeight: "260px",
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
+                    "&:hover": {
+                      transform: "translateY(-6px)",
+                      boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
+                      borderColor: "#092181",
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{
+                      height: { xs: 300, sm: 400 },
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
                     <Pie data={chartData} options={chartOptions} />
                   </Box>
                 </Card>
@@ -689,7 +778,8 @@ export default function ReporteSeguimientoPac() {
             ) : (
               <Card sx={{ p: 3, textAlign: "center", borderRadius: 3 }}>
                 <Typography color="text.secondary">
-                  No hay datos para mostrar. Selecciona un rango de fechas y genera el reporte.
+                  No hay datos para mostrar. Selecciona un rango de fechas y
+                  genera el reporte.
                 </Typography>
               </Card>
             )}
@@ -711,7 +801,7 @@ export default function ReporteSeguimientoPac() {
             {mensaje}
           </Alert>
         </Snackbar>
-      </Container >
-    </Layout >
+      </Container>
+    </Layout>
   );
 }

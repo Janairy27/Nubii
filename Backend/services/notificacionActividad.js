@@ -1,18 +1,39 @@
 import nodemailer from "nodemailer";
-import path from 'path';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-export const sendNotificacion = async (email, nombrePaciente, nombreProfesional) => {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',  auth:{
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASS,
-        },
-    });
+export const sendNotificacion = async (
+  email,
+  nombrePaciente,
+  nombreProfesional
+) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
 
-    // Ruta absoluta del logo (ajústar si se cambia la ubicación)
-      const logoPath = path.resolve("F:\\Estadia\\Nubii\\frontend\\public\\logo.png");
-    
-      // Contenido HTML del correo
+  //Obtenemos la ruta del directorio actual: .../Nubii/Backend/utils
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+
+  // Construimos la ruta al logo.
+  // Usamos '../..' para salir de 'utils' -> 'Backend' -> Raíz del proyecto.
+  // Desde la raíz, entramos a 'frontend/public/logo.png'.
+  const logoPath = path.join(
+    __dirname,
+    "../..",
+    "frontend",
+    "public",
+    "logo.png"
+  );
+  if (!fs.existsSync(logoPath)) {
+    console.error("¡ALERTA! El sistema no encuentra la imagen en:", logoPath);
+  }
+  // Contenido HTML del correo
   const htmlContent = `
     <div style="background-color:#F4F6F8;padding:40px 0;display:flex;justify-content:center;">
       <div style="max-width:640px;width:100%;background:#ffffff;border-radius:16px;
@@ -66,18 +87,17 @@ export const sendNotificacion = async (email, nombrePaciente, nombreProfesional)
     </div>
   `;
 
-    await transporter.sendMail({
-        from: `"Nubii" <${process.env.EMAIL_USER}>`,
-        to: email,
-        subject: 'Nueva actividad para tu bienestar emocional',
-        html: htmlContent,
+  await transporter.sendMail({
+    from: `"Nubii" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: "Nueva actividad para tu bienestar emocional",
+    html: htmlContent,
     attachments: [
       {
         filename: "logo.png",
         path: logoPath,
-        cid: "logoNubii", 
+        cid: "logoNubii",
       },
     ],
   });
-
 };

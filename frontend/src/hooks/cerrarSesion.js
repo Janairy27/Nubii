@@ -117,8 +117,8 @@ const CerrarSesion = ({ tiempoSalida = 30 }) => {
               <DialogContentText
                 sx={{ textAlign: "center", mb: 2, color: "#333" }}
               >
-                Tu sesión ha expirado por inactividad. Serás redirigido al inicio
-                de sesión en unos segundos.
+                Tu sesión ha expirado por inactividad. Serás redirigido al
+                inicio de sesión en unos segundos.
               </DialogContentText>
 
               {/*  Contador numérico */}
@@ -155,7 +155,10 @@ const CerrarSesion = ({ tiempoSalida = 30 }) => {
             </DialogContent>
 
             <DialogActions sx={{ justifyContent: "center", p: 2 }}>
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <Button
                   onClick={handleCerrarDialogo}
                   variant="contained"

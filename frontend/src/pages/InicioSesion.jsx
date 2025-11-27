@@ -22,7 +22,6 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import LoginIcon from "@mui/icons-material/Login";
 import axios from "axios";
 
-
 export default function InicioSesion() {
   const location = useLocation();
   const [email, setEmail] = useState("");
@@ -45,22 +44,22 @@ export default function InicioSesion() {
   useEffect(() => {
     // Verifica si la navegación contiene un mensaje de éxito de registro
     if (location.state?.registrationSuccess) {
-        // Llama a la función local que muestra el Snackbar en este componente
-        mostrarMensaje(location.state.message, location.state.severity);
+      // Llama a la función local que muestra el Snackbar en este componente
+      mostrarMensaje(location.state.message, location.state.severity);
 
-        // Limpia el estado para que el mensaje no se muestre si el usuario recarga
-        // Esto evita que el mensaje aparezca cada vez que se carga el login
-        navigate(location.pathname, { replace: true, state: {} });
+      // Limpia el estado para que el mensaje no se muestre si el usuario recarga
+      // Esto evita que el mensaje aparezca cada vez que se carga el login
+      navigate(location.pathname, { replace: true, state: {} });
     }
-}, [location.state, navigate]); // Dependencias
+  }, [location.state, navigate]); // Dependencias
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "http://localhost:4000/api/auth/login",
-        { email, password }
-      );
+      const res = await axios.post("http://localhost:4000/api/auth/login", {
+        email,
+        password,
+      });
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("role", res.data.role);
@@ -69,25 +68,30 @@ export default function InicioSesion() {
       localStorage.setItem("aPaterno", res.data.aPaterno);
 
       if (res.data.role === 1) {
-    navigate("/dashboardAdmin", {
-        state: { 
+        navigate("/dashboardAdmin", {
+          state: {
             loginMessage: "Credenciales válidas, has iniciado sesión",
-            loginMessageType: "success"
-        }
-    });
-} else if (res.data.role === 2) {
+            loginMessageType: "success",
+          },
+        });
+      } else if (res.data.role === 2) {
         // 1. Mostrar el mensaje PRIMERO
-        mostrarMensaje("Credenciales válidas, en un momento serás dirigido al panel principal", "success");
-        
+        mostrarMensaje(
+          "Credenciales válidas, en un momento serás dirigido al panel principal",
+          "success"
+        );
+
         // 2. Retrasar la navegación
         setTimeout(() => {
           navigate("/dashboardProf");
         }, 6000); // Espera 1.5 segundos
-        
       } else {
         // 1. Mostrar el mensaje PRIMERO
-        mostrarMensaje("Credenciales válidas, en un momento serás dirigido al panel principal", "success");
-        
+        mostrarMensaje(
+          "Credenciales válidas, en un momento serás dirigido al panel principal",
+          "success"
+        );
+
         // 2. Retrasar la navegación
         setTimeout(() => {
           navigate("/dashboard");
@@ -314,8 +318,6 @@ export default function InicioSesion() {
             >
               Iniciar sesión
             </Button>
-
-         
 
             <Box
               sx={{

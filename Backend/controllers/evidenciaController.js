@@ -1,161 +1,204 @@
-import{
-    createEvidencia, updateEvidencia, deleteEvidencia, getEvidenciaByPacienteDesc,
-    getEvidenciasByAtrribute, getEvidenciasByAtrributeProf
+import {
+  createEvidencia,
+  updateEvidencia,
+  deleteEvidencia,
+  getEvidenciaByPacienteDesc,
+  getEvidenciasByAtrribute,
+  getEvidenciasByAtrributeProf,
 } from "../models/evidenciaModel.js";
 
 import { validarParrafos } from "../utils/validaciones.js";
 
 // Registro de evidencias
-export const registrarEvidencia = async(req, res) => {
-    console.log("Información de la evidencia obtenida:", req.body);
+export const registrarEvidencia = async (req, res) => {
+  console.log("Información de la evidencia obtenida:", req.body);
 
-    const{fecha_sugerida, comentario_Evidencia} = req.body;
-    let fecha_realizada = req.body.fecha_realizada;
-    const idPaciente = Number(req.body.idPaciente);
-    const idActividad = Number(req.body.idActividad);
-    const completada = Number(req.body.completada);
-    const satisfaccion = Number(req.body.satisfaccion);
+  const { fecha_sugerida, comentario_Evidencia } = req.body;
+  let fecha_realizada = req.body.fecha_realizada;
+  const idPaciente = Number(req.body.idPaciente);
+  const idActividad = Number(req.body.idActividad);
+  const completada = Number(req.body.completada);
+  const satisfaccion = Number(req.body.satisfaccion);
 
-    try{
-        // Validación de campos nulos
-        if(!satisfaccion){
-            return res.status(404).json({message: "Faltan campos por completar"});
-        }
-
-        // Validar formato de comentario
-        const errores = validarParrafos(comentario_Evidencia);
-        if(errores > 0){
-            return res.status(400).json({message: "Favor de cumplir con el formato solicitado", errores});
-        }
-
-        try{
-            if(completada === 2){
-                fecha_realizada = new Date().toISOString().split('T')[0];
-            }else{
-                fecha_realizada = null;
-            }
-            // Almacenar la información
-            console.log("Insertando evidencia");
-            const idEvidencia = await createEvidencia({
-                idPaciente, idActividad, fecha_sugerida, fecha_realizada, completada, satisfaccion, comentario_Evidencia
-            });
-            console.log("Evidencia creada con id:", idEvidencia);
-            res.status(201).json({message: "Evidencia creada con éxito"});
-        }catch(err){
-            console.log("Error al crear evidencia", err.message);
-            res.status(500).json({error: err.message});
-        }
-    }catch(err){
-        console.log("Error al registrar evidencia", err);
-        res.status(500).json({error: "Error interno del servidor"});
+  try {
+    // Validación de campos nulos
+    if (!satisfaccion) {
+      return res.status(404).json({ message: "Faltan campos por completar" });
     }
+
+    // Validar formato de comentario
+    const errores = validarParrafos(comentario_Evidencia);
+    if (errores > 0) {
+      return res
+        .status(400)
+        .json({
+          message: "Favor de cumplir con el formato solicitado",
+          errores,
+        });
+    }
+
+    try {
+      if (completada === 2) {
+        fecha_realizada = new Date().toISOString().split("T")[0];
+      } else {
+        fecha_realizada = null;
+      }
+      // Almacenar la información
+      console.log("Insertando evidencia");
+      const idEvidencia = await createEvidencia({
+        idPaciente,
+        idActividad,
+        fecha_sugerida,
+        fecha_realizada,
+        completada,
+        satisfaccion,
+        comentario_Evidencia,
+      });
+      console.log("Evidencia creada con id:", idEvidencia);
+      res.status(201).json({ message: "Evidencia creada con éxito" });
+    } catch (err) {
+      console.log("Error al crear evidencia", err.message);
+      res.status(500).json({ error: err.message });
+    }
+  } catch (err) {
+    console.log("Error al registrar evidencia", err);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
 };
 
 // Función para actualizar evidencias
-export const ActualizarEvidencia = async(req, res) => {
-    const {idEvidencia} = req.params;
-    console.log("ID de la evidencia:", idEvidencia);
+export const ActualizarEvidencia = async (req, res) => {
+  const { idEvidencia } = req.params;
+  console.log("ID de la evidencia:", idEvidencia);
 
-    const{comentario_Evidencia} = req.body;
-    let fecha_realizada = req.body.fecha_realizada;
-    const completada = Number(req.body.completada);
-    const satisfaccion = Number(req.body.satisfaccion);
-    console.log("Informacion obtenida de la evidencia:", req.body);
+  const { comentario_Evidencia } = req.body;
+  let fecha_realizada = req.body.fecha_realizada;
+  const completada = Number(req.body.completada);
+  const satisfaccion = Number(req.body.satisfaccion);
+  console.log("Informacion obtenida de la evidencia:", req.body);
 
-    try{
-        const errores = validarParrafos(comentario_Evidencia);
-        if(errores.length > 0){
-            return res.status(400).json({message: "Errores de validación", errores});
-        }
-
-        if(completada === 1){
-            fecha_realizada = null;
-        }else{
-            fecha_realizada = new Date().toISOString().split('T')[0];
-        }
-        
-        console.log("Actualizando evidencia con id:", idEvidencia);
-        const Evidencia = await updateEvidencia(idEvidencia, {fecha_realizada, completada, satisfaccion, comentario_Evidencia});
-        console.log("Evidencia actualizada");
-        if(!Evidencia){
-            return res.status(404).json({message: "La evidencia no fue actualizada"});
-        }
-
-        res.json({message: "Evidencia actualizada exitosamente"});
-    }catch(err){
-        console.log("Errores al actualizar evidencia:", err);
-        res.status(500).json({error: err.message});
+  try {
+    const errores = validarParrafos(comentario_Evidencia);
+    if (errores.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "Errores de validación", errores });
     }
+
+    if (completada === 1) {
+      fecha_realizada = null;
+    } else {
+      fecha_realizada = new Date().toISOString().split("T")[0];
+    }
+
+    console.log("Actualizando evidencia con id:", idEvidencia);
+    const Evidencia = await updateEvidencia(idEvidencia, {
+      fecha_realizada,
+      completada,
+      satisfaccion,
+      comentario_Evidencia,
+    });
+    console.log("Evidencia actualizada");
+    if (!Evidencia) {
+      return res
+        .status(404)
+        .json({ message: "La evidencia no fue actualizada" });
+    }
+
+    res.json({ message: "Evidencia actualizada exitosamente" });
+  } catch (err) {
+    console.log("Errores al actualizar evidencia:", err);
+    res.status(500).json({ error: err.message });
+  }
 };
 
 // Función para eliminar evidencia
-export const EliminarEvidencia = async(req, res) => {
-    const {idEvidencia} = req.params;
-    console.log("ID de la evidencia recibido:", idEvidencia);
-    try{
-        await deleteEvidencia(idEvidencia);
-        res.json({message: "Evidencia eliminada con éxito"});
-    }catch(err){
-        console.log("Error al eliminar evidencia:", err);
-        res.status(500).json({error: err.message});
-    }
+export const EliminarEvidencia = async (req, res) => {
+  const { idEvidencia } = req.params;
+  console.log("ID de la evidencia recibido:", idEvidencia);
+  try {
+    await deleteEvidencia(idEvidencia);
+    res.json({ message: "Evidencia eliminada con éxito" });
+  } catch (err) {
+    console.log("Error al eliminar evidencia:", err);
+    res.status(500).json({ error: err.message });
+  }
 };
 
 // Función que lista las evidencias de los pacientes
-export const getEvidenciasByPaciente = async(req, res) => {
-    const {idPaciente} = req.params;
-    console.log("ID del profesional obtenido:", idPaciente);
+export const getEvidenciasByPaciente = async (req, res) => {
+  const { idPaciente } = req.params;
+  console.log("ID del profesional obtenido:", idPaciente);
 
-    try{
-        const evidencia = await getEvidenciaByPacienteDesc(idPaciente);
-        console.log("Evidencias obtenidas");
-        if(!evidencia){
-            return res.status(404).json({message: "Evidencia no encontrada"});
-        }
-        res.json(evidencia);
-    }catch(err){
-        res.status(500).json({error: err.message});
+  try {
+    const evidencia = await getEvidenciaByPacienteDesc(idPaciente);
+    console.log("Evidencias obtenidas");
+    if (!evidencia) {
+      return res.status(404).json({ message: "Evidencia no encontrada" });
     }
+    res.json(evidencia);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 };
 
 // Función para hacer búsqueda de evidencias de forma dinámica
-export const getEvidenciasByFilter = async(req, res) => {
-    try{
-        const{idPaciente, nombreActividad, fecha_sugerida, fecha_realizada, completada, satisfaccion} = req.query;
-        console.log("Parametros recibidos:", req.query);
+export const getEvidenciasByFilter = async (req, res) => {
+  try {
+    const {
+      idPaciente,
+      nombreActividad,
+      fecha_sugerida,
+      fecha_realizada,
+      completada,
+      satisfaccion,
+    } = req.query;
+    console.log("Parametros recibidos:", req.query);
 
-        const filtros = {
-            nombreActividad: nombreActividad || undefined,
-            fecha_sugerida: fecha_sugerida || undefined,
-            fecha_realizada: fecha_realizada || undefined,
-            completada: completada ? parseInt(completada): undefined,
-            satisfaccion: satisfaccion ? parseInt(satisfaccion): undefined
-        };
+    const filtros = {
+      nombreActividad: nombreActividad || undefined,
+      fecha_sugerida: fecha_sugerida || undefined,
+      fecha_realizada: fecha_realizada || undefined,
+      completada: completada ? parseInt(completada) : undefined,
+      satisfaccion: satisfaccion ? parseInt(satisfaccion) : undefined,
+    };
 
-        const resultado = await getEvidenciasByAtrribute(filtros, parseInt(idPaciente));
-        res.json(resultado);
-    }catch(err){
-        console.log("Error en la obtención de evidencias filtradas:", err);
-        res.status(500).json({error: err.message});
-    }
+    const resultado = await getEvidenciasByAtrribute(
+      filtros,
+      parseInt(idPaciente)
+    );
+    res.json(resultado);
+  } catch (err) {
+    console.log("Error en la obtención de evidencias filtradas:", err);
+    res.status(500).json({ error: err.message });
+  }
 };
 // Función para hacer búsqueda de evidencias de forma dinámica en los profesionales
-export const getEvidenciasByFilterProf = async(req, res) => {
-    try{
-        const{idProfesional, nombrePaciente, nombreActividad, fecha_realizada, satisfaccion} = req.query;
-        console.log("Parametros recibidos:", req.query);
+export const getEvidenciasByFilterProf = async (req, res) => {
+  try {
+    const {
+      idProfesional,
+      nombrePaciente,
+      nombreActividad,
+      fecha_realizada,
+      satisfaccion,
+    } = req.query;
+    console.log("Parametros recibidos:", req.query);
 
-        const filtros = {
-            nombrePaciente: nombrePaciente || undefined,
-            nombreActividad: nombreActividad || undefined,
-            fecha_realizada: fecha_realizada || undefined,
-            satisfaccion: satisfaccion ? parseInt(satisfaccion): undefined
-        };
+    const filtros = {
+      nombrePaciente: nombrePaciente || undefined,
+      nombreActividad: nombreActividad || undefined,
+      fecha_realizada: fecha_realizada || undefined,
+      satisfaccion: satisfaccion ? parseInt(satisfaccion) : undefined,
+    };
 
-        const resultado = await getEvidenciasByAtrributeProf(filtros, parseInt(idProfesional));
-        res.json(resultado);
-    }catch(err){
-        console.log("Error en la obtención de evidencias filtradas:", err);
-        res.status(500).json({error: err.message});
-    }
+    const resultado = await getEvidenciasByAtrributeProf(
+      filtros,
+      parseInt(idProfesional)
+    );
+    res.json(resultado);
+  } catch (err) {
+    console.log("Error en la obtención de evidencias filtradas:", err);
+    res.status(500).json({ error: err.message });
+  }
 };

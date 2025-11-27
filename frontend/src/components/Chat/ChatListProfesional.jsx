@@ -24,7 +24,13 @@ const ChatListProfesional = ({ pacientes, onSelect, mensajesNuevos }) => {
   return (
     <Paper
       elevation={3}
-      sx={{ height: "100%", overflowY: "auto", borderRadius: "16px", bgcolor: "#fafafa", p: 1 }}
+      sx={{
+        height: "100%",
+        overflowY: "auto",
+        borderRadius: "16px",
+        bgcolor: "#fafafa",
+        p: 1,
+      }}
     >
       {pacientes.length === 0 ? (
         <Typography
@@ -39,7 +45,7 @@ const ChatListProfesional = ({ pacientes, onSelect, mensajesNuevos }) => {
           {pacientes.map((paciente, index) => {
             const pacienteIdStr = String(paciente.idPaciente);
             // Asegurarse de que se accede al objeto mensajesNuevos de forma segura
-            const noLeidos = Number(mensajesNuevos[pacienteIdStr] ?? 0); 
+            const noLeidos = Number(mensajesNuevos[pacienteIdStr] ?? 0);
             const tieneNoLeidos = noLeidos > 0;
 
             return (
@@ -66,7 +72,7 @@ const ChatListProfesional = ({ pacientes, onSelect, mensajesNuevos }) => {
                   <ListItemAvatar>
                     <Badge
                       color="error"
-                      badgeContent={ noLeidos}
+                      badgeContent={noLeidos}
                       overlap="circular"
                       anchorOrigin={{ vertical: "top", horizontal: "right" }}
                     >
@@ -78,7 +84,9 @@ const ChatListProfesional = ({ pacientes, onSelect, mensajesNuevos }) => {
                           height: 45,
                           fontSize: "1rem",
                           fontWeight: "bold",
-                          animation: tieneNoLeidos ? `${pulse} 1.5s infinite` : "none",
+                          animation: tieneNoLeidos
+                            ? `${pulse} 1.5s infinite`
+                            : "none",
                         }}
                       >
                         {paciente.nombrePaciente?.[0]?.toUpperCase() || "P"}

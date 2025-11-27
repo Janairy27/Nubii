@@ -15,12 +15,12 @@ import { useNavigate } from "react-router-dom";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("");
-  
+
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [mensaje, setMensaje] = useState("");
   const [tipo, setTipo] = useState("success");
 
-   const mostrarMensaje = (msg, severity = "info") => {
+  const mostrarMensaje = (msg, severity = "info") => {
     setMensaje(msg);
     setTipo(severity);
     setOpenSnackbar(true);
@@ -38,14 +38,20 @@ export default function ForgotPassword() {
       await axios.post(`http://localhost:4000/api/auth/forgot-password`, {
         email,
       });
-      mostrarMensaje("Si el correo existe, se envió un enlace para restablecer tu contraseña.", "success");
+      mostrarMensaje(
+        "Si el correo existe, se envió un enlace para restablecer tu contraseña.",
+        "success"
+      );
       setOpenSnackbar(true);
       //setSeverity("success");
       //setOpen(true);
     } catch (err) {
       if (err.response) {
         console.error("Response:", err.response.status, err.response.data);
-        mostrarMensaje(err.response.data?.message || "Error en el servidor", "error");
+        mostrarMensaje(
+          err.response.data?.message || "Error en el servidor",
+          "error"
+        );
       } else if (err.request) {
         console.error("No hubo respuesta del servidor", err.request);
         mostrarMensaje("No hubo respuesta del servidor", "error");
@@ -57,8 +63,6 @@ export default function ForgotPassword() {
       setOpenSnackbar(true);
     }
   };
-
-
 
   const handleBack = () => {
     navigate("/login");
@@ -196,28 +200,27 @@ export default function ForgotPassword() {
               color: "#555",
             }}
           >
-            Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
+            Ingresa tu correo y te enviaremos un enlace para restablecer tu
+            contraseña.
           </Typography>
-           {/* Snackbar para mensajes */}
+          {/* Snackbar para mensajes */}
 
-        <Snackbar
-          open={openSnackbar}
-          autoHideDuration={8000}
-          onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-          <Alert
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={8000}
             onClose={handleCloseSnackbar}
-            severity={tipo}
-            variant="filled"
-            sx={{ width: "100%" }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           >
-            {mensaje}
-          </Alert>
-        </Snackbar>
+            <Alert
+              onClose={handleCloseSnackbar}
+              severity={tipo}
+              variant="filled"
+              sx={{ width: "100%" }}
+            >
+              {mensaje}
+            </Alert>
+          </Snackbar>
         </Box>
-
-       
       </Container>
     </Box>
   );

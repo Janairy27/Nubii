@@ -1,7 +1,12 @@
 import express from "express";
-import { enviarMensaje, obtenerChat,getPacientesPorProfesional, marcarMensajesLeidos,
-    obtenerMensajesNoLeidos, obtenerMensajesNoLeidosPac
- } from "../controllers/chatController.js";
+import {
+  enviarMensaje,
+  obtenerChat,
+  getPacientesPorProfesional,
+  marcarMensajesLeidos,
+  obtenerMensajesNoLeidos,
+  obtenerMensajesNoLeidosPac,
+} from "../controllers/chatController.js";
 
 const router = express.Router();
 
@@ -12,13 +17,6 @@ router.get("/pacientes/:idProfesional", getPacientesPorProfesional);
 
 router.get("/:idPaciente/:idProfesional", obtenerChat);
 
-
-
-
 router.put("/leido/:idPaciente/:idProfesional", marcarMensajesLeidos);
- 
-
-
 
 export default router;
-

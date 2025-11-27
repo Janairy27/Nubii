@@ -17,20 +17,20 @@ const estadoCitaMap = [
 ];
 
 const modalidadMap = [
-  { value: 1, nombre: "🏥 Presencial", color: "#4CAF50" },
-  { value: 2, nombre: "💻 Virtual", color: "#2196F3" },
+  { value: 1, nombre: "Presencial", color: "#4CAF50" },
+  { value: 2, nombre: "Virtual", color: "#2196F3" },
 ];
 
 const especialidadMap = [
-  { value: 1, nombre: "🧠 Psicólogo", color: "#AB47BC" },
-  { value: 2, nombre: "💊 Psiquiatra", color: "#42A5F5" },
-  { value: 3, nombre: "👐 Terapeuta", color: "#26A69A" },
-  { value: 4, nombre: "🩺 Neurólogo", color: "#EF5350" },
-  { value: 5, nombre: "❤️ Médico General", color: "#66BB6A" },
-  { value: 6, nombre: "🧘 Psicoterapeuta", color: "#FFA726" },
-  { value: 7, nombre: "💡 Psicoanalista", color: "#8D6E63" },
-  { value: 8, nombre: "🤝 Consejero", color: "#29B6F6" },
-  { value: 9, nombre: "👥 Trabajador Social", color: "#FFA726" },
+  { value: 1, nombre: "Psicólogo", color: "#AB47BC" },
+  { value: 2, nombre: "Psiquiatra", color: "#42A5F5" },
+  { value: 3, nombre: "Terapeuta", color: "#26A69A" },
+  { value: 4, nombre: "Neurólogo", color: "#EF5350" },
+  { value: 5, nombre: "Médico General", color: "#66BB6A" },
+  { value: 6, nombre: "Psicoterapeuta", color: "#FFA726" },
+  { value: 7, nombre: "Psicoanalista", color: "#8D6E63" },
+  { value: 8, nombre: "Consejero", color: "#29B6F6" },
+  { value: 9, nombre: "Trabajador Social", color: "#FFA726" },
 ];
 
 // Función principal
@@ -72,7 +72,9 @@ export async function generarExcel(datos) {
   datos.forEach((item) => {
     const estado = estadoCitaMap.find((e) => e.value === item.estado);
     const modalidad = modalidadMap.find((m) => m.value === item.modalidad);
-    const especialidad = especialidadMap.find((e) => e.value === item.especialidad);
+    const especialidad = especialidadMap.find(
+      (e) => e.value === item.especialidad
+    );
 
     const row = sheet.addRow({
       idCita: item.idCita,
@@ -93,7 +95,11 @@ export async function generarExcel(datos) {
 
     // Bordes y alineación
     row.eachCell((cell) => {
-      cell.alignment = { horizontal: "center", vertical: "middle", wrapText: true };
+      cell.alignment = {
+        horizontal: "center",
+        vertical: "middle",
+        wrapText: true,
+      };
       cell.border = {
         bottom: { style: "thin", color: { argb: "FFE0E0E0" } },
       };

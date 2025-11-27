@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Bar } from "react-chartjs-2";
-import { format, parseISO, isWithinInterval, eachDayOfInterval } from "date-fns";
+import {
+  format,
+  parseISO,
+  isWithinInterval,
+  eachDayOfInterval,
+} from "date-fns";
 import axios from "axios";
 import {
   Typography,
@@ -52,7 +57,7 @@ import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import DateRangeIcon from "@mui/icons-material/DateRange";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import CloseIcon from "@mui/icons-material/Close";
@@ -89,21 +94,34 @@ const emocionMap = {
 };
 
 const emocionColors = [
-  "#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF", "#FF9F40", "#E7E9ED",
-  "#A3A847", "#C94E4E", "#6C757D", "#007BFF", "#28A745", "#17A2B8",
-  "#FFC107", "#DC3545", "#343A40"
+  "#FF6384",
+  "#36A2EB",
+  "#FFCE56",
+  "#4BC0C0",
+  "#9966FF",
+  "#FF9F40",
+  "#E7E9ED",
+  "#A3A847",
+  "#C94E4E",
+  "#6C757D",
+  "#007BFF",
+  "#28A745",
+  "#17A2B8",
+  "#FFC107",
+  "#DC3545",
+  "#343A40",
 ];
 
 const LineaTiempo = () => {
   const [idUsuario, setIdUsuario] = useState(null);
   const [idPaciente, setIdPaciente] = useState(null);
-  const [Nombre, setNombre] = useState('');
-  const [fechaInicio, setFechaInicio] = useState('');
-  const [fechaFin, setFechaFin] = useState('');
+  const [Nombre, setNombre] = useState("");
+  const [fechaInicio, setFechaInicio] = useState("");
+  const [fechaFin, setFechaFin] = useState("");
   const [emocion, setEmocion] = useState(null);
   const [intensidad, setIntensidad] = useState(null);
-  const [comentario, setComentario] = useState('');
-  const [range, setRange] = useState('semanal');
+  const [comentario, setComentario] = useState("");
+  const [range, setRange] = useState("semanal");
   const [historial, setHistorial] = useState([]);
   const [datasetsMap, setDatasetsMap] = useState([]);
   const navigate = useNavigate();
@@ -115,11 +133,11 @@ const LineaTiempo = () => {
   const [openG, setOpenG] = useState(false); //Para abrir la gráfica
 
   const [formData, setFormData] = useState({
-    fecha_inicio: '',
-    fecha_fin: '',
-    emocion_predom: '',
-    prom_intensidad: '',
-    comentario: ''
+    fecha_inicio: "",
+    fecha_fin: "",
+    emocion_predom: "",
+    prom_intensidad: "",
+    comentario: "",
   });
 
   useEffect(() => {
@@ -142,10 +160,12 @@ const LineaTiempo = () => {
   // Cargar historial desde el backend
   const fetchHistorial = async () => {
     try {
-      const response = await axios.get(`http://localhost:4000/api/historial/obtener-historial/${idPaciente}`);
+      const response = await axios.get(
+        `http://localhost:4000/api/historial/obtener-historial/${idPaciente}`
+      );
       setHistorial(response.data);
     } catch (error) {
-      console.error('Error al obtener historial:', error);
+      console.error("Error al obtener historial:", error);
     }
   };
 
@@ -166,12 +186,13 @@ const LineaTiempo = () => {
       fecha_fin: fechaFin,
       emocion_predom: emocion,
       prom_intensidad: intensidad,
-      comentario
+      comentario,
     };
 
     console.log("Enviando data:", data);
 
-    axios.post("http://localhost:4000/api/historial/registro-historial", data)
+    axios
+      .post("http://localhost:4000/api/historial/registro-historial", data)
       .then(() => {
         fetchHistorial();
         setFechaInicio("");
@@ -198,7 +219,7 @@ const LineaTiempo = () => {
   const expandHistorial = (historial) => {
     let expanded = [];
 
-    historial.forEach(entry => {
+    historial.forEach((entry) => {
       if (!entry.fecha_inicio || !entry.fecha_fin) {
         console.warn("Registro con fechas inválidas:", entry);
         return;
@@ -208,12 +229,12 @@ const LineaTiempo = () => {
 
       const dias = eachDayOfInterval({ start, end });
 
-      dias.forEach(dia => {
+      dias.forEach((dia) => {
         expanded.push({
           fecha: dia,
           emocion: entry.emocion_predom,
           intensidad: entry.prom_intensidad,
-          comentario: entry.comentario
+          comentario: entry.comentario,
         });
       });
     });
@@ -230,13 +251,13 @@ const LineaTiempo = () => {
     let startDate;
 
     switch (range) {
-      case 'semanal':
+      case "semanal":
         startDate = new Date(now.setDate(now.getDate() - 7));
         break;
-      case 'quincenal':
+      case "quincenal":
         startDate = new Date(now.setDate(now.getDate() - 14));
         break;
-      case 'mensual':
+      case "mensual":
         startDate = new Date(now.setMonth(now.getMonth() - 1));
         break;
       default:
@@ -245,20 +266,19 @@ const LineaTiempo = () => {
 
     const expanded = expandHistorial(historial);
 
-    return expanded.filter(entry =>
-      entry.fecha instanceof Date &&
-      !isNaN(entry.fecha) &&
-      isWithinInterval(entry.fecha, {
-        start: startDate,
-        end: new Date()
-      })
+    return expanded.filter(
+      (entry) =>
+        entry.fecha instanceof Date &&
+        !isNaN(entry.fecha) &&
+        isWithinInterval(entry.fecha, {
+          start: startDate,
+          end: new Date(),
+        })
     );
   }, [historial, range]);
 
-
   const chartData = useMemo(() => {
     if (filteredData.length === 0) return { labels: [], datasets: [] };
-
 
     const now = new Date();
     let startDate;
@@ -271,21 +291,24 @@ const LineaTiempo = () => {
         startDate = new Date(now.getTime() - 13 * 24 * 60 * 60 * 1000); // 14 días
         break;
       case "mensual":
-        startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate());
+        startDate = new Date(
+          now.getFullYear(),
+          now.getMonth() - 1,
+          now.getDate()
+        );
         break;
       default:
         startDate = new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000);
     }
 
-
     const days = eachDayOfInterval({ start: startDate, end: new Date() });
-    const dayLabels = days.map((d) => format(d, 'dd/MM'));
+    const dayLabels = days.map((d) => format(d, "dd/MM"));
 
     // Agrupar intensidades por emoción y día
     const grouped = {};
 
     days.forEach((day) => {
-      const dayKey = format(day, 'dd/MM');
+      const dayKey = format(day, "dd/MM");
       grouped[dayKey] = {};
       Object.keys(emocionMap).forEach((emocionId) => {
         grouped[dayKey][emocionId] = null;
@@ -293,7 +316,7 @@ const LineaTiempo = () => {
     });
 
     filteredData.forEach((entry) => {
-      const dayKey = format(entry.fecha, 'dd/MM');
+      const dayKey = format(entry.fecha, "dd/MM");
       const emocionId = entry.emocion;
 
       if (!grouped[dayKey]) return;
@@ -314,7 +337,7 @@ const LineaTiempo = () => {
 
     return {
       labels: dayLabels,
-      datasets
+      datasets,
     };
   }, [filteredData, range]);
 
@@ -340,24 +363,31 @@ const LineaTiempo = () => {
       y: {
         beginAtZero: true,
         max: 10,
-        title: { display: true, text: "Intensidad", font: { size: 14, weight: "bold" } },
+        title: {
+          display: true,
+          text: "Intensidad",
+          font: { size: 14, weight: "bold" },
+        },
         ticks: { stepSize: 1 },
         grid: { color: "#e0e0e0" },
       },
       x: {
-        title: { display: true, text: "Fecha", font: { size: 14, weight: "bold" } },
+        title: {
+          display: true,
+          text: "Fecha",
+          font: { size: 14, weight: "bold" },
+        },
         grid: { color: "#f5f5f5" },
       },
     },
   };
 
   const handleInputChange = (e) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
-
 
   return (
     <Paper
@@ -401,7 +431,10 @@ const LineaTiempo = () => {
             backgroundColor: "#FFFFFF",
             "& fieldset": { borderColor: "#CBD4D8" },
             "&:hover fieldset": { borderColor: "#355C7D" },
-            "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: "2px" },
+            "&.Mui-focused fieldset": {
+              borderColor: "#092181",
+              borderWidth: "2px",
+            },
           },
           "& .MuiInputLabel-root": {
             color: "#2D5D7B",
@@ -410,7 +443,11 @@ const LineaTiempo = () => {
         }}
       >
         <InputLabel>Rango</InputLabel>
-        <Select value={range} onChange={(e) => setRange(e.target.value)} label="Rango">
+        <Select
+          value={range}
+          onChange={(e) => setRange(e.target.value)}
+          label="Rango"
+        >
           <MenuItem value="semanal">
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
               <CalendarTodayIcon sx={{ color: "#4CAF50" }} />
@@ -457,10 +494,7 @@ const LineaTiempo = () => {
           </IconButton>
         </Tooltip>
         <Box sx={{ height: 300 }}>
-          <Bar
-            data={chartData}
-            options={chartOptions}
-          />
+          <Bar data={chartData} options={chartOptions} />
         </Box>
       </Box>
       <Dialog
@@ -476,7 +510,13 @@ const LineaTiempo = () => {
           },
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <Typography variant="h6" sx={{ fontWeight: 600, color: "#1976d2" }}>
             Gráfica Detallada
           </Typography>
@@ -641,28 +681,31 @@ const LineaTiempo = () => {
               }}
             />
 
-            <FormControl sx={{
-              width: "100%",
-              maxWidth: "400px",
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "12px",
-                backgroundColor: "#FFFFFF",
-                "& fieldset": {
-                  borderColor: "#CBD4D8",
+            <FormControl
+              sx={{
+                width: "100%",
+                maxWidth: "400px",
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                  backgroundColor: "#FFFFFF",
+                  "& fieldset": {
+                    borderColor: "#CBD4D8",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#355C7D",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#092181",
+                    borderWidth: "2px",
+                  },
                 },
-                "&:hover fieldset": {
-                  borderColor: "#355C7D",
+                "& .MuiInputLabel-root": {
+                  color: "#2D5D7B",
+                  fontWeight: "bold",
                 },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#092181",
-                  borderWidth: "2px",
-                },
-              },
-              "& .MuiInputLabel-root": {
-                color: "#2D5D7B",
-                fontWeight: "bold",
-              },
-            }} size="small">
+              }}
+              size="small"
+            >
               <InputLabel>Emoción predominante</InputLabel>
               <Select
                 name="emocion"
@@ -671,7 +714,10 @@ const LineaTiempo = () => {
                 label="Emoción predominante"
                 sx={{
                   borderRadius: 2,
-                  "& .MuiSelect-select": { display: "flex", alignItems: "center" },
+                  "& .MuiSelect-select": {
+                    display: "flex",
+                    alignItems: "center",
+                  },
                 }}
               >
                 {Object.entries(emocionMap).map(([k, v], index) => {
@@ -679,11 +725,21 @@ const LineaTiempo = () => {
                   const color = emocionColors[index % emocionColors.length];
                   return (
                     <MenuItem key={k} value={Number(k)}>
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, color }}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1.5,
+                          color,
+                        }}
+                      >
                         <Tooltip title={v.label}>
                           <IconComponent fontSize="small" sx={{ color }} />
                         </Tooltip>
-                        <Typography variant="body2" sx={{ color: "#424242", fontWeight: 500 }}>
+                        <Typography
+                          variant="body2"
+                          sx={{ color: "#424242", fontWeight: 500 }}
+                        >
                           {v.label}
                         </Typography>
                       </Box>
@@ -756,22 +812,22 @@ const LineaTiempo = () => {
                 },
               }}
             />
-            <Box sx={{
-              display: "flex",
-              flexDirection: { xs: "column", sm: "row" },
-              gap: 1,
-              mt: 1,
-              pt: 3,
-              //borderTop: "1px solid #E0E0E0",
-              justifyContent: "center",
-            }}>
-
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: 1,
+                mt: 1,
+                pt: 3,
+                //borderTop: "1px solid #E0E0E0",
+                justifyContent: "center",
+              }}
+            >
               <Button
                 type="submit"
                 startIcon={<AddCircleIcon />}
                 variant="contained"
                 color="success"
-
                 sx={{
                   width: "100%",
                   maxWidth: "300px",
@@ -797,9 +853,7 @@ const LineaTiempo = () => {
         </Collapse>
       </Box>
     </Paper>
-
   );
 };
 
 export default LineaTiempo;
-

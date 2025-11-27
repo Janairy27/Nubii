@@ -1,11 +1,9 @@
-
 import React from "react";
 import { Box } from "@mui/material";
 import HeaderProf from "./HeaderProf";
 import CerrarSesion from "../hooks/cerrarSesion";
 
 export default function Layout({ children }) {
-
   return (
     <>
       <HeaderProf />
@@ -20,9 +18,7 @@ export default function Layout({ children }) {
         {children}
       </Box>
 
-      <CerrarSesion tiempoSalida={30} /> 
-
-
+      <CerrarSesion tiempoSalida={30} />
     </>
   );
 }

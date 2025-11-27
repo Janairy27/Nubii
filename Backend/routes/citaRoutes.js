@@ -1,8 +1,15 @@
 import express from "express";
 import {
-    registrarCita, ActualizarCita, ActualizarCitaprof, EliminarCita, getCitasByFilterPac,
-    getCitasByFilterProf,
-    obtenerEventos, obtenerEventosProf, getCitasPac, getCitasByFilterAdmin
+  registrarCita,
+  ActualizarCita,
+  ActualizarCitaprof,
+  EliminarCita,
+  getCitasByFilterPac,
+  getCitasByFilterProf,
+  obtenerEventos,
+  obtenerEventosProf,
+  getCitasPac,
+  getCitasByFilterAdmin,
 } from "../controllers/citaController.js";
 
 const router = express.Router();
@@ -20,6 +27,5 @@ router.get("/citas/:idPaciente", obtenerEventos);
 router.get("/citasProf/:idProfesional", obtenerEventosProf);
 
 router.get("/pacientes/:idProfesional", getCitasPac);
-
 
 export default router;

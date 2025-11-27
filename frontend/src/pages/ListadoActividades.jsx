@@ -35,8 +35,7 @@ import {
   DialogContentText,
   DialogTitle,
   Fade,
-  Backdrop
-
+  Backdrop,
 } from "@mui/material";
 import {
   Search,
@@ -59,12 +58,11 @@ import {
   Delete,
   CheckCircle,
   CalendarToday,
-
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import AirIcon from "@mui/icons-material/Air";
 import SelfImprovementIcon from "@mui/icons-material/SelfImprovement";
 import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
@@ -77,17 +75,17 @@ import ChecklistIcon from "@mui/icons-material/Checklist";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
-import SignalCellular1BarIcon from '@mui/icons-material/SignalCellular1Bar';
-import SignalCellular2BarIcon from '@mui/icons-material/SignalCellular2Bar';
-import SignalCellular3BarIcon from '@mui/icons-material/SignalCellular3Bar';
-import SignalCellular4BarIcon from '@mui/icons-material/SignalCellular4Bar';
+import SignalCellular1BarIcon from "@mui/icons-material/SignalCellular1Bar";
+import SignalCellular2BarIcon from "@mui/icons-material/SignalCellular2Bar";
+import SignalCellular3BarIcon from "@mui/icons-material/SignalCellular3Bar";
+import SignalCellular4BarIcon from "@mui/icons-material/SignalCellular4Bar";
 
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CancelIcon from '@mui/icons-material/Cancel';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import AddTaskIcon from '@mui/icons-material/AddTask';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
+import AddTaskIcon from "@mui/icons-material/AddTask";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -106,7 +104,7 @@ const ListadoActividades = () => {
     nombre: false,
     tipo: false,
     duracion: false,
-    dificultad: false
+    dificultad: false,
   });
 
   const [valoresFiltro, setValoresFiltro] = useState({
@@ -114,7 +112,7 @@ const ListadoActividades = () => {
     nombre: "",
     tipo: "",
     duracion: "",
-    dificultad: ""
+    dificultad: "",
   });
 
   const [actividadSeleccionada, setActividadSeleccionada] = useState(null);
@@ -153,8 +151,6 @@ const ListadoActividades = () => {
   // Cancelar
   const handleCloseConfirm = () => setOpenConfirm(false);
 
-
-
   const [vista, setVista] = useState("actividades");
 
   const [evidencias, setEvidencias] = useState([]);
@@ -173,46 +169,139 @@ const ListadoActividades = () => {
     fecha_sugerida: "",
     fecha_realizada: "",
     completada: "",
-    satisfaccion: ""
+    satisfaccion: "",
   });
-
 
   const navigate = useNavigate();
 
-
   const tiposActividad = [
-    { text: "Respiración guiada", icon: <AirIcon />, value: 1, color: "#4caf50" },
-    { text: "Relajación", icon: <SelfImprovementIcon />, value: 2, color: "#2196f3" },
-    { text: "Movimiento físico suave", icon: <DirectionsRunIcon />, value: 3, color: "#ff9800" },
+    {
+      text: "Respiración guiada",
+      icon: <AirIcon />,
+      value: 1,
+      color: "#4caf50",
+    },
+    {
+      text: "Relajación",
+      icon: <SelfImprovementIcon />,
+      value: 2,
+      color: "#2196f3",
+    },
+    {
+      text: "Movimiento físico suave",
+      icon: <DirectionsRunIcon />,
+      value: 3,
+      color: "#ff9800",
+    },
     { text: "Aire libre", icon: <ParkIcon />, value: 4, color: "#009688" },
-    { text: "Actividad física activa", icon: <FitnessCenterIcon />, value: 5, color: "#9c27b0" },
-    { text: "Desahogo emocional", icon: <SentimentSatisfiedAltIcon />, value: 6, color: "#e91e63" },
-    { text: "Actividad creativa", icon: <BrushIcon />, value: 7, color: "#ff5722" },
+    {
+      text: "Actividad física activa",
+      icon: <FitnessCenterIcon />,
+      value: 5,
+      color: "#9c27b0",
+    },
+    {
+      text: "Desahogo emocional",
+      icon: <SentimentSatisfiedAltIcon />,
+      value: 6,
+      color: "#e91e63",
+    },
+    {
+      text: "Actividad creativa",
+      icon: <BrushIcon />,
+      value: 7,
+      color: "#ff5722",
+    },
     { text: "Social", icon: <GroupIcon />, value: 8, color: "#03a9f4" },
-    { text: "Organización", icon: <ChecklistIcon />, value: 9, color: "#607d8b" },
+    {
+      text: "Organización",
+      icon: <ChecklistIcon />,
+      value: 9,
+      color: "#607d8b",
+    },
     { text: "Descanso", icon: <BedtimeIcon />, value: 10, color: "#795548" },
-    { text: "Estimulación cognitiva", icon: <PsychologyIcon />, value: 11, color: "#673ab7" },
-    { text: "Visualización positiva", icon: <WbSunnyIcon />, value: 12, color: "#ffc107" },
+    {
+      text: "Estimulación cognitiva",
+      icon: <PsychologyIcon />,
+      value: 11,
+      color: "#673ab7",
+    },
+    {
+      text: "Visualización positiva",
+      icon: <WbSunnyIcon />,
+      value: 12,
+      color: "#ffc107",
+    },
   ];
 
   const nivelesDificultad = [
-    { text: "Muy baja", icon: <SignalCellular1BarIcon />, value: 1, color: "#56ab2f" },
-    { text: "Baja", icon: <SignalCellular2BarIcon />, value: 2, color: "#ffcc33" },
-    { text: "Media", icon: <SignalCellular3BarIcon />, value: 3, color: "#8e24aa" },
-    { text: "Alta", icon: <SignalCellular4BarIcon />, value: 4, color: "#c51162" },
+    {
+      text: "Muy baja",
+      icon: <SignalCellular1BarIcon />,
+      value: 1,
+      color: "#56ab2f",
+    },
+    {
+      text: "Baja",
+      icon: <SignalCellular2BarIcon />,
+      value: 2,
+      color: "#ffcc33",
+    },
+    {
+      text: "Media",
+      icon: <SignalCellular3BarIcon />,
+      value: 3,
+      color: "#8e24aa",
+    },
+    {
+      text: "Alta",
+      icon: <SignalCellular4BarIcon />,
+      value: 4,
+      color: "#c51162",
+    },
   ];
 
   const completadaMap = [
-    { text: "Completada", icon: <CheckCircleIcon />, value: 2, color: "#4caf50" },
-    { text: "No completada", icon: <CancelIcon />, value: 1, color: "#f44336" }
+    {
+      text: "Completada",
+      icon: <CheckCircleIcon />,
+      value: 2,
+      color: "#4caf50",
+    },
+    { text: "No completada", icon: <CancelIcon />, value: 1, color: "#f44336" },
   ];
 
   const satisfaccionMap = [
-    { value: 1, icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />, label: "Muy insatisfecho", color: "#f44336" },
-    { value: 2, icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />, label: "Insatisfecho", color: "#ff9800" },
-    { value: 3, icon: <SentimentNeutral sx={{ fontSize: 32 }} />, label: "Neutral", color: "#ffeb3b" },
-    { value: 4, icon: <SentimentSatisfied sx={{ fontSize: 32 }} />, label: "Satisfecho", color: "#4caf50" },
-    { value: 5, icon: <SentimentVerySatisfied sx={{ fontSize: 32 }} />, label: "Muy satisfecho", color: "#2196f3" },
+    {
+      value: 1,
+      icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />,
+      label: "Muy insatisfecho",
+      color: "#f44336",
+    },
+    {
+      value: 2,
+      icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />,
+      label: "Insatisfecho",
+      color: "#ff9800",
+    },
+    {
+      value: 3,
+      icon: <SentimentNeutral sx={{ fontSize: 32 }} />,
+      label: "Neutral",
+      color: "#ffeb3b",
+    },
+    {
+      value: 4,
+      icon: <SentimentSatisfied sx={{ fontSize: 32 }} />,
+      label: "Satisfecho",
+      color: "#4caf50",
+    },
+    {
+      value: 5,
+      icon: <SentimentVerySatisfied sx={{ fontSize: 32 }} />,
+      label: "Muy satisfecho",
+      color: "#2196f3",
+    },
   ];
 
   // Funciones para obtener nombre, icono y color según valor seleccionado para actividad
@@ -296,9 +385,9 @@ const ListadoActividades = () => {
 
   const obtenerActividades = () => {
     axios
-      .get(`http://localhost:4000/api/actividades/by-filter/`,
-        { params: { idPaciente } }
-      )
+      .get(`http://localhost:4000/api/actividades/by-filter/`, {
+        params: { idPaciente },
+      })
       .then((res) => {
         setActividades(res.data);
         setActividadSeleccionada(null);
@@ -338,7 +427,10 @@ const ListadoActividades = () => {
       );
 
       if (res.data.length === 0) {
-        mostrarMensaje("No se encontraron actividades con esos filtros.", "warning");
+        mostrarMensaje(
+          "No se encontraron actividades con esos filtros.",
+          "warning"
+        );
         obtenerActividades();
       } else {
         setActividades(res.data);
@@ -357,7 +449,7 @@ const ListadoActividades = () => {
       nombre: false,
       tipo: false,
       duracion: false,
-      dificultad: false
+      dificultad: false,
     });
 
     // Reseteo de valores
@@ -366,7 +458,7 @@ const ListadoActividades = () => {
       nombre: "",
       tipo: "",
       duracion: "",
-      dificultad: ""
+      dificultad: "",
     });
 
     // Carga de todas las actividades
@@ -402,7 +494,6 @@ const ListadoActividades = () => {
       });
   };
 
-
   const handleBuscarEvid = () => {
     const filtrosAplicadosEvid = {};
 
@@ -412,7 +503,10 @@ const ListadoActividades = () => {
     if (filtrosActivosEvid.fecha_sugerida && valoresFiltroEvid.fecha_sugerida) {
       filtrosAplicadosEvid.fecha_sugerida = valoresFiltroEvid.fecha_sugerida;
     }
-    if (filtrosActivosEvid.fecha_realizada && valoresFiltroEvid.fecha_realizada) {
+    if (
+      filtrosActivosEvid.fecha_realizada &&
+      valoresFiltroEvid.fecha_realizada
+    ) {
       filtrosAplicadosEvid.fecha_realizada = valoresFiltroEvid.fecha_realizada;
     }
     if (filtrosActivosEvid.completada && valoresFiltroEvid.completada) {
@@ -430,14 +524,22 @@ const ListadoActividades = () => {
     const queryParamsE = new URLSearchParams(filtrosAplicadosEvid).toString();
 
     axios
-      .get(`http://localhost:4000/api/evidencia/by-filter?${queryParamsE}`, { params: { idPaciente } })
+      .get(`http://localhost:4000/api/evidencia/by-filter?${queryParamsE}`, {
+        params: { idPaciente },
+      })
       .then((res) => {
-        mostrarMensaje("Búsqueda de evidencias realizada correctamente.", "success");
+        mostrarMensaje(
+          "Búsqueda de evidencias realizada correctamente.",
+          "success"
+        );
         setEvidencias(res.data);
         setActividadSeleccionada(null);
       })
       .catch(() => {
-        mostrarMensaje("No se encontraron evidencias con estos filtros.", "warning");
+        mostrarMensaje(
+          "No se encontraron evidencias con estos filtros.",
+          "warning"
+        );
         obtenerEvidencias();
       });
   };
@@ -448,7 +550,7 @@ const ListadoActividades = () => {
       fecha_sugerida: false,
       fecha_realizada: false,
       completada: false,
-      satisfaccion: false
+      satisfaccion: false,
     });
 
     setValoresFiltroEvid({
@@ -456,11 +558,11 @@ const ListadoActividades = () => {
       fecha_sugerida: "",
       fecha_realizada: "",
       completada: "",
-      satisfaccion: ""
+      satisfaccion: "",
     });
 
     obtenerEvidencias();
-  }
+  };
 
   const handleSeleccionarEvid = (evidencia) => {
     setEvidenciaSeleccionada(evidencia);
@@ -474,7 +576,6 @@ const ListadoActividades = () => {
   };
 
   const handleActualizar = () => {
-
     let formattedFecha = null;
 
     if (fechaRealizada instanceof Date && !isNaN(fechaRealizada)) {
@@ -493,27 +594,30 @@ const ListadoActividades = () => {
         mostrarMensaje("Evidencia actualizada correctamente", "success");
         obtenerEvidencias();
       })
-      .catch((err) =>{
-         //Log completo del error para depuración
+      .catch((err) => {
+        //Log completo del error para depuración
         console.error("Error completo de Axios:", err);
         let mensajeError = "Error al actualizar la evidencia.";
 
         // Verificar que la respuesta 400 tenga datos estructurados
-         if (err.response && err.response.data) {
-            const dataError = err.response.data;
-            
-            
-            if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
-                // Unir  los errores de validación en una sola cadena
-                mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-            } 
+        if (err.response && err.response.data) {
+          const dataError = err.response.data;
 
-            else if (dataError.message) {
-                 mensajeError = dataError.message;
-            }
+          if (
+            dataError.errores &&
+            Array.isArray(dataError.errores) &&
+            dataError.errores.length > 0
+          ) {
+            // Unir  los errores de validación en una sola cadena
+            mensajeError = `Errores de validación: ${dataError.errores.join(
+              "; "
+            )}`;
+          } else if (dataError.message) {
+            mensajeError = dataError.message;
+          }
         }
-        // Mostrar el mensaje de error específico o el genérico 
-         mostrarMensaje(mensajeError, "error"); 
+        // Mostrar el mensaje de error específico o el genérico
+        mostrarMensaje(mensajeError, "error");
       });
   };
 
@@ -530,22 +634,31 @@ const ListadoActividades = () => {
     }
   };
   const InfoItem = ({ icon, label, value }) => (
-    <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
-      <Box sx={{
-        mr: 2,
-        color: '#355C7D',
-        display: 'flex',
-        alignItems: 'center',
-        minWidth: '24px',
-        mt: 0.5
-      }}>
+    <Box sx={{ display: "flex", alignItems: "flex-start", mb: 2 }}>
+      <Box
+        sx={{
+          mr: 2,
+          color: "#355C7D",
+          display: "flex",
+          alignItems: "center",
+          minWidth: "24px",
+          mt: 0.5,
+        }}
+      >
         {icon}
       </Box>
       <Box sx={{ flex: 1 }}>
-        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ fontSize: "0.8rem" }}
+        >
           {label}
         </Typography>
-        <Typography variant="body1" sx={{ fontWeight: 'medium', wordBreak: 'break-word' }}>
+        <Typography
+          variant="body1"
+          sx={{ fontWeight: "medium", wordBreak: "break-word" }}
+        >
           {value || "No especificado"}
         </Typography>
       </Box>
@@ -554,7 +667,8 @@ const ListadoActividades = () => {
 
   return (
     <Layout>
-      <Container maxWidth="md"
+      <Container
+        maxWidth="md"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -564,17 +678,19 @@ const ListadoActividades = () => {
           minHeight: "100vh",
         }}
       >
-        <Paper sx={{
-          p: { xs: 2, md: 4 },
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#F4F6F8",
-          width: "100%",
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}>
+        <Paper
+          sx={{
+            p: { xs: 2, md: 4 },
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F4F6F8",
+            width: "100%",
+            mx: "auto",
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
+        >
           <Box>
             <Box
               sx={{
@@ -586,8 +702,16 @@ const ListadoActividades = () => {
               }}
             >
               {[
-                { key: "actividades", label: "Actividades", count: actividades?.length || 0 },
-                { key: "evidencias", label: "Evidencias", count: evidencias?.length || 0 },
+                {
+                  key: "actividades",
+                  label: "Actividades",
+                  count: actividades?.length || 0,
+                },
+                {
+                  key: "evidencias",
+                  label: "Evidencias",
+                  count: evidencias?.length || 0,
+                },
               ].map((item) => (
                 <Button
                   key={item.key}
@@ -607,9 +731,15 @@ const ListadoActividades = () => {
                     alignItems: "center",
                     gap: 1.2,
                     transition: "all 0.3s ease",
-                    boxShadow: vista === item.key ? "0 4px 10px rgba(9, 33, 129, 0.2)" : "none",
+                    boxShadow:
+                      vista === item.key
+                        ? "0 4px 10px rgba(9, 33, 129, 0.2)"
+                        : "none",
                     "&:hover": {
-                      backgroundColor: vista === item.key ? "#06175f" : "rgba(9, 33, 129, 0.08)",
+                      backgroundColor:
+                        vista === item.key
+                          ? "#06175f"
+                          : "rgba(9, 33, 129, 0.08)",
                       transform: "translateY(-2px)",
                       boxShadow: "0 6px 12px rgba(9, 33, 129, 0.15)",
                     },
@@ -637,20 +767,24 @@ const ListadoActividades = () => {
                 </Button>
               ))}
             </Box>
-
           </Box>
           {vista === "actividades" ? (
             <>
               <Box sx={{ textAlign: "center" }}>
-                <Typography variant="h5"
+                <Typography
+                  variant="h5"
                   fontWeight="bold"
                   sx={{
                     color: "#092181",
                     fontSize: { xs: "1.5rem", md: "2rem" },
-                  }}>
+                  }}
+                >
                   Listado de actividades
                 </Typography>
-                <Typography variant="h6" sx={{ opacity: 0.9, fontSize: { xs: "1rem", md: "1.25rem" } }}>
+                <Typography
+                  variant="h6"
+                  sx={{ opacity: 0.9, fontSize: { xs: "1rem", md: "1.25rem" } }}
+                >
                   Visualiza todas las actividades
                 </Typography>
               </Box>
@@ -667,12 +801,14 @@ const ListadoActividades = () => {
                     borderRadius: 3,
                   }}
                 >
-                  <Box sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ mb: 3, display: "flex", alignItems: "center" }}>
                     <FilterList sx={{ mr: 1, color: "#092181" }} />
-                    <Typography variant="h6"
+                    <Typography
+                      variant="h6"
                       fontWeight="bold"
                       color="#092181"
-                      sx={{ flex: 1 }}>
+                      sx={{ flex: 1 }}
+                    >
                       Selecciona filtros de búsqueda:
                     </Typography>
                   </Box>
@@ -693,14 +829,14 @@ const ListadoActividades = () => {
                             onChange={() =>
                               setFiltrosActivos((prev) => ({
                                 ...prev,
-                                [key]: !prev[key]
+                                [key]: !prev[key],
                               }))
                             }
                             sx={{
-                          color: "#5A6ACF",
-                          "&.Mui-checked": { color: "#092181" },
-                          "& .MuiSvgIcon-root": { fontSize: 26 },
-                        }}
+                              color: "#5A6ACF",
+                              "&.Mui-checked": { color: "#092181" },
+                              "& .MuiSvgIcon-root": { fontSize: 26 },
+                            }}
                           />
                         }
                         label={key.charAt(0).toUpperCase() + key.slice(1)}
@@ -717,39 +853,39 @@ const ListadoActividades = () => {
                     }}
                   >
                     {filtrosActivos.profesional && (
-
                       <TextField
                         sx={{
                           width: "100%",
                           maxWidth: "400px",
                           "& .MuiOutlinedInput-root": {
                             borderRadius: "12px",
-                            backgroundColor: "#fff", 
+                            backgroundColor: "#fff",
                             "& fieldset": {
-                              borderColor: "#CBD4D8", 
+                              borderColor: "#CBD4D8",
                             },
                             "&:hover fieldset": {
-                              borderColor: "#355C7D", 
+                              borderColor: "#355C7D",
                             },
                             "&.Mui-focused fieldset": {
-                              borderColor: "#092181", 
+                              borderColor: "#092181",
                               borderWidth: "2px",
                             },
                           },
                           "& .MuiInputLabel-root": {
-                            color: "#2D5D7B", 
+                            color: "#2D5D7B",
                             fontWeight: "bold",
                           },
                           "& .MuiInputBase-input::placeholder": {
-                            color: "#777777", 
+                            color: "#777777",
                             opacity: 1,
                           },
-
                         }}
-
                         label="Nombre del profesional"
                         onChange={(e) =>
-                          setValoresFiltro({ ...valoresFiltro, profesional: e.target.value })
+                          setValoresFiltro({
+                            ...valoresFiltro,
+                            profesional: e.target.value,
+                          })
                         }
                         InputProps={{
                           startAdornment: (
@@ -759,8 +895,7 @@ const ListadoActividades = () => {
                           ),
                         }}
                       />
-                    )
-                    }
+                    )}
                     {filtrosActivos.nombre && (
                       <TextField
                         sx={{
@@ -768,15 +903,15 @@ const ListadoActividades = () => {
                           maxWidth: "400px",
                           "& .MuiOutlinedInput-root": {
                             borderRadius: "12px",
-                            backgroundColor: "#fff", 
+                            backgroundColor: "#fff",
                             "& fieldset": {
-                              borderColor: "#CBD4D8", 
+                              borderColor: "#CBD4D8",
                             },
                             "&:hover fieldset": {
                               borderColor: "#355C7D",
                             },
                             "&.Mui-focused fieldset": {
-                              borderColor: "#092181", 
+                              borderColor: "#092181",
                               borderWidth: "2px",
                             },
                           },
@@ -785,49 +920,58 @@ const ListadoActividades = () => {
                             fontWeight: "bold",
                           },
                           "& .MuiInputBase-input::placeholder": {
-                            color: "#777777", 
+                            color: "#777777",
                             opacity: 1,
                           },
-
                         }}
                         label="Nombre de la actividad"
                         value={valoresFiltro.nombre}
                         onChange={(e) =>
-                          setValoresFiltro({ ...valoresFiltro, nombre: e.target.value })
+                          setValoresFiltro({
+                            ...valoresFiltro,
+                            nombre: e.target.value,
+                          })
                         }
                       />
                     )}
 
                     {filtrosActivos.tipo && (
-                      <FormControl sx={{
-                        width: "100%", maxWidth: "400px", "& .MuiOutlinedInput-root": {
-                          borderRadius: "12px",
-                          backgroundColor: "#fff", 
-                          "& fieldset": {
-                            borderColor: "#CBD4D8", 
+                      <FormControl
+                        sx={{
+                          width: "100%",
+                          maxWidth: "400px",
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: "12px",
+                            backgroundColor: "#fff",
+                            "& fieldset": {
+                              borderColor: "#CBD4D8",
+                            },
+                            "&:hover fieldset": {
+                              borderColor: "#355C7D",
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#092181",
+                              borderWidth: "2px",
+                            },
                           },
-                          "&:hover fieldset": {
-                            borderColor: "#355C7D", 
+                          "& .MuiInputLabel-root": {
+                            color: "#2D5D7B",
+                            fontWeight: "bold",
                           },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#092181", 
-                            borderWidth: "2px",
+                          "& .MuiInputBase-input::placeholder": {
+                            color: "#777777",
+                            opacity: 1,
                           },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "#2D5D7B", 
-                          fontWeight: "bold",
-                        },
-                        "& .MuiInputBase-input::placeholder": {
-                          color: "#777777", 
-                          opacity: 1,
-                        },
-                      }}>
+                        }}
+                      >
                         <InputLabel>Tipo de actividad</InputLabel>
                         <Select
                           value={valoresFiltro.tipo}
                           onChange={(e) =>
-                            setValoresFiltro({ ...valoresFiltro, tipo: e.target.value })
+                            setValoresFiltro({
+                              ...valoresFiltro,
+                              tipo: e.target.value,
+                            })
                           }
                           label="Tipo de actividad"
                           renderValue={(selectedValue) => {
@@ -840,11 +984,25 @@ const ListadoActividades = () => {
                             // Usamos Box con display: flex para asegurar la alineación horizontal
                             if (selectedTipo) {
                               return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedTipo.color, display: 'flex' }}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      color: selectedTipo.color,
+                                      display: "flex",
+                                    }}
+                                  >
                                     {selectedTipo.icon}
                                   </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                  <Typography
+                                    variant="body1"
+                                    sx={{ fontWeight: 500 }}
+                                  >
                                     {selectedTipo.text}
                                   </Typography>
                                 </Box>
@@ -852,24 +1010,22 @@ const ListadoActividades = () => {
                             }
                             return "";
                           }}
-
                         >
                           {tiposActividad.map((tipo) => (
                             <MenuItem key={tipo.value} value={tipo.value}>
                               <ListItemIcon sx={{ color: tipo.color }}>
-                                  {tipo.icon}
+                                {tipo.icon}
                               </ListItemIcon>
                               <ListItemText
                                 primary={tipo.text}
                                 primaryTypographyProps={{
-                                  sx: { fontWeight: 500 }
+                                  sx: { fontWeight: 500 },
                                 }}
                               />
                             </MenuItem>
                           ))}
                         </Select>
                       </FormControl>
-
                     )}
 
                     {filtrosActivos.duracion && (
@@ -879,15 +1035,15 @@ const ListadoActividades = () => {
                           maxWidth: "400px",
                           "& .MuiOutlinedInput-root": {
                             borderRadius: "12px",
-                            backgroundColor: "#fff", 
+                            backgroundColor: "#fff",
                             "& fieldset": {
-                              borderColor: "#CBD4D8", 
+                              borderColor: "#CBD4D8",
                             },
                             "&:hover fieldset": {
                               borderColor: "#355C7D",
                             },
                             "&.Mui-focused fieldset": {
-                              borderColor: "#092181", 
+                              borderColor: "#092181",
                               borderWidth: "2px",
                             },
                           },
@@ -896,71 +1052,91 @@ const ListadoActividades = () => {
                             fontWeight: "bold",
                           },
                           "& .MuiInputBase-input::placeholder": {
-                            color: "#777777", 
+                            color: "#777777",
                             opacity: 1,
                           },
-
                         }}
                         label="Duración (min)"
                         type="number"
                         value={valoresFiltro.duracion}
                         onChange={(e) =>
-                          setValoresFiltro({ ...valoresFiltro, duracion: e.target.value })
+                          setValoresFiltro({
+                            ...valoresFiltro,
+                            duracion: e.target.value,
+                          })
                         }
                         InputProps={{
                           endAdornment: (
                             <InputAdornment position="end">min</InputAdornment>
-                          )
+                          ),
                         }}
                       />
                     )}
 
                     {filtrosActivos.dificultad && (
-                      <FormControl sx={{
-                        width: "100%", maxWidth: "400px",
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: "12px", 
-                          backgroundColor: "#fff", 
-                          "& fieldset": {
-                            borderColor: "#CBD4D8", 
+                      <FormControl
+                        sx={{
+                          width: "100%",
+                          maxWidth: "400px",
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: "12px",
+                            backgroundColor: "#fff",
+                            "& fieldset": {
+                              borderColor: "#CBD4D8",
+                            },
+                            "&:hover fieldset": {
+                              borderColor: "#355C7D",
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#092181",
+                              borderWidth: "2px",
+                            },
                           },
-                          "&:hover fieldset": {
-                            borderColor: "#355C7D", 
+                          "& .MuiInputLabel-root": {
+                            color: "#2D5D7B",
+                            fontWeight: "bold",
                           },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#092181", 
-                            borderWidth: "2px",
+                          "& .MuiInputBase-input::placeholder": {
+                            color: "#777777",
+                            opacity: 1,
                           },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "#2D5D7B", 
-                          fontWeight: "bold",
-                        },
-                        "& .MuiInputBase-input::placeholder": {
-                          color: "#777777",
-                          opacity: 1,
-                        },
-
-                      }}>
+                        }}
+                      >
                         <InputLabel>Dificultad</InputLabel>
                         <Select
                           value={valoresFiltro.dificultad}
                           onChange={(e) =>
-                            setValoresFiltro({ ...valoresFiltro, dificultad: e.target.value })
+                            setValoresFiltro({
+                              ...valoresFiltro,
+                              dificultad: e.target.value,
+                            })
                           }
                           label="Dificultad"
-
-                          renderValue={(selectedValue) =>{
+                          renderValue={(selectedValue) => {
                             const selectedDifi = nivelesDificultad.find(
                               (dificultad) => dificultad.value === selectedValue
                             );
                             if (selectedDifi) {
                               return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedDifi.color, display: 'flex' }}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      color: selectedDifi.color,
+                                      display: "flex",
+                                    }}
+                                  >
                                     {selectedDifi.icon}
                                   </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                  <Typography
+                                    variant="body1"
+                                    sx={{ fontWeight: 500 }}
+                                  >
                                     {selectedDifi.text}
                                   </Typography>
                                 </Box>
@@ -968,10 +1144,12 @@ const ListadoActividades = () => {
                             }
                             return "";
                           }}
-
                         >
                           {nivelesDificultad.map((dificultad) => (
-                            <MenuItem key={dificultad.value} value={dificultad.value}>
+                            <MenuItem
+                              key={dificultad.value}
+                              value={dificultad.value}
+                            >
                               <ListItemIcon>
                                 <Box sx={{ color: dificultad.color }}>
                                   {dificultad.icon}
@@ -980,7 +1158,7 @@ const ListadoActividades = () => {
                               <ListItemText
                                 primary={dificultad.text}
                                 primaryTypographyProps={{
-                                  sx: { fontWeight: 500 }
+                                  sx: { fontWeight: 500 },
                                 }}
                               />
                             </MenuItem>
@@ -988,7 +1166,9 @@ const ListadoActividades = () => {
                         </Select>
                       </FormControl>
                     )}
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+                    <Box
+                      sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2 }}
+                    >
                       <Button
                         variant="contained"
                         startIcon={<Search />}
@@ -1028,31 +1208,41 @@ const ListadoActividades = () => {
                 </Card>
               )}
 
-
-
               {/* Listado o Detalle */}
               {!actividadSeleccionada ? (
-                <Tooltip title="Selecciona una tarjeta para ver más información" arrow>
+                <Tooltip
+                  title="Selecciona una tarjeta para ver más información"
+                  arrow
+                >
                   <Box sx={{ width: "100%" }}>
-                    <Box sx={{
-                      display: "flex",
-                      flexDirection: { xs: "column", sm: "row" },
-                      alignItems: { xs: "flex-start", sm: "center" },
-                      justifyContent: { xs: "center", sm: "space-between" },
-                      flexWrap: "wrap",
-                      gap: 2,
-                      mb: 3,
-                    }}>
-                      <Box sx={{
+                    <Box
+                      sx={{
                         display: "flex",
-                        alignItems: "center",
-                        gap: 1.5,
-                        flex: 1,
-                        justifyContent: { xs: "center", sm: "flex-start" },
-                        textAlign: { xs: "center", sm: "left" },
-                      }}>
-                        <AssignmentIndIcon sx={{ color: "#092181", fontSize: 32 }} />
-                        <Typography variant="h5" sx={{ color: "#092181", fontWeight: "bold" }}>
+                        flexDirection: { xs: "column", sm: "row" },
+                        alignItems: { xs: "flex-start", sm: "center" },
+                        justifyContent: { xs: "center", sm: "space-between" },
+                        flexWrap: "wrap",
+                        gap: 2,
+                        mb: 3,
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1.5,
+                          flex: 1,
+                          justifyContent: { xs: "center", sm: "flex-start" },
+                          textAlign: { xs: "center", sm: "left" },
+                        }}
+                      >
+                        <AssignmentIndIcon
+                          sx={{ color: "#092181", fontSize: 32 }}
+                        />
+                        <Typography
+                          variant="h5"
+                          sx={{ color: "#092181", fontWeight: "bold" }}
+                        >
                           {actividades.length > 0
                             ? "Actividades registradas:"
                             : "No se han registrado actividades aún."}
@@ -1085,10 +1275,18 @@ const ListadoActividades = () => {
                             borderRadius: 3,
                             border: "1px solid #e0e7ff",
                             backgroundColor: "#f9fafc",
-                            width: { xs: "100%", sm: "calc(50% - 12px)", md: "350px" },
+                            width: {
+                              xs: "100%",
+                              sm: "calc(50% - 12px)",
+                              md: "350px",
+                            },
                             maxWidth: "400px",
                             minWidth: "280px",
-                            flex: { xs: "1 1 100%", sm: "1 1 calc(50% - 12px)", md: "0 1 350px" },
+                            flex: {
+                              xs: "1 1 100%",
+                              sm: "1 1 calc(50% - 12px)",
+                              md: "0 1 350px",
+                            },
                             transition: "all 0.3s ease",
                             "&:hover": {
                               boxShadow: "0 8px 20px rgba(9, 33, 129, 0.15)",
@@ -1100,7 +1298,9 @@ const ListadoActividades = () => {
                           {/* Multimedia de la actividad */}
                           {actividad.multimedia ? (
                             <Box sx={{ position: "relative" }}>
-                              {actividad.multimedia.match(/\.(mp4|webm|ogg)$/i) ? (
+                              {actividad.multimedia.match(
+                                /\.(mp4|webm|ogg)$/i
+                              ) ? (
                                 <Box
                                   component="video"
                                   src={`http://localhost:4000/uploads/${actividad.multimedia}`}
@@ -1117,7 +1317,9 @@ const ListadoActividades = () => {
                                   }}
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    abrirModalImagen(`http://localhost:4000/uploads/${actividad.multimedia}`);
+                                    abrirModalImagen(
+                                      `http://localhost:4000/uploads/${actividad.multimedia}`
+                                    );
                                   }}
                                 />
                               ) : (
@@ -1136,7 +1338,9 @@ const ListadoActividades = () => {
                                   }}
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    abrirModalImagen(`http://localhost:4000/uploads/${actividad.multimedia}`);
+                                    abrirModalImagen(
+                                      `http://localhost:4000/uploads/${actividad.multimedia}`
+                                    );
                                   }}
                                 />
                               )}
@@ -1146,16 +1350,22 @@ const ListadoActividades = () => {
                                   top: 8,
                                   right: 8,
                                   backgroundColor: "rgba(255, 255, 255, 0.9)",
-                                  "&:hover": { backgroundColor: "rgba(255, 255, 255, 1)" },
+                                  "&:hover": {
+                                    backgroundColor: "rgba(255, 255, 255, 1)",
+                                  },
                                   width: 32,
                                   height: 32,
                                 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  abrirModalImagen(`http://localhost:4000/uploads/${actividad.multimedia}`);
+                                  abrirModalImagen(
+                                    `http://localhost:4000/uploads/${actividad.multimedia}`
+                                  );
                                 }}
                               >
-                                <ZoomIn sx={{ fontSize: 18, color: "#092181" }} />
+                                <ZoomIn
+                                  sx={{ fontSize: 18, color: "#092181" }}
+                                />
                               </IconButton>
                             </Box>
                           ) : (
@@ -1171,14 +1381,31 @@ const ListadoActividades = () => {
                                 position: "relative",
                               }}
                             >
-                              <Typography variant="body2" color="text.secondary">
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
                                 Sin archivo multimedia
                               </Typography>
                             </Box>
                           )}
-                          <CardContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <PsychologyIcon sx={{ fontSize: 20, color: "#6a94bfff" }} />
+                          <CardContent
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 2,
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
+                              <PsychologyIcon
+                                sx={{ fontSize: 20, color: "#6a94bfff" }}
+                              />
                               <Typography
                                 variant="body1"
                                 sx={{
@@ -1194,8 +1421,16 @@ const ListadoActividades = () => {
                                 {actividad.nombreProfesional}
                               </Typography>
                             </Box>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <AssignmentIndIcon sx={{ fontSize: 18, color: "#67121A" }} />
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
+                              <AssignmentIndIcon
+                                sx={{ fontSize: 18, color: "#67121A" }}
+                              />
                               <Typography
                                 variant="h6"
                                 sx={{
@@ -1212,15 +1447,33 @@ const ListadoActividades = () => {
                                 {actividad.nombreAct}
                               </Typography>
                             </Box>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1, color: getColorAct(actividad.tipoAct) }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                                color: getColorAct(actividad.tipoAct),
+                              }}
+                            >
                               {getIconoAct(actividad.tipoAct)}
                               <Typography variant="body2">
                                 {getNombreAct(actividad.tipoAct)}
                               </Typography>
                             </Box>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <AccessTime sx={{ fontSize: 16, color: "#2D5D7B" }} />
-                              <Typography variant="body2" sx={{ color: "text.primary", fontWeight: 500 }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
+                              <AccessTime
+                                sx={{ fontSize: 16, color: "#2D5D7B" }}
+                              />
+                              <Typography
+                                variant="body2"
+                                sx={{ color: "text.primary", fontWeight: 500 }}
+                              >
                                 {actividad.duracion_minutos} minutos
                               </Typography>
                             </Box>
@@ -1231,39 +1484,54 @@ const ListadoActividades = () => {
                   </Box>
                 </Tooltip>
               ) : (
-
-                < Box sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 3,
-                }}>
-                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 3,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 2,
+                    }}
+                  >
                     {/*  
                     <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181", textAlign: "center" }}>
                       Detalle de la actividad
                     </Typography> */}
 
                     <Divider sx={{ width: "80%" }} />
-                    <Box sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 2,
-                      mt: 3,
-                    }}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 2,
+                        mt: 3,
+                      }}
                     >
                       {/* Información del Profesional */}
-                      <Card sx={{
-                        flex: 1,
-                        p: 3,
-                        borderRadius: 3,
-                        backgroundColor: "#f8f9ff",
-                        border: "2px solid #092181",
-                        boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
-                        minWidth: { xs: "100%", md: "300px" }
-                      }}>
+                      <Card
+                        sx={{
+                          flex: 1,
+                          p: 3,
+                          borderRadius: 3,
+                          backgroundColor: "#f8f9ff",
+                          border: "2px solid #092181",
+                          boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
+                          minWidth: { xs: "100%", md: "300px" },
+                        }}
+                      >
                         <Box display="flex" alignItems="center" gap={1} mb={2}>
                           <PeopleAltIcon color="primary" />
-                          <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
+                          <Typography
+                            variant="h6"
+                            fontWeight="bold"
+                            sx={{ color: "#092181" }}
+                          >
                             Información del profesional
                           </Typography>
                         </Box>
@@ -1276,18 +1544,24 @@ const ListadoActividades = () => {
                       </Card>
 
                       {/* Información de la Actividad */}
-                      <Card sx={{
-                        flex: 2,
-                        p: 3,
-                        borderRadius: 3,
-                        backgroundColor: "#f8f9ff",
-                        border: "2px solid #092181",
-                        boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
-                        minWidth: { xs: "100%", md: "400px" }
-                      }}>
+                      <Card
+                        sx={{
+                          flex: 2,
+                          p: 3,
+                          borderRadius: 3,
+                          backgroundColor: "#f8f9ff",
+                          border: "2px solid #092181",
+                          boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
+                          minWidth: { xs: "100%", md: "400px" },
+                        }}
+                      >
                         <Box display="flex" alignItems="center" gap={1} mb={2}>
                           <AssignmentIndIcon color="primary" />
-                          <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
+                          <Typography
+                            variant="h6"
+                            fontWeight="bold"
+                            sx={{ color: "#092181" }}
+                          >
                             Información de la actividad
                           </Typography>
                         </Box>
@@ -1310,37 +1584,84 @@ const ListadoActividades = () => {
                           label="Objetivo de la actividad"
                           value={actividadSeleccionada.objetivo}
                         />
-                        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3, mt: 2 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1, color: getColorAct(actividadSeleccionada.tipoAct) }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexWrap: "wrap",
+                            gap: 3,
+                            mt: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                              color: getColorAct(actividadSeleccionada.tipoAct),
+                            }}
+                          >
                             {getIconoAct(actividadSeleccionada.tipoAct)}
                             <Box>
-                              <Typography variant="body2" color="text.secondary">
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
                                 Tipo de actividad
                               </Typography>
-                              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                              <Typography
+                                variant="body1"
+                                sx={{ fontWeight: "medium" }}
+                              >
                                 {getNombreAct(actividadSeleccionada.tipoAct)}
                               </Typography>
                             </Box>
                           </Box>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
                             <AccessTime sx={{ color: "#2D5D7B" }} />
                             <Box>
-                              <Typography variant="body2" color="text.secondary">
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
                                 Duración
                               </Typography>
-                              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                              <Typography
+                                variant="body1"
+                                sx={{ fontWeight: "medium" }}
+                              >
                                 {actividadSeleccionada.duracion_minutos} minutos
                               </Typography>
                             </Box>
                           </Box>
 
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1, color: getColorDif(actividadSeleccionada.dificultad) }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                              color: getColorDif(
+                                actividadSeleccionada.dificultad
+                              ),
+                            }}
+                          >
                             {getIconoDif(actividadSeleccionada.dificultad)}
                             <Box>
-                              <Typography variant="body2" color="text.secondary">
+                              <Typography
+                                variant="body2"
+                                color="text.secondary"
+                              >
                                 Dificultad
                               </Typography>
-                              <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+                              <Typography
+                                variant="body1"
+                                sx={{ fontWeight: "medium" }}
+                              >
                                 {getNombreDif(actividadSeleccionada.dificultad)}
                               </Typography>
                             </Box>
@@ -1363,8 +1684,13 @@ const ListadoActividades = () => {
                           variant="contained"
                           startIcon={<AddTaskIcon />}
                           onClick={() => {
-                            console.log("ID", actividadSeleccionada.idActividad);
-                            navigate(`/registroEvidencia/${actividadSeleccionada.idActividad}`)
+                            console.log(
+                              "ID",
+                              actividadSeleccionada.idActividad
+                            );
+                            navigate(
+                              `/registroEvidencia/${actividadSeleccionada.idActividad}`
+                            );
                           }}
                           sx={{
                             borderRadius: 3,
@@ -1379,9 +1705,8 @@ const ListadoActividades = () => {
                               boxShadow: "0 4px 12px rgba(9, 33, 129, 0.3)",
                             },
                             transition: "all 0.2s ease",
-                            flex: { xs: "1 1 100%", sm: "0 0 auto" }, 
+                            flex: { xs: "1 1 100%", sm: "0 0 auto" },
                           }}
-
                         >
                           Realizar actividad
                         </Button>
@@ -1407,19 +1732,19 @@ const ListadoActividades = () => {
                     </Box>
                   </Box>
                 </Box>
-
-
               )}
             </>
           ) : (
             <>
               <Box sx={{ textAlign: "center" }}>
-                <Typography variant="h5"
+                <Typography
+                  variant="h5"
                   fontWeight="bold"
                   sx={{
                     color: "#092181",
                     fontSize: { xs: "1.5rem", md: "2rem" },
-                  }}>
+                  }}
+                >
                   Listado evidencias realizadas
                 </Typography>
               </Box>
@@ -1436,13 +1761,14 @@ const ListadoActividades = () => {
                     borderRadius: 3,
                   }}
                 >
-
-                  <Box sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ mb: 3, display: "flex", alignItems: "center" }}>
                     <FilterList sx={{ mr: 1, color: "#092181" }} />
-                    <Typography variant="h6"
+                    <Typography
+                      variant="h6"
                       fontWeight="bold"
                       color="#092181"
-                      sx={{ flex: 1 }}>
+                      sx={{ flex: 1 }}
+                    >
                       Selecciona filtros de búsqueda:
                     </Typography>
                   </Box>
@@ -1463,14 +1789,14 @@ const ListadoActividades = () => {
                             onChange={() =>
                               setFiltrosActivosEvid((prev) => ({
                                 ...prev,
-                                [key]: !prev[key]
+                                [key]: !prev[key],
                               }))
                             }
                             sx={{
-                          color: "#5A6ACF",
-                          "&.Mui-checked": { color: "#092181" },
-                          "& .MuiSvgIcon-root": { fontSize: 26 },
-                        }}
+                              color: "#5A6ACF",
+                              "&.Mui-checked": { color: "#092181" },
+                              "& .MuiSvgIcon-root": { fontSize: 26 },
+                            }}
                           />
                         }
                         label={key.charAt(0).toUpperCase() + key.slice(1)}
@@ -1486,173 +1812,204 @@ const ListadoActividades = () => {
                       gap: 2,
                     }}
                   >
-                    {
-                      filtrosActivosEvid.actividad && (
-
-                        <TextField
-                          sx={{
-                            width: "100%",
-                            maxWidth: "400px",
-                            "& .MuiOutlinedInput-root": {
-                              borderRadius: "12px",
-                              backgroundColor: "#ffffff",
-                              "& fieldset": { borderColor: "#e0e7ff" },
-                              "&:hover fieldset": { borderColor: "#092181" },
-                              "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: 2 },
+                    {filtrosActivosEvid.actividad && (
+                      <TextField
+                        sx={{
+                          width: "100%",
+                          maxWidth: "400px",
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: "12px",
+                            backgroundColor: "#ffffff",
+                            "& fieldset": { borderColor: "#e0e7ff" },
+                            "&:hover fieldset": { borderColor: "#092181" },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#092181",
+                              borderWidth: 2,
                             },
-                          }}
-                          label="Nombre de la actividad"
-                          onChange={(e) =>
-                            setValoresFiltroEvid({ ...valoresFiltroEvid, actividad: e.target.value })
+                          },
+                        }}
+                        label="Nombre de la actividad"
+                        onChange={(e) =>
+                          setValoresFiltroEvid({
+                            ...valoresFiltroEvid,
+                            actividad: e.target.value,
+                          })
+                        }
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <Person color="primary" />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    )}
+                    {filtrosActivosEvid.fecha_sugerida && (
+                      <LocalizationProvider
+                        dateAdapter={AdapterDateFns}
+                        adapterLocale={es}
+                      >
+                        <DatePicker
+                          label="Fecha de sugerencia"
+                          value={valoresFiltroEvid.fecha_sugerida}
+                          onChange={(newValue) =>
+                            setValoresFiltroEvid({
+                              ...valoresFiltroEvid,
+                              fecha_sugerida: newValue,
+                            })
                           }
-                          InputProps={{
-                            startAdornment: (
-                              <InputAdornment position="start">
-                                <Person color="primary" />
-                              </InputAdornment>
-                            ),
+                          format="dd/MM/yyyy"
+                          slotProps={{
+                            textField: {
+                              fullWidth: true,
+                              InputLabelProps: { shrink: true },
+                              sx: {
+                                width: "100%",
+                                maxWidth: "400px",
+                                "& .MuiOutlinedInput-root": {
+                                  borderRadius: "12px",
+                                  backgroundColor: "#fff",
+                                  "& fieldset": {
+                                    borderColor: "#CBD4D8",
+                                  },
+                                  "&:hover fieldset": {
+                                    borderColor: "#355C7D",
+                                  },
+                                  "&.Mui-focused fieldset": {
+                                    borderColor: "#092181",
+                                    borderWidth: "2px",
+                                  },
+                                },
+                                "& .MuiInputLabel-root": {
+                                  color: "#2D5D7B",
+                                  fontWeight: "bold",
+                                },
+                                "& .MuiInputBase-input::placeholder": {
+                                  color: "#777",
+                                  opacity: 1,
+                                },
+                              },
+                            },
                           }}
                         />
-
-                      )
-                    }
-                    {filtrosActivosEvid.fecha_sugerida && (
-                    
-              <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
-                  <DatePicker
-                    label="Fecha de sugerencia"
-                     value={valoresFiltroEvid.fecha_sugerida}
-                        onChange={(newValue) =>
-                          setValoresFiltroEvid({ ...valoresFiltroEvid, fecha_sugerida: newValue})
-                        }
-                    format="dd/MM/yyyy"
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        InputLabelProps: { shrink: true },
-                        sx: {
-                            width: "100%",
-                            maxWidth: "400px",
-                            "& .MuiOutlinedInput-root": {
-                              borderRadius: "12px",
-                              backgroundColor: "#fff",
-                              "& fieldset": {
-                                borderColor: "#CBD4D8",
-                              },
-                              "&:hover fieldset": {
-                                borderColor: "#355C7D",
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "#092181",
-                                borderWidth: "2px",
-                              },
-                            },
-                            "& .MuiInputLabel-root": {
-                              color: "#2D5D7B",
-                              fontWeight: "bold",
-                            },
-                            "& .MuiInputBase-input::placeholder": {
-                              color: "#777",
-                              opacity: 1,
-                            },
-                        }
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
+                      </LocalizationProvider>
                     )}
 
                     {filtrosActivosEvid.fecha_realizada && (
-                       <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
-                  <DatePicker
-                    label="Fecha en que se realizo"
-                        value={valoresFiltroEvid.fecha_realizada}
-                        onChange={(newValue) =>
-                          setValoresFiltroEvid({ ...valoresFiltroEvid, fecha_realizada: newValue})
-                        }
-                    format="dd/MM/yyyy"
-                    slotProps={{
-                      textField: {
-                        fullWidth: true,
-                        InputLabelProps: { shrink: true },
-                        sx: {
-                            width: "100%",
-                            maxWidth: "400px",
-                            "& .MuiOutlinedInput-root": {
-                              borderRadius: "12px",
-                              backgroundColor: "#fff",
-                              "& fieldset": {
-                                borderColor: "#CBD4D8",
-                              },
-                              "&:hover fieldset": {
-                                borderColor: "#355C7D",
-                              },
-                              "&.Mui-focused fieldset": {
-                                borderColor: "#092181",
-                                borderWidth: "2px",
+                      <LocalizationProvider
+                        dateAdapter={AdapterDateFns}
+                        adapterLocale={es}
+                      >
+                        <DatePicker
+                          label="Fecha en que se realizo"
+                          value={valoresFiltroEvid.fecha_realizada}
+                          onChange={(newValue) =>
+                            setValoresFiltroEvid({
+                              ...valoresFiltroEvid,
+                              fecha_realizada: newValue,
+                            })
+                          }
+                          format="dd/MM/yyyy"
+                          slotProps={{
+                            textField: {
+                              fullWidth: true,
+                              InputLabelProps: { shrink: true },
+                              sx: {
+                                width: "100%",
+                                maxWidth: "400px",
+                                "& .MuiOutlinedInput-root": {
+                                  borderRadius: "12px",
+                                  backgroundColor: "#fff",
+                                  "& fieldset": {
+                                    borderColor: "#CBD4D8",
+                                  },
+                                  "&:hover fieldset": {
+                                    borderColor: "#355C7D",
+                                  },
+                                  "&.Mui-focused fieldset": {
+                                    borderColor: "#092181",
+                                    borderWidth: "2px",
+                                  },
+                                },
+                                "& .MuiInputLabel-root": {
+                                  color: "#2D5D7B",
+                                  fontWeight: "bold",
+                                },
+                                "& .MuiInputBase-input::placeholder": {
+                                  color: "#777",
+                                  opacity: 1,
+                                },
                               },
                             },
-                            "& .MuiInputLabel-root": {
-                              color: "#2D5D7B",
-                              fontWeight: "bold",
-                            },
-                            "& .MuiInputBase-input::placeholder": {
-                              color: "#777",
-                              opacity: 1,
-                            },
-                        }
-                      },
-                    }}
-                  />
-                </LocalizationProvider>
-                     
+                          }}
+                        />
+                      </LocalizationProvider>
                     )}
 
                     {filtrosActivosEvid.completada && (
-                      <FormControl sx={{
-                        width: "100%", maxWidth: "400px",
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: "12px",
-                          backgroundColor: "#fff", 
-                          "& fieldset": {
-                            borderColor: "#CBD4D8", 
+                      <FormControl
+                        sx={{
+                          width: "100%",
+                          maxWidth: "400px",
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: "12px",
+                            backgroundColor: "#fff",
+                            "& fieldset": {
+                              borderColor: "#CBD4D8",
+                            },
+                            "&:hover fieldset": {
+                              borderColor: "#355C7D",
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#092181",
+                              borderWidth: "2px",
+                            },
                           },
-                          "&:hover fieldset": {
-                            borderColor: "#355C7D", 
+                          "& .MuiInputLabel-root": {
+                            color: "#2D5D7B",
+                            fontWeight: "bold",
                           },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#092181", 
-                            borderWidth: "2px",
+                          "& .MuiInputBase-input::placeholder": {
+                            color: "#777777",
+                            opacity: 1,
                           },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "#2D5D7B", 
-                          fontWeight: "bold",
-                        },
-                        "& .MuiInputBase-input::placeholder": {
-                          color: "#777777", 
-                          opacity: 1,
-                        },
-                      }}
+                        }}
                       >
                         <InputLabel>Estado de la evidencia</InputLabel>
                         <Select
                           value={valoresFiltroEvid.completada}
                           onChange={(e) =>
-                            setValoresFiltroEvid({ ...valoresFiltroEvid, completada: e.target.value })
+                            setValoresFiltroEvid({
+                              ...valoresFiltroEvid,
+                              completada: e.target.value,
+                            })
                           }
                           label="Estado"
-                            renderValue={(selectedValue) =>{
+                          renderValue={(selectedValue) => {
                             const selectedComp = completadaMap.find(
                               (completada) => completada.value === selectedValue
                             );
                             if (selectedComp) {
                               return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedComp.color, display: 'flex' }}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      color: selectedComp.color,
+                                      display: "flex",
+                                    }}
+                                  >
                                     {selectedComp.icon}
                                   </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                  <Typography
+                                    variant="body1"
+                                    sx={{ fontWeight: 500 }}
+                                  >
                                     {selectedComp.text}
                                   </Typography>
                                 </Box>
@@ -1660,10 +2017,12 @@ const ListadoActividades = () => {
                             }
                             return "";
                           }}
-                        
                         >
                           {completadaMap.map((completada) => (
-                            <MenuItem key={completada.value} value={completada.value}>
+                            <MenuItem
+                              key={completada.value}
+                              value={completada.value}
+                            >
                               <ListItemIcon>
                                 <Box sx={{ color: completada.color }}>
                                   {completada.icon}
@@ -1672,7 +2031,7 @@ const ListadoActividades = () => {
                               <ListItemText
                                 primary={completada.text}
                                 primaryTypographyProps={{
-                                  sx: { fontWeight: 500 }
+                                  sx: { fontWeight: 500 },
                                 }}
                               />
                             </MenuItem>
@@ -1681,52 +2040,71 @@ const ListadoActividades = () => {
                       </FormControl>
                     )}
 
-
                     {filtrosActivosEvid.satisfaccion && (
-                      <FormControl sx={{
-                        width: "100%", maxWidth: "400px",
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: "12px", 
-                          backgroundColor: "#fff", 
-                          "& fieldset": {
-                            borderColor: "#CBD4D8", 
+                      <FormControl
+                        sx={{
+                          width: "100%",
+                          maxWidth: "400px",
+                          "& .MuiOutlinedInput-root": {
+                            borderRadius: "12px",
+                            backgroundColor: "#fff",
+                            "& fieldset": {
+                              borderColor: "#CBD4D8",
+                            },
+                            "&:hover fieldset": {
+                              borderColor: "#355C7D",
+                            },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#092181",
+                              borderWidth: "2px",
+                            },
                           },
-                          "&:hover fieldset": {
-                            borderColor: "#355C7D", 
+                          "& .MuiInputLabel-root": {
+                            color: "#2D5D7B",
+                            fontWeight: "bold",
                           },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#092181", 
-                            borderWidth: "2px",
+                          "& .MuiInputBase-input::placeholder": {
+                            color: "#777777",
+                            opacity: 1,
                           },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "#2D5D7B", 
-                          fontWeight: "bold",
-                        },
-                        "& .MuiInputBase-input::placeholder": {
-                          color: "#777777",
-                          opacity: 1,
-                        },
-
-                      }}>
+                        }}
+                      >
                         <InputLabel>Satisfaccion</InputLabel>
                         <Select
                           value={valoresFiltroEvid.satisfaccion}
                           onChange={(e) =>
-                            setValoresFiltroEvid({ ...valoresFiltroEvid, satisfaccion: e.target.value })
+                            setValoresFiltroEvid({
+                              ...valoresFiltroEvid,
+                              satisfaccion: e.target.value,
+                            })
                           }
                           label="Satisfaccion"
-                            renderValue={(selectedValue) =>{
+                          renderValue={(selectedValue) => {
                             const selectedSast = satisfaccionMap.find(
-                              (satisfaccion) => satisfaccion.value === selectedValue
+                              (satisfaccion) =>
+                                satisfaccion.value === selectedValue
                             );
                             if (selectedSast) {
                               return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedSast.color, display: 'flex' }}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      color: selectedSast.color,
+                                      display: "flex",
+                                    }}
+                                  >
                                     {selectedSast.icon}
                                   </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                  <Typography
+                                    variant="body1"
+                                    sx={{ fontWeight: 500 }}
+                                  >
                                     {selectedSast.label}
                                   </Typography>
                                 </Box>
@@ -1734,10 +2112,12 @@ const ListadoActividades = () => {
                             }
                             return "";
                           }}
-                        
                         >
                           {satisfaccionMap.map((satisfaccion) => (
-                            <MenuItem key={satisfaccion.value} value={satisfaccion.value}>
+                            <MenuItem
+                              key={satisfaccion.value}
+                              value={satisfaccion.value}
+                            >
                               <ListItemIcon>
                                 <Box sx={{ color: satisfaccion.color }}>
                                   {satisfaccion.icon}
@@ -1746,16 +2126,17 @@ const ListadoActividades = () => {
                               <ListItemText
                                 primary={satisfaccion.label}
                                 primaryTypographyProps={{
-                                  sx: { fontWeight: 500 }
+                                  sx: { fontWeight: 500 },
                                 }}
                               />
                             </MenuItem>
                           ))}
                         </Select>
                       </FormControl>
-
                     )}
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+                    <Box
+                      sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2 }}
+                    >
                       <Button
                         variant="contained"
                         startIcon={<Search />}
@@ -1775,7 +2156,7 @@ const ListadoActividades = () => {
                         variant="outlined"
                         startIcon={<RestartAlt />}
                         onClick={handleLimpiarFiltrosEvid}
-                      sx={{
+                        sx={{
                           minWidth: 150,
                           textTransform: "none",
                           borderColor: "#092181",
@@ -1797,28 +2178,40 @@ const ListadoActividades = () => {
 
               {/* Listado o Detalle */}
               {!evidenciaSeleccionada ? (
-                <Tooltip title="Selecciona una tarjeta para ver más información" arrow>
+                <Tooltip
+                  title="Selecciona una tarjeta para ver más información"
+                  arrow
+                >
                   <Box sx={{ width: "100%" }}>
-                    <Box sx={{
-                      display: "flex",
-                      flexDirection: { xs: "column", sm: "row" },
-                      alignItems: { xs: "flex-start", sm: "center" },
-                      justifyContent: { xs: "center", sm: "space-between" },
-                      flexWrap: "wrap",
-                      gap: 2,
-                      mb: 3,
-                    }}>
-                      <Box sx={{
+                    <Box
+                      sx={{
                         display: "flex",
-                        alignItems: "center",
-                        gap: 1.5,
-                        flex: 1,
-                        justifyContent: { xs: "center", sm: "flex-start" },
-                        textAlign: { xs: "center", sm: "left" },
-                      }}>
-                        <AssignmentTurnedInIcon sx={{ color: "#092181", fontSize: 30 }} />
+                        flexDirection: { xs: "column", sm: "row" },
+                        alignItems: { xs: "flex-start", sm: "center" },
+                        justifyContent: { xs: "center", sm: "space-between" },
+                        flexWrap: "wrap",
+                        gap: 2,
+                        mb: 3,
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 1.5,
+                          flex: 1,
+                          justifyContent: { xs: "center", sm: "flex-start" },
+                          textAlign: { xs: "center", sm: "left" },
+                        }}
+                      >
+                        <AssignmentTurnedInIcon
+                          sx={{ color: "#092181", fontSize: 30 }}
+                        />
 
-                        <Typography variant="h6" sx={{ color: "#092181", fontWeight: "bold" }}>
+                        <Typography
+                          variant="h6"
+                          sx={{ color: "#092181", fontWeight: "bold" }}
+                        >
                           {evidencias.length > 0
                             ? "Evidencias registradas:"
                             : "No se han registrado evidencias aún."}
@@ -1851,10 +2244,18 @@ const ListadoActividades = () => {
                             borderRadius: 4,
                             border: "1px solid #e3e8ff",
                             background: " #f9fafc ",
-                            width: { xs: "100%", sm: "calc(50% - 12px)", md: "350px" },
+                            width: {
+                              xs: "100%",
+                              sm: "calc(50% - 12px)",
+                              md: "350px",
+                            },
                             maxWidth: "400px",
                             minWidth: "280px",
-                            flex: { xs: "1 1 100%", sm: "1 1 calc(50% - 12px)", md: "0 1 350px" },
+                            flex: {
+                              xs: "1 1 100%",
+                              sm: "1 1 calc(50% - 12px)",
+                              md: "0 1 350px",
+                            },
                             transition: "all 0.3s ease",
                             boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
                             "&:hover": {
@@ -1889,8 +2290,16 @@ const ListadoActividades = () => {
                             </Typography>
 
                             {/* Fecha sugerida */}
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <CalendarToday sx={{ fontSize: 20, color: "#67121A" }} />
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
+                              <CalendarToday
+                                sx={{ fontSize: 20, color: "#67121A" }}
+                              />
                               <Typography
                                 variant="body1"
                                 sx={{
@@ -1899,7 +2308,11 @@ const ListadoActividades = () => {
                                   fontSize: "0.95rem",
                                 }}
                               >
-                                {new Date(evidencia.fecha_sugerida).toISOString().split("T")[0]}
+                                {
+                                  new Date(evidencia.fecha_sugerida)
+                                    .toISOString()
+                                    .split("T")[0]
+                                }
                               </Typography>
                             </Box>
 
@@ -1926,7 +2339,9 @@ const ListadoActividades = () => {
                                 display: "flex",
                                 alignItems: "center",
                                 gap: 1,
-                                color: getColorSatisfaccion(evidencia.satisfaccion),
+                                color: getColorSatisfaccion(
+                                  evidencia.satisfaccion
+                                ),
                               }}
                             >
                               {getIconoSatisfaccion(evidencia.satisfaccion)}
@@ -1936,44 +2351,59 @@ const ListadoActividades = () => {
                             </Box>
                           </CardContent>
                         </Card>
-
                       ))}
                     </Box>
                   </Box>
                 </Tooltip>
               ) : (
-                <Box sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 3,
-                }}>
-                  <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 3,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 2,
+                    }}
+                  >
                     {/*}
                     <Typography variant="h4" fontWeight="bold" sx={{ color: "#092181", textAlign: "center" }}>
                       Detalle de la evidencia
                     </Typography> */}
                     <Divider sx={{ width: "80%" }} />
 
-                    <Box sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: 2,
-                      mt: 3,
-                    }}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 2,
+                        mt: 3,
+                      }}
                     >
                       {/* Información del paciente */}
-                      <Card sx={{
-                        flex: 1,
-                        p: 3,
-                        borderRadius: 3,
-                        backgroundColor: "#f8f9ff",
-                        border: "2px solid #092181",
-                        boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
-                        minWidth: { xs: "100%", md: "300px" }
-                      }}>
+                      <Card
+                        sx={{
+                          flex: 1,
+                          p: 3,
+                          borderRadius: 3,
+                          backgroundColor: "#f8f9ff",
+                          border: "2px solid #092181",
+                          boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
+                          minWidth: { xs: "100%", md: "300px" },
+                        }}
+                      >
                         <Box display="flex" alignItems="center" gap={1} mb={2}>
                           <PeopleAltIcon color="primary" />
-                          <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
+                          <Typography
+                            variant="h6"
+                            fontWeight="bold"
+                            sx={{ color: "#092181" }}
+                          >
                             Información del paciente
                           </Typography>
                         </Box>
@@ -1985,18 +2415,24 @@ const ListadoActividades = () => {
                         />
                       </Card>
                       {/* Información de la Actividad */}
-                      <Card sx={{
-                        flex: 2,
-                        p: 3,
-                        borderRadius: 3,
-                        backgroundColor: "#f8f9ff",
-                        border: "2px solid #092181",
-                        boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
-                        minWidth: { xs: "100%", md: "400px" }
-                      }}>
+                      <Card
+                        sx={{
+                          flex: 2,
+                          p: 3,
+                          borderRadius: 3,
+                          backgroundColor: "#f8f9ff",
+                          border: "2px solid #092181",
+                          boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
+                          minWidth: { xs: "100%", md: "400px" },
+                        }}
+                      >
                         <Box display="flex" alignItems="center" gap={1} mb={2}>
                           <AssignmentIndIcon color="primary" />
-                          <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
+                          <Typography
+                            variant="h6"
+                            fontWeight="bold"
+                            sx={{ color: "#092181" }}
+                          >
                             Información de la actividad
                           </Typography>
                         </Box>
@@ -2021,27 +2457,39 @@ const ListadoActividades = () => {
                             ["fecha_realizada", "Fecha en que se realizo"],
                             ["completada", "¿Fue completada?"],
                             ["satisfaccion", "Nivel de satisfaccion"],
-                            ["comentario_Evidencia", "Comentarios"]
+                            ["comentario_Evidencia", "Comentarios"],
                           ].map(([key, label]) => {
                             // Detectar si se trata de un campo especial que requiere un select
-                            const isSelect = ["completada", "satisfaccion"].includes(key);
-                            const isEditableField = ["completada", "satisfaccion", "comentario_Evidencia"].includes(key);
-                            const isDateField = ["fecha_sugerida", "fecha_realizada"].includes(key);
+                            const isSelect = [
+                              "completada",
+                              "satisfaccion",
+                            ].includes(key);
+                            const isEditableField = [
+                              "completada",
+                              "satisfaccion",
+                              "comentario_Evidencia",
+                            ].includes(key);
+                            const isDateField = [
+                              "fecha_sugerida",
+                              "fecha_realizada",
+                            ].includes(key);
                             // Obtener las opciones según el campo
                             let options = {};
                             if (key === "completada") options = completadaMap;
-                            if (key === "satisfaccion") options = satisfaccionMap;
+                            if (key === "satisfaccion")
+                              options = satisfaccionMap;
                             const value = evidenciaSeleccionada[key];
                             return (
                               <Box
                                 key={key}
                                 sx={{
-                                  flex: "1 1 48%", 
+                                  flex: "1 1 48%",
                                   minWidth: "250px",
                                 }}
                               >
                                 {isSelect ? (
-                                  <FormControl fullWidth
+                                  <FormControl
+                                    fullWidth
                                     sx={{
                                       "& .MuiOutlinedInput-root": {
                                         borderRadius: "12px",
@@ -2076,7 +2524,10 @@ const ListadoActividades = () => {
                                       }}
                                     >
                                       {options.map((opt) => (
-                                        <MenuItem key={opt.value} value={opt.value}>
+                                        <MenuItem
+                                          key={opt.value}
+                                          value={opt.value}
+                                        >
                                           <ListItemIcon>
                                             <Box
                                               sx={{
@@ -2089,7 +2540,6 @@ const ListadoActividades = () => {
                                           <Typography sx={{ color: opt.color }}>
                                             {opt.text || opt.label}
                                           </Typography>
-
                                         </MenuItem>
                                       ))}
                                     </Select>
@@ -2123,7 +2573,9 @@ const ListadoActividades = () => {
                                     rows={4}
                                     value={
                                       isDateField && value
-                                        ? new Date(value).toISOString().split("T")[0]
+                                        ? new Date(value)
+                                            .toISOString()
+                                            .split("T")[0]
                                         : value || ""
                                     }
                                     onChange={(e) =>
@@ -2133,30 +2585,30 @@ const ListadoActividades = () => {
                                       })
                                     }
                                     disabled={!isEditableField}
-                                    InputLabelProps={isDateField ? { shrink: true } : {}}
-
+                                    InputLabelProps={
+                                      isDateField ? { shrink: true } : {}
+                                    }
                                   />
                                 )}
                               </Box>
                             );
-
                           })}
                         </Box>
                       </Card>
-
                     </Box>
                   </Box>
 
-                  <Box sx={{
-                    display: "flex",
-                    flexDirection: { xs: "column", sm: "row" },
-                    gap: 2,
-                    mt: 4,
-                    pt: 3,
-                    borderTop: "1px solid #E0E0E0",
-                    justifyContent: "flex-end",
-                  }}>
-
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
+                      gap: 2,
+                      mt: 4,
+                      pt: 3,
+                      borderTop: "1px solid #E0E0E0",
+                      justifyContent: "flex-end",
+                    }}
+                  >
                     <Button
                       variant="contained"
                       startIcon={<Update />}
@@ -2174,14 +2626,15 @@ const ListadoActividades = () => {
                           boxShadow: "0 4px 12px rgba(9, 33, 129, 0.3)",
                         },
                         transition: "all 0.2s ease",
-                        flex: { xs: "1 1 100%", sm: "0 0 auto" }, 
+                        flex: { xs: "1 1 100%", sm: "0 0 auto" },
                       }}
                     >
                       Actualizar
                     </Button>
 
                     <Button
-                      variant="outlined" color="error"
+                      variant="outlined"
+                      color="error"
                       startIcon={<Delete />}
                       onClick={handleOpenConfirm}
                       sx={{
@@ -2200,7 +2653,8 @@ const ListadoActividades = () => {
                       Eliminar
                     </Button>
 
-                    <Button variant="outlined"
+                    <Button
+                      variant="outlined"
                       startIcon={<ArrowBack />}
                       onClick={() => setEvidenciaSeleccionada(null)}
                       sx={{
@@ -2219,11 +2673,9 @@ const ListadoActividades = () => {
                     >
                       Cancelar
                     </Button>
-
                   </Box>
                 </Box>
               )}
-
             </>
           )}
         </Paper>
@@ -2292,7 +2744,10 @@ const ListadoActividades = () => {
                   >
                     Cancelar
                   </Button>
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Button
                       onClick={handleEliminar}
                       variant="contained"
@@ -2333,10 +2788,11 @@ const ListadoActividades = () => {
                   },
                 }}
               >
-                <CheckCircle
-                  sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }}
-                />
-                <Typography variant="h6" sx={{ color: "#092181", fontWeight: 600 }}>
+                <CheckCircle sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }} />
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#092181", fontWeight: 600 }}
+                >
                   Evidencia eliminada correctamente
                 </Typography>
                 <Typography variant="body2" sx={{ color: "#555", mt: 1 }}>
@@ -2403,7 +2859,7 @@ const ListadoActividades = () => {
                   <video
                     src={archivoModal}
                     controls
-                    autoPlay={false} 
+                    autoPlay={false}
                     style={{
                       width: "100%",
                       height: "auto",
@@ -2438,8 +2894,6 @@ const ListadoActividades = () => {
             </Box>
           </Fade>
         </Modal>
-
-
 
         {/* Snackbar para mensajes */}
         <Snackbar

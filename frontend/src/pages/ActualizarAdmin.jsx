@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, memo } from "react";
-import Layout from '../components/LayoutAdmin';
+import Layout from "../components/LayoutAdmin";
 import axios from "axios";
 import {
   Box,
@@ -24,65 +24,74 @@ import {
   Email,
   Favorite,
   MedicalServices,
-  Lock
+  Lock,
 } from "@mui/icons-material";
 // Componente memoizado para campos normales
-const MemoizedTextField = memo(({ label, value, onChange, type = "text", ...props }) => (
-  <TextField
-    label={label}
-    value={value || ""}
-    onChange={onChange}
-    type={type}
-    InputLabelProps={type === "date" ? { shrink: true } : {}}
-    {...props}
-  />
-));
+const MemoizedTextField = memo(
+  ({ label, value, onChange, type = "text", ...props }) => (
+    <TextField
+      label={label}
+      value={value || ""}
+      onChange={onChange}
+      type={type}
+      InputLabelProps={type === "date" ? { shrink: true } : {}}
+      {...props}
+    />
+  )
+);
 
 // Componente memoizado específico para selects
-const MemoizedSelectField = memo(({ label, value, onChange, children, ...props }) => (
-  <TextField
-    select
-    label={label}
-    value={value || ""}
-    onChange={onChange}
-    {...props}
-  >
-    {children}
-  </TextField>
-));
+const MemoizedSelectField = memo(
+  ({ label, value, onChange, children, ...props }) => (
+    <TextField
+      select
+      label={label}
+      value={value || ""}
+      onChange={onChange}
+      {...props}
+    >
+      {children}
+    </TextField>
+  )
+);
 
-MemoizedTextField.displayName = 'MemoizedTextField';
-MemoizedSelectField.displayName = 'MemoizedSelectField';
-
-
+MemoizedTextField.displayName = "MemoizedTextField";
+MemoizedSelectField.displayName = "MemoizedSelectField";
 
 export default function ActualizarAdmin() {
-  const [idUsuario, setIdUsuario] = useState('');
+  const [idUsuario, setIdUsuario] = useState("");
   // const [userData, setUserData] = useState(null);
   const [formData, setFormData] = useState({});
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [mensaje, setMensaje] = useState("");
   const [tipo, setTipo] = useState("success");
 
-
   const navigate = useNavigate();
   // Estilos memoizados
-  const textFieldStyles = useMemo(() => ({
-    "& .MuiOutlinedInput-root": {
-      borderRadius: "12px",
-      backgroundColor: "#fff",
-      "& fieldset": { borderColor: "#CBD4D8" },
-      "&:hover fieldset": { borderColor: "#355C7D" },
-      "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: "2px" },
-    },
-    "& .MuiInputLabel-root": { color: "#2D5D7B", fontWeight: "bold" },
-    flex: "1 1 300px"
-  }), []);
-  const fullWidthStyles = useMemo(() => ({
-    ...textFieldStyles,
-    flex: "1 1 620px"
-  }), [textFieldStyles]);
-
+  const textFieldStyles = useMemo(
+    () => ({
+      "& .MuiOutlinedInput-root": {
+        borderRadius: "12px",
+        backgroundColor: "#fff",
+        "& fieldset": { borderColor: "#CBD4D8" },
+        "&:hover fieldset": { borderColor: "#355C7D" },
+        "&.Mui-focused fieldset": {
+          borderColor: "#092181",
+          borderWidth: "2px",
+        },
+      },
+      "& .MuiInputLabel-root": { color: "#2D5D7B", fontWeight: "bold" },
+      flex: "1 1 300px",
+    }),
+    []
+  );
+  const fullWidthStyles = useMemo(
+    () => ({
+      ...textFieldStyles,
+      flex: "1 1 620px",
+    }),
+    [textFieldStyles]
+  );
 
   const mostrarMensaje = useCallback((msg, severity = "info") => {
     setMensaje(msg);
@@ -92,73 +101,83 @@ export default function ActualizarAdmin() {
 
   const handleCloseSnackbar = useCallback(() => setOpenSnackbar(false), []);
 
-
   useEffect(() => {
     const storedId = localStorage.getItem("idUsuario");
     if (storedId) {
       setIdUsuario(storedId);
       fetchUserData(storedId);
     } else {
-      mostrarMensaje("No se encontró el ID del usuario. Inicia sesión nuevamente.", "error");
+      mostrarMensaje(
+        "No se encontró el ID del usuario. Inicia sesión nuevamente.",
+        "error"
+      );
     }
   }, [mostrarMensaje]);
 
-  const fetchUserData = useCallback(async (id) => {
-    try {
-      const res = await axios.get(`http://localhost:4000/api/auth/by-id/${id}`);
-      const userData = res.data;
+  const fetchUserData = useCallback(
+    async (id) => {
+      try {
+        const res = await axios.get(
+          `http://localhost:4000/api/auth/by-id/${id}`
+        );
+        const userData = res.data;
 
-      // Formatear fecha para el input date
-      const formattedData = {
-        ...userData,
-        fecha_nacimiento: userData.fecha_nacimiento
-          ? new Date(userData.fecha_nacimiento).toISOString().split('T')[0]
-          : ""
-      };
+        // Formatear fecha para el input date
+        const formattedData = {
+          ...userData,
+          fecha_nacimiento: userData.fecha_nacimiento
+            ? new Date(userData.fecha_nacimiento).toISOString().split("T")[0]
+            : "",
+        };
 
-      setFormData(formattedData);
-    } catch (error) {
-      console.error("Error al obtener datos del usuario:", error);
-      mostrarMensaje("No se pudieron cargar los datos del usuario.", "warning");
-    }
-  }, [mostrarMensaje]);
+        setFormData(formattedData);
+      } catch (error) {
+        console.error("Error al obtener datos del usuario:", error);
+        mostrarMensaje(
+          "No se pudieron cargar los datos del usuario.",
+          "warning"
+        );
+      }
+    },
+    [mostrarMensaje]
+  );
 
   // Crear handlers memoizados para cada campo
   const createFieldHandler = useCallback((fieldName) => {
     return (event) => {
       const value = event.target.value;
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        [fieldName]: value
+        [fieldName]: value,
       }));
     };
   }, []);
 
   // Handlers pre-creados para cada campo
-  const handlers = useMemo(() => ({
-    Nombre: createFieldHandler('Nombre'),
-    aPaterno: createFieldHandler('aPaterno'),
-    aMaterno: createFieldHandler('aMaterno'),
-    fecha_nacimiento: createFieldHandler('fecha_nacimiento'),
-    curp: createFieldHandler('curp'),
-    sexo: createFieldHandler('sexo'),
-    email: createFieldHandler('email'),
-    telefono: createFieldHandler('telefono'),
-    estado: createFieldHandler('estado'),
-    municipio: createFieldHandler('municipio'),
-    calle: createFieldHandler('calle'),
-    newPassword: createFieldHandler('newPassword'),
-    nivel_estres: createFieldHandler('nivel_estres'),
-    especialidad: createFieldHandler('especialidad'),
-    cedula: createFieldHandler('cedula')
-  }), [createFieldHandler]);
-
+  const handlers = useMemo(
+    () => ({
+      Nombre: createFieldHandler("Nombre"),
+      aPaterno: createFieldHandler("aPaterno"),
+      aMaterno: createFieldHandler("aMaterno"),
+      fecha_nacimiento: createFieldHandler("fecha_nacimiento"),
+      curp: createFieldHandler("curp"),
+      sexo: createFieldHandler("sexo"),
+      email: createFieldHandler("email"),
+      telefono: createFieldHandler("telefono"),
+      estado: createFieldHandler("estado"),
+      municipio: createFieldHandler("municipio"),
+      calle: createFieldHandler("calle"),
+      newPassword: createFieldHandler("newPassword"),
+      nivel_estres: createFieldHandler("nivel_estres"),
+      especialidad: createFieldHandler("especialidad"),
+      cedula: createFieldHandler("cedula"),
+    }),
+    [createFieldHandler]
+  );
 
   const handleUpdate = useCallback(async () => {
     try {
       const url = `http://localhost:4000/api/auth/update/${formData.idUsuario}`;
-
-
 
       const payload = {
         Nombre: formData.Nombre,
@@ -172,7 +191,9 @@ export default function ActualizarAdmin() {
         estado: formData.estado,
         municipio: formData.municipio,
         calle: formData.calle,
-        nivel_estres: formData.nivel_estres ? Number(formData.nivel_estres) : null,
+        nivel_estres: formData.nivel_estres
+          ? Number(formData.nivel_estres)
+          : null,
         especialidad: formData.especialidad,
         cedula: formData.cedula,
       };
@@ -186,53 +207,74 @@ export default function ActualizarAdmin() {
     } catch (err) {
       //Log completo del error para depuración
       console.error("Error completo de Axios:", err);
-        let mensajeError = "Error al actualizar la usuario.";
-        // Verificar que la respuesta 400 tenga datos estructurados
-         if (err.response && err.response.data) {
-            const dataError = err.response.data;
-            
-            if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
-                // Unir los errores de validación en una sola cadena
-                mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-            } 
-          
-            else if (dataError.message) {
-                 mensajeError = dataError.message;
-            }
+      let mensajeError = "Error al actualizar la usuario.";
+      // Verificar que la respuesta 400 tenga datos estructurados
+      if (err.response && err.response.data) {
+        const dataError = err.response.data;
+
+        if (
+          dataError.errores &&
+          Array.isArray(dataError.errores) &&
+          dataError.errores.length > 0
+        ) {
+          // Unir los errores de validación en una sola cadena
+          mensajeError = `Errores de validación: ${dataError.errores.join(
+            "; "
+          )}`;
+        } else if (dataError.message) {
+          mensajeError = dataError.message;
         }
-        // Mostrar el mensaje de error específico o el genérico 
-         mostrarMensaje(mensajeError, "error"); 
       }
+      // Mostrar el mensaje de error específico o el genérico
+      mostrarMensaje(mensajeError, "error");
+    }
   }, [formData, mostrarMensaje]);
 
-
-// Componente para secciones del formulario
-  const FormSection = useCallback(({ icon, title, children }) => (
-    <Card elevation={3} sx={{ borderRadius: 3, backgroundColor: "#fff", mb: 3 }}>
-      <CardContent sx={{ p: 3 }}>
-        <Box display="flex" alignItems="center" mb={3}>
-          {icon}
-          <Typography variant="h6" fontWeight="bold" color="primary" sx={{ ml: 2 }}>
-            {title}
-          </Typography>
-        </Box>
-        <Divider sx={{ mb: 3 }} />
-        <Box display="flex" flexWrap="wrap" gap={2}>
-          {children}
-        </Box>
-      </CardContent>
-    </Card>
-  ), []);
-
-
+  // Componente para secciones del formulario
+  const FormSection = useCallback(
+    ({ icon, title, children }) => (
+      <Card
+        elevation={3}
+        sx={{ borderRadius: 3, backgroundColor: "#fff", mb: 3 }}
+      >
+        <CardContent sx={{ p: 3 }}>
+          <Box display="flex" alignItems="center" mb={3}>
+            {icon}
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              color="primary"
+              sx={{ ml: 2 }}
+            >
+              {title}
+            </Typography>
+          </Box>
+          <Divider sx={{ mb: 3 }} />
+          <Box display="flex" flexWrap="wrap" gap={2}>
+            {children}
+          </Box>
+        </CardContent>
+      </Card>
+    ),
+    []
+  );
 
   return (
     <>
       <Layout>
-        <Box sx={{ flexGrow: 1, minHeight: '100vh', backgroundColor: '#F4F6F8', paddingBottom: '2rem' }}>
-
+        <Box
+          sx={{
+            flexGrow: 1,
+            minHeight: "100vh",
+            backgroundColor: "#F4F6F8",
+            paddingBottom: "2rem",
+          }}
+        >
           <Container maxWidth="lg" sx={{ mt: 5 }}>
-            <Paper elevation={4} sx={{ p: 4, borderRadius: 3, backgroundColor: "#ffffffff" }}>
+            <Paper
+              elevation={4}
+              sx={{ p: 4, borderRadius: 3, backgroundColor: "#ffffffff" }}
+            >
               <Typography
                 variant="h4"
                 fontWeight="bold"
@@ -384,10 +426,12 @@ export default function ActualizarAdmin() {
                   {/* Información Específica por Tipo de Usuario */}
                   {formData.tipo_usuario === 3 && (
                     <FormSection
-                      icon={<Favorite sx={{ color: "#2D5D7B", fontSize: 32 }} />}
+                      icon={
+                        <Favorite sx={{ color: "#2D5D7B", fontSize: 32 }} />
+                      }
                       title="Información de Salud"
                     >
-                      <Grid item xs={24} >
+                      <Grid item xs={24}>
                         <TextField
                           fullWidth
                           label="Nivel de Estrés (1-10)"
@@ -403,7 +447,11 @@ export default function ActualizarAdmin() {
 
                   {formData.tipo_usuario === 2 && (
                     <FormSection
-                      icon={<MedicalServices sx={{ color: "#2D5D7B", fontSize: 32 }} />}
+                      icon={
+                        <MedicalServices
+                          sx={{ color: "#2D5D7B", fontSize: 32 }}
+                        />
+                      }
                       title="Información Profesional"
                     >
                       <Grid item xs={12} sm={6}>
@@ -422,8 +470,12 @@ export default function ActualizarAdmin() {
                           <MenuItem value="5">Médico General</MenuItem>
                           <MenuItem value="6">Psicoterapeuta</MenuItem>
                           <MenuItem value="7">Psicoanalista</MenuItem>
-                          <MenuItem value="8">Consejero en salud mental</MenuItem>
-                          <MenuItem value="9">Trabajador social clínico</MenuItem>
+                          <MenuItem value="8">
+                            Consejero en salud mental
+                          </MenuItem>
+                          <MenuItem value="9">
+                            Trabajador social clínico
+                          </MenuItem>
                         </TextField>
                       </Grid>
                       <Grid item xs={12} sm={6}>
@@ -439,7 +491,14 @@ export default function ActualizarAdmin() {
                   )}
 
                   {/* Botones de Acción */}
-                  <Box sx={{ mt: 4, display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
+                  <Box
+                    sx={{
+                      mt: 4,
+                      display: "flex",
+                      gap: 2,
+                      justifyContent: "flex-end",
+                    }}
+                  >
                     <Button
                       variant="outlined"
                       onClick={() => navigate(-1)}
@@ -450,8 +509,8 @@ export default function ActualizarAdmin() {
                         color: "#2D5D7B",
                         "&:hover": {
                           borderColor: "#0A2361",
-                          backgroundColor: "rgba(45, 93, 123, 0.04)"
-                        }
+                          backgroundColor: "rgba(45, 93, 123, 0.04)",
+                        },
                       }}
                     >
                       Cancelar
@@ -464,7 +523,7 @@ export default function ActualizarAdmin() {
                         backgroundColor: "#2D5D7B",
                         "&:hover": { backgroundColor: "#0A2361" },
                         borderRadius: 2,
-                        px: 4
+                        px: 4,
                       }}
                     >
                       Actualizar Información

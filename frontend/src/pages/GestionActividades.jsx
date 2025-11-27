@@ -34,24 +34,27 @@ import {
   Modal,
   IconButton,
   Fade,
-  Backdrop
+  Backdrop,
 } from "@mui/material";
 import {
-  Search, Update, Delete, ArrowBack,
+  Search,
+  Update,
+  Delete,
+  ArrowBack,
   FilterList,
   AccessTime,
   FitnessCenter,
   CheckCircle,
   Close,
-  ZoomIn
+  ZoomIn,
 } from "@mui/icons-material";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import SettingsIcon from '@mui/icons-material/Settings';
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
-import LinkIcon from '@mui/icons-material/Link';
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import SettingsIcon from "@mui/icons-material/Settings";
+import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
+import LinkIcon from "@mui/icons-material/Link";
 
 import AirIcon from "@mui/icons-material/Air";
 import SelfImprovementIcon from "@mui/icons-material/SelfImprovement";
@@ -66,14 +69,14 @@ import BedtimeIcon from "@mui/icons-material/Bedtime";
 import PsychologyIcon from "@mui/icons-material/Psychology";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 
-import SignalCellular1BarIcon from '@mui/icons-material/SignalCellular1Bar';
-import SignalCellular2BarIcon from '@mui/icons-material/SignalCellular2Bar';
-import SignalCellular3BarIcon from '@mui/icons-material/SignalCellular3Bar';
-import SignalCellular4BarIcon from '@mui/icons-material/SignalCellular4Bar';
+import SignalCellular1BarIcon from "@mui/icons-material/SignalCellular1Bar";
+import SignalCellular2BarIcon from "@mui/icons-material/SignalCellular2Bar";
+import SignalCellular3BarIcon from "@mui/icons-material/SignalCellular3Bar";
+import SignalCellular4BarIcon from "@mui/icons-material/SignalCellular4Bar";
 
-import DraftsIcon from '@mui/icons-material/Drafts';
-import PublicIcon from '@mui/icons-material/Public';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
+import DraftsIcon from "@mui/icons-material/Drafts";
+import PublicIcon from "@mui/icons-material/Public";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 
 const GestionActividades = () => {
   const [idUsuario, setIdUsuario] = useState("");
@@ -94,7 +97,6 @@ const GestionActividades = () => {
   const [openConfirm, setOpenConfirm] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const navigate = useNavigate();
-
 
   // Abrir diálogo de confirmación
   const handleOpenConfirm = () => setOpenConfirm(true);
@@ -123,28 +125,91 @@ const GestionActividades = () => {
     setModalAbierto(true);
   };
 
-
-
   const tiposActividad = [
-    { text: "Respiración guiada", icon: <AirIcon />, value: 1, color: "#4caf50" },
-    { text: "Relajación", icon: <SelfImprovementIcon />, value: 2, color: "#2196f3" },
-    { text: "Movimiento físico suave", icon: <DirectionsRunIcon />, value: 3, color: "#ff9800" },
+    {
+      text: "Respiración guiada",
+      icon: <AirIcon />,
+      value: 1,
+      color: "#4caf50",
+    },
+    {
+      text: "Relajación",
+      icon: <SelfImprovementIcon />,
+      value: 2,
+      color: "#2196f3",
+    },
+    {
+      text: "Movimiento físico suave",
+      icon: <DirectionsRunIcon />,
+      value: 3,
+      color: "#ff9800",
+    },
     { text: "Aire libre", icon: <ParkIcon />, value: 4, color: "#009688" },
-    { text: "Actividad física activa", icon: <FitnessCenterIcon />, value: 5, color: "#9c27b0" },
-    { text: "Desahogo emocional", icon: <SentimentSatisfiedAltIcon />, value: 6, color: "#e91e63" },
-    { text: "Actividad creativa", icon: <BrushIcon />, value: 7, color: "#ff5722" },
+    {
+      text: "Actividad física activa",
+      icon: <FitnessCenterIcon />,
+      value: 5,
+      color: "#9c27b0",
+    },
+    {
+      text: "Desahogo emocional",
+      icon: <SentimentSatisfiedAltIcon />,
+      value: 6,
+      color: "#e91e63",
+    },
+    {
+      text: "Actividad creativa",
+      icon: <BrushIcon />,
+      value: 7,
+      color: "#ff5722",
+    },
     { text: "Social", icon: <GroupIcon />, value: 8, color: "#03a9f4" },
-    { text: "Organización", icon: <ChecklistIcon />, value: 9, color: "#607d8b" },
+    {
+      text: "Organización",
+      icon: <ChecklistIcon />,
+      value: 9,
+      color: "#607d8b",
+    },
     { text: "Descanso", icon: <BedtimeIcon />, value: 10, color: "#795548" },
-    { text: "Estimulación cognitiva", icon: <PsychologyIcon />, value: 11, color: "#673ab7" },
-    { text: "Visualización positiva", icon: <WbSunnyIcon />, value: 12, color: "#ffc107" },
+    {
+      text: "Estimulación cognitiva",
+      icon: <PsychologyIcon />,
+      value: 11,
+      color: "#673ab7",
+    },
+    {
+      text: "Visualización positiva",
+      icon: <WbSunnyIcon />,
+      value: 12,
+      color: "#ffc107",
+    },
   ];
 
   const nivelesDificultad = [
-    { text: "Muy baja", icon: <SignalCellular1BarIcon />, value: 1, color: "#56ab2f" },
-    { text: "Baja", icon: <SignalCellular2BarIcon />, value: 2, color: "#ffcc33" },
-    { text: "Media", icon: <SignalCellular3BarIcon />, value: 3, color: "#8e24aa" },
-    { text: "Alta", icon: <SignalCellular4BarIcon />, value: 4, color: "#c51162" },
+    {
+      text: "Muy baja",
+      icon: <SignalCellular1BarIcon />,
+      value: 1,
+      color: "#56ab2f",
+    },
+    {
+      text: "Baja",
+      icon: <SignalCellular2BarIcon />,
+      value: 2,
+      color: "#ffcc33",
+    },
+    {
+      text: "Media",
+      icon: <SignalCellular3BarIcon />,
+      value: 3,
+      color: "#8e24aa",
+    },
+    {
+      text: "Alta",
+      icon: <SignalCellular4BarIcon />,
+      value: 4,
+      color: "#c51162",
+    },
   ];
 
   const estadoPublicacion = [
@@ -154,7 +219,7 @@ const GestionActividades = () => {
 
   // Función para renderizar el valor seleccionado en los Select
   const renderSelectedValue = (value, options) => {
-    const selectedOption = options.find(option => option.value === value);
+    const selectedOption = options.find((option) => option.value === value);
     if (!selectedOption) return null;
 
     return (
@@ -215,10 +280,13 @@ const GestionActividades = () => {
         setCriterioBusqueda("");
         setValorBusqueda("");
         setActividadSeleccionada(null);
-        mostrarMensaje("Actividad encontrada exitosamente","success");
+        mostrarMensaje("Actividad encontrada exitosamente", "success");
       })
       .catch(() => {
-        mostrarMensaje("No se encontraron actividades con ese criterio.", "warning");
+        mostrarMensaje(
+          "No se encontraron actividades con ese criterio.",
+          "warning"
+        );
         obtenerActividades();
         setCriterioBusqueda("");
         setValorBusqueda("");
@@ -230,21 +298,22 @@ const GestionActividades = () => {
   };
 
   const handleActualizar = async () => {
-      const formData = new FormData();
+    const formData = new FormData();
 
-      formData.append("nombreAct", actividadSeleccionada.nombreAct);
-      formData.append("descripcionAct", actividadSeleccionada.descripcionAct);
-      formData.append("objetivo", actividadSeleccionada.objetivo);
-      formData.append("tipoAct", actividadSeleccionada.tipoAct);
-      formData.append("duracion_minutos", actividadSeleccionada.duracion_minutos);
-      formData.append("dificultad", actividadSeleccionada.dificultad);
-      formData.append("publico", actividadSeleccionada.publico);
+    formData.append("nombreAct", actividadSeleccionada.nombreAct);
+    formData.append("descripcionAct", actividadSeleccionada.descripcionAct);
+    formData.append("objetivo", actividadSeleccionada.objetivo);
+    formData.append("tipoAct", actividadSeleccionada.tipoAct);
+    formData.append("duracion_minutos", actividadSeleccionada.duracion_minutos);
+    formData.append("dificultad", actividadSeleccionada.dificultad);
+    formData.append("publico", actividadSeleccionada.publico);
 
-      if (actividadSeleccionada.multimedia instanceof File) {
-        formData.append("multimedia", actividadSeleccionada.multimedia);
-      }
+    if (actividadSeleccionada.multimedia instanceof File) {
+      formData.append("multimedia", actividadSeleccionada.multimedia);
+    }
 
-     axios.put(
+    axios
+      .put(
         `http://localhost:4000/api/actividades/actualizar-actividad/${actividadSeleccionada.idActividad}`,
         formData,
         {
@@ -254,27 +323,33 @@ const GestionActividades = () => {
         }
       )
       .then(() => {
-          mostrarMensaje("Actividad actualizada correctamente ", "success");
-      obtenerActividades();
-      }).catch ((err) => {
+        mostrarMensaje("Actividad actualizada correctamente ", "success");
+        obtenerActividades();
+      })
+      .catch((err) => {
         //Log completo del error para depuración
-      console.error("Error completo de Axios:", err);
+        console.error("Error completo de Axios:", err);
         let mensajeError = "Error al actualizar la recomendación.";
 
-         // Verificar que la respuesta 400 tenga datos estructurados
-         if (err.response && err.response.data) {
-            const dataError = err.response.data;
-            
-            if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
-                // Unir  los errores de validación en una sola cadena
-                mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-            } 
-            else if (dataError.message) {
-                 mensajeError = dataError.message;
-            }
+        // Verificar que la respuesta 400 tenga datos estructurados
+        if (err.response && err.response.data) {
+          const dataError = err.response.data;
+
+          if (
+            dataError.errores &&
+            Array.isArray(dataError.errores) &&
+            dataError.errores.length > 0
+          ) {
+            // Unir  los errores de validación en una sola cadena
+            mensajeError = `Errores de validación: ${dataError.errores.join(
+              "; "
+            )}`;
+          } else if (dataError.message) {
+            mensajeError = dataError.message;
+          }
         }
-        // Mostrar el mensaje de error específico o el genérico 
-         mostrarMensaje(mensajeError, "error"); 
+        // Mostrar el mensaje de error específico o el genérico
+        mostrarMensaje(mensajeError, "error");
       });
   };
 
@@ -377,7 +452,7 @@ const GestionActividades = () => {
                   fontWeight: 600,
                   borderRadius: 2,
                   border: "2px solid #e0e7ff",
-                  color: "#2D5D7B", 
+                  color: "#2D5D7B",
                   transition: "all 0.2s ease-in-out",
                   "&:hover": {
                     backgroundColor: "#EEF5FF",
@@ -387,35 +462,56 @@ const GestionActividades = () => {
                   backgroundColor: "#2D5D7B !important",
                   color: "#FFFFFF !important",
                   borderColor: "#2D5D7B",
-                  "& .MuiTypography-root": { 
+                  "& .MuiTypography-root": {
                     color: "#FFFFFF !important",
                   },
                 },
               }}
             >
               <ToggleButton value="publicados">
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  <Typography variant="button" fontWeight="bold" sx={{ textTransform: "capitalize" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    variant="button"
+                    fontWeight="bold"
+                    sx={{ textTransform: "capitalize" }}
+                  >
                     Publicados
                   </Typography>
                   <Typography variant="caption" sx={{ opacity: 0.8 }}>
-                    {actividades.filter(a => a.publico === 2).length} actividades
+                    {actividades.filter((a) => a.publico === 2).length}{" "}
+                    actividades
                   </Typography>
                 </Box>
               </ToggleButton>
 
               <ToggleButton value="borradores">
-                <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                  <Typography variant="button" fontWeight="bold" sx={{ textTransform: "capitalize" }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography
+                    variant="button"
+                    fontWeight="bold"
+                    sx={{ textTransform: "capitalize" }}
+                  >
                     Borradores
                   </Typography>
                   <Typography variant="caption" sx={{ opacity: 0.8 }}>
-                    {actividades.filter(a => a.publico === 1).length} actividades
+                    {actividades.filter((a) => a.publico === 1).length}{" "}
+                    actividades
                   </Typography>
                 </Box>
               </ToggleButton>
             </ToggleButtonGroup>
-
 
             {actividadSeleccionada && (
               <Button
@@ -453,7 +549,10 @@ const GestionActividades = () => {
               >
                 <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
                   <FilterList sx={{ color: "#092181", mr: 1 }} />
-                  <Typography variant="h6" sx={{ color: "#092181", fontWeight: "bold" }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "#092181", fontWeight: "bold" }}
+                  >
                     Búsqueda Avanzada
                   </Typography>
                 </Box>
@@ -463,7 +562,7 @@ const GestionActividades = () => {
                     display: "flex",
                     flexDirection: { xs: "column", sm: "row" },
                     gap: 2,
-                    alignItems: { xs: "stretch", sm: "flex-end" }
+                    alignItems: { xs: "stretch", sm: "flex-end" },
                   }}
                 >
                   <FormControl
@@ -474,7 +573,10 @@ const GestionActividades = () => {
                         backgroundColor: "#ffffff",
                         "& fieldset": { borderColor: "#e0e7ff" },
                         "&:hover fieldset": { borderColor: "#092181" },
-                        "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: 2 },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#092181",
+                          borderWidth: 2,
+                        },
                       },
                     }}
                   >
@@ -500,10 +602,19 @@ const GestionActividades = () => {
                         backgroundColor: "#ffffff",
                         "& fieldset": { borderColor: "#e0e7ff" },
                         "&:hover fieldset": { borderColor: "#092181" },
-                        "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: 2 },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#092181",
+                          borderWidth: 2,
+                        },
                       },
                     }}
-                    label={`Buscar por ${criterioBusqueda === "nombreAct" ? "nombre" : criterioBusqueda === "descripcionAct" ? "descripción" : "objetivo"}`}
+                    label={`Buscar por ${
+                      criterioBusqueda === "nombreAct"
+                        ? "nombre"
+                        : criterioBusqueda === "descripcionAct"
+                        ? "descripción"
+                        : "objetivo"
+                    }`}
                     value={valorBusqueda}
                     onChange={(e) => setValorBusqueda(e.target.value)}
                     onKeyPress={handleKeyPress}
@@ -543,24 +654,29 @@ const GestionActividades = () => {
                   gap: 2,
                 }}
               >
-
-                <Box sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1.5,
-                  flex: 1,
-                  justifyContent: { xs: "center", sm: "flex-start" },
-                  textAlign: { xs: "center", sm: "left" },
-                }}
-
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1.5,
+                    flex: 1,
+                    justifyContent: { xs: "center", sm: "flex-start" },
+                    textAlign: { xs: "center", sm: "left" },
+                  }}
                 >
                   <MenuBookIcon sx={{ color: "#092181", fontSize: 32 }} />
-                  <Typography variant="h5" sx={{ color: "#092181", fontWeight: "bold" }}>
-                    Actividades {modoVista === "publicados" ? "Publicadas" : "en Borrador"}
+                  <Typography
+                    variant="h5"
+                    sx={{ color: "#092181", fontWeight: "bold" }}
+                  >
+                    Actividades{" "}
+                    {modoVista === "publicados" ? "Publicadas" : "en Borrador"}
                   </Typography>
                 </Box>
                 <Chip
-                  label={`${actividades.length} ${actividades.length === 1 ? 'actividad' : 'actividades'}`}
+                  label={`${actividades.length} ${
+                    actividades.length === 1 ? "actividad" : "actividades"
+                  }`}
                   sx={{
                     backgroundColor: "#092181",
                     color: "white",
@@ -572,13 +688,13 @@ const GestionActividades = () => {
                 <Box sx={{ textAlign: "center", py: 8 }}>
                   <MenuBookIcon sx={{ fontSize: 64, color: "#666", mb: 2 }} />
                   <Typography variant="h6" color="text.secondary">
-                    No hay actividades {modoVista === "publicados" ? "publicadas" : "en borrador"}
+                    No hay actividades{" "}
+                    {modoVista === "publicados" ? "publicadas" : "en borrador"}
                   </Typography>
                 </Box>
               ) : (
                 <Tooltip title="Haz clic en una actividad para editarla" arrow>
                   <Box sx={{ width: "100%" }}>
-
                     <Box
                       sx={{
                         display: "flex",
@@ -591,7 +707,12 @@ const GestionActividades = () => {
                       }}
                     >
                       {actividades.map((actividad, index) => (
-                        <Slide in timeout={600 + (index * 100)} direction="up" key={actividad.idActividad}>
+                        <Slide
+                          in
+                          timeout={600 + index * 100}
+                          direction="up"
+                          key={actividad.idActividad}
+                        >
                           <Card
                             onClick={() => handleSeleccionar(actividad)}
                             sx={{
@@ -618,7 +739,9 @@ const GestionActividades = () => {
                             {/* Multimedia de la actividad (imagen o video) con botón de zoom */}
                             {actividad.multimedia ? (
                               <Box sx={{ position: "relative" }}>
-                                {actividad.multimedia.match(/\.(mp4|webm|ogg)$/i) ? (
+                                {actividad.multimedia.match(
+                                  /\.(mp4|webm|ogg)$/i
+                                ) ? (
                                   // Si es un video
                                   <Box
                                     component="video"
@@ -636,7 +759,9 @@ const GestionActividades = () => {
                                     }}
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      abrirModalImagen(`http://localhost:4000/uploads/${actividad.multimedia}`);
+                                      abrirModalImagen(
+                                        `http://localhost:4000/uploads/${actividad.multimedia}`
+                                      );
                                     }}
                                   />
                                 ) : (
@@ -656,7 +781,9 @@ const GestionActividades = () => {
                                     }}
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      abrirModalImagen(`http://localhost:4000/uploads/${actividad.multimedia}`);
+                                      abrirModalImagen(
+                                        `http://localhost:4000/uploads/${actividad.multimedia}`
+                                      );
                                     }}
                                   />
                                 )}
@@ -668,16 +795,22 @@ const GestionActividades = () => {
                                     top: 8,
                                     right: 8,
                                     backgroundColor: "rgba(255, 255, 255, 0.9)",
-                                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 1)" },
+                                    "&:hover": {
+                                      backgroundColor: "rgba(255, 255, 255, 1)",
+                                    },
                                     width: 32,
                                     height: 32,
                                   }}
                                   onClick={(e) => {
                                     e.stopPropagation();
-                                    abrirModalImagen(`http://localhost:4000/uploads/${actividad.multimedia}`);
+                                    abrirModalImagen(
+                                      `http://localhost:4000/uploads/${actividad.multimedia}`
+                                    );
                                   }}
                                 >
-                                  <ZoomIn sx={{ fontSize: 18, color: "#092181" }} />
+                                  <ZoomIn
+                                    sx={{ fontSize: 18, color: "#092181" }}
+                                  />
                                 </IconButton>
                               </Box>
                             ) : (
@@ -694,15 +827,31 @@ const GestionActividades = () => {
                                   position: "relative",
                                 }}
                               >
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                >
                                   Sin archivo multimedia
                                 </Typography>
                               </Box>
                             )}
 
-
-                            <CardContent sx={{ p: 2.5, flex: 1, display: "flex", flexDirection: "column" }}>
-                              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 1.5 }}>
+                            <CardContent
+                              sx={{
+                                p: 2.5,
+                                flex: 1,
+                                display: "flex",
+                                flexDirection: "column",
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  justifyContent: "space-between",
+                                  alignItems: "flex-start",
+                                  mb: 1.5,
+                                }}
+                              >
                                 <Typography
                                   variant="h6"
                                   sx={{
@@ -721,10 +870,17 @@ const GestionActividades = () => {
                                   {actividad.nombreAct}
                                 </Typography>
                                 <Chip
-                                  label={actividad.publico === 2 ? "Publicada" : "Borrador"}
+                                  label={
+                                    actividad.publico === 2
+                                      ? "Publicada"
+                                      : "Borrador"
+                                  }
                                   size="small"
                                   sx={{
-                                    backgroundColor: actividad.publico === 2 ? "#4CAF50" : "#FF9800",
+                                    backgroundColor:
+                                      actividad.publico === 2
+                                        ? "#4CAF50"
+                                        : "#FF9800",
                                     color: "white",
                                     fontWeight: "bold",
                                     fontSize: "0.7rem",
@@ -733,25 +889,60 @@ const GestionActividades = () => {
                                 />
                               </Box>
 
-                              <Box sx={{ display: "flex", flexDirection: "column", gap: 1, mb: 2, flex: 1 }}>
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <AccessTime sx={{ fontSize: 16, color: "#2D5D7B" }} />
-                                  <Typography variant="body2" sx={{ color: "text.primary", fontWeight: 500 }}>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  gap: 1,
+                                  mb: 2,
+                                  flex: 1,
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <AccessTime
+                                    sx={{ fontSize: 16, color: "#2D5D7B" }}
+                                  />
+                                  <Typography
+                                    variant="body2"
+                                    sx={{
+                                      color: "text.primary",
+                                      fontWeight: 500,
+                                    }}
+                                  >
                                     {actividad.duracion_minutos} minutos
                                   </Typography>
                                 </Box>
 
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <FitnessCenter sx={{ fontSize: 16, color: "#2D5D7B" }} />
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <FitnessCenter
+                                    sx={{ fontSize: 16, color: "#2D5D7B" }}
+                                  />
                                   <Typography
                                     variant="body2"
                                     sx={{
-                                      color: actividad.dificultad === 4 ? "#D32F2F" :
-                                        actividad.dificultad === 3 ? "#FF9800" : "#388E3C",
+                                      color:
+                                        actividad.dificultad === 4
+                                          ? "#D32F2F"
+                                          : actividad.dificultad === 3
+                                          ? "#FF9800"
+                                          : "#388E3C",
                                       fontWeight: 600,
                                     }}
                                   >
-                                    {nivelesDificultad[actividad.dificultad - 1]?.text || "Sin definir"}
+                                    {nivelesDificultad[actividad.dificultad - 1]
+                                      ?.text || "Sin definir"}
                                   </Typography>
                                 </Box>
 
@@ -815,7 +1006,7 @@ const GestionActividades = () => {
                     borderRadius: 3,
                     backgroundColor: "#f8f9ff",
                     border: "2px solid #092181",
-                    boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)"
+                    boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
                   }}
                 >
                   <Box display="flex" alignItems="center" gap={1} mb={2}>
@@ -827,14 +1018,15 @@ const GestionActividades = () => {
                         background: "#092181",
                         WebkitBackgroundClip: "text",
                         WebkitTextFillColor: "transparent",
-
                       }}
                     >
                       Información de la Actividad
                     </Typography>
                   </Box>
 
-                  <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                  >
                     <TextField
                       fullWidth
                       label="Nombre de la actividad"
@@ -848,49 +1040,10 @@ const GestionActividades = () => {
                       sx={{
                         mb: 2,
                         "& .MuiOutlinedInput-root": {
-                          borderRadius: "12px", 
-                          backgroundColor: "#fff", 
-                          "& fieldset": {
-                            borderColor: "#CBD4D8", 
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "#355C7D",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#092181", 
-                            borderWidth: "2px",
-                          },
-                        },
-                        "& .MuiInputLabel-root": {
-                          color: "#2D5D7B", 
-                          fontWeight: "bold",
-                        },
-                        "& .MuiInputBase-input::placeholder": {
-                          color: "#777777", 
-                          opacity: 1,
-                        },
-                      }}
-                    />
-
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={3}
-                      label="Descripción"
-                      value={actividadSeleccionada.descripcionAct || ""}
-                      onChange={(e) =>
-                        setActividadSeleccionada({
-                          ...actividadSeleccionada,
-                          descripcionAct: e.target.value,
-                        })
-                      }
-                      sx={{
-                        mb: 2,
-                        "& .MuiOutlinedInput-root": {
-                          borderRadius: "12px", 
+                          borderRadius: "12px",
                           backgroundColor: "#fff",
                           "& fieldset": {
-                            borderColor: "#CBD4D8", 
+                            borderColor: "#CBD4D8",
                           },
                           "&:hover fieldset": {
                             borderColor: "#355C7D",
@@ -911,7 +1064,44 @@ const GestionActividades = () => {
                       }}
                     />
 
-
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={3}
+                      label="Descripción"
+                      value={actividadSeleccionada.descripcionAct || ""}
+                      onChange={(e) =>
+                        setActividadSeleccionada({
+                          ...actividadSeleccionada,
+                          descripcionAct: e.target.value,
+                        })
+                      }
+                      sx={{
+                        mb: 2,
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "12px",
+                          backgroundColor: "#fff",
+                          "& fieldset": {
+                            borderColor: "#CBD4D8",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "#355C7D",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#092181",
+                            borderWidth: "2px",
+                          },
+                        },
+                        "& .MuiInputLabel-root": {
+                          color: "#2D5D7B",
+                          fontWeight: "bold",
+                        },
+                        "& .MuiInputBase-input::placeholder": {
+                          color: "#777777",
+                          opacity: 1,
+                        },
+                      }}
+                    />
                   </Box>
                 </Card>
 
@@ -923,7 +1113,7 @@ const GestionActividades = () => {
                     borderRadius: 3,
                     backgroundColor: "#f8f9ff",
                     border: "2px solid #092181",
-                    boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)"
+                    boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
                   }}
                 >
                   <Box display="flex" alignItems="center" gap={1} mb={2}>
@@ -941,7 +1131,9 @@ const GestionActividades = () => {
                     </Typography>
                   </Box>
 
-                  <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+                  >
                     <Box
                       sx={{
                         display: "flex",
@@ -949,7 +1141,8 @@ const GestionActividades = () => {
                         gap: 2,
                       }}
                     >
-                      <FormControl fullWidth
+                      <FormControl
+                        fullWidth
                         sx={{
                           "& .MuiOutlinedInput-root": {
                             borderRadius: "12px",
@@ -969,7 +1162,8 @@ const GestionActividades = () => {
                             color: "#2D5D7B",
                             fontWeight: "bold",
                           },
-                        }}>
+                        }}
+                      >
                         <InputLabel>Tipo de actividad</InputLabel>
                         <Select
                           value={actividadSeleccionada.tipoAct || ""}
@@ -980,7 +1174,9 @@ const GestionActividades = () => {
                               tipoAct: parseInt(e.target.value),
                             })
                           }
-                          renderValue={(value) => renderSelectedValue(value, tiposActividad)}
+                          renderValue={(value) =>
+                            renderSelectedValue(value, tiposActividad)
+                          }
                         >
                           {tiposActividad.map((tipo) => (
                             <MenuItem key={tipo.value} value={tipo.value}>
@@ -992,7 +1188,7 @@ const GestionActividades = () => {
                               <ListItemText
                                 primary={tipo.text}
                                 primaryTypographyProps={{
-                                  sx: { fontWeight: 500 }
+                                  sx: { fontWeight: 500 },
                                 }}
                               />
                             </MenuItem>
@@ -1001,12 +1197,11 @@ const GestionActividades = () => {
                       </FormControl>
                       <TextField
                         sx={{
-
                           "& .MuiOutlinedInput-root": {
-                            borderRadius: "12px", 
-                            backgroundColor: "#fff", 
+                            borderRadius: "12px",
+                            backgroundColor: "#fff",
                             "& fieldset": {
-                              borderColor: "#CBD4D8", 
+                              borderColor: "#CBD4D8",
                             },
                             "&:hover fieldset": {
                               borderColor: "#355C7D",
@@ -1042,7 +1237,8 @@ const GestionActividades = () => {
                         }}
                       />
 
-                      <FormControl fullWidth
+                      <FormControl
+                        fullWidth
                         sx={{
                           "& .MuiOutlinedInput-root": {
                             borderRadius: "12px",
@@ -1074,7 +1270,9 @@ const GestionActividades = () => {
                               dificultad: parseInt(e.target.value),
                             })
                           }
-                          renderValue={(value) => renderSelectedValue(value, nivelesDificultad)}
+                          renderValue={(value) =>
+                            renderSelectedValue(value, nivelesDificultad)
+                          }
                         >
                           {nivelesDificultad.map((nivel) => (
                             <MenuItem key={nivel.value} value={nivel.value}>
@@ -1086,7 +1284,7 @@ const GestionActividades = () => {
                               <ListItemText
                                 primary={nivel.text}
                                 primaryTypographyProps={{
-                                  sx: { fontWeight: 500 }
+                                  sx: { fontWeight: 500 },
                                 }}
                               />
                             </MenuItem>
@@ -1129,7 +1327,9 @@ const GestionActividades = () => {
                             publico: parseInt(e.target.value),
                           })
                         }
-                        renderValue={(value) => renderSelectedValue(value, estadoPublicacion)}
+                        renderValue={(value) =>
+                          renderSelectedValue(value, estadoPublicacion)
+                        }
                       >
                         {estadoPublicacion.map((estado) => (
                           <MenuItem key={estado.value} value={estado.value}>
@@ -1141,7 +1341,7 @@ const GestionActividades = () => {
                             <ListItemText
                               primary={estado.text}
                               primaryTypographyProps={{
-                                sx: { fontWeight: 500 }
+                                sx: { fontWeight: 500 },
                               }}
                             />
                           </MenuItem>
@@ -1159,18 +1359,22 @@ const GestionActividades = () => {
                   borderRadius: 3,
                   backgroundColor: "#f8f9ff",
                   border: "2px solid #092181",
-                  boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)"
+                  boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
                 }}
               >
                 <Box display="flex" alignItems="center" gap={1} mb={2}>
                   <EmojiObjectsIcon color="primary" />
-                  <Typography variant="h6" fontWeight="bold"
+                  <Typography
+                    variant="h6"
+                    fontWeight="bold"
                     sx={{
                       background: "#092181",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
                     }}
-                  >Objetivo y Recursos</Typography>
+                  >
+                    Objetivo y Recursos
+                  </Typography>
                 </Box>
                 <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                   <TextField
@@ -1186,16 +1390,16 @@ const GestionActividades = () => {
                     sx={{
                       mb: 2,
                       "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px", 
-                        backgroundColor: "#fff", 
+                        borderRadius: "12px",
+                        backgroundColor: "#fff",
                         "& fieldset": {
-                          borderColor: "#CBD4D8", 
+                          borderColor: "#CBD4D8",
                         },
                         "&:hover fieldset": {
-                          borderColor: "#355C7D", 
+                          borderColor: "#355C7D",
                         },
                         "&.Mui-focused fieldset": {
-                          borderColor: "#092181", 
+                          borderColor: "#092181",
                           borderWidth: "2px",
                         },
                       },
@@ -1211,7 +1415,9 @@ const GestionActividades = () => {
                   />
 
                   <Box>
-                    <Typography sx={{ mb: 1, fontWeight: 600, color: "#2D5D7B" }}>
+                    <Typography
+                      sx={{ mb: 1, fontWeight: 600, color: "#2D5D7B" }}
+                    >
                       Archivo multimedia (opcional)
                     </Typography>
 
@@ -1221,10 +1427,11 @@ const GestionActividades = () => {
                       startIcon={<LinkIcon />}
                       sx={{
                         borderRadius: 3,
-                        textTransform: "capitalize"
+                        textTransform: "capitalize",
                       }}
                     >
-                      {actividadSeleccionada.vistaPrevia || actividadSeleccionada.multimedia
+                      {actividadSeleccionada.vistaPrevia ||
+                      actividadSeleccionada.multimedia
                         ? "Reemplazar archivo"
                         : "Subir archivo"}
                       <input
@@ -1289,13 +1496,17 @@ const GestionActividades = () => {
                         )
                       ) : actividadSeleccionada.multimedia ? (
                         actividadSeleccionada.multimedia.endsWith(".mp4") ||
-                          actividadSeleccionada.multimedia.endsWith(".webm") ||
-                          actividadSeleccionada.multimedia.endsWith(".ogg") ? (
+                        actividadSeleccionada.multimedia.endsWith(".webm") ||
+                        actividadSeleccionada.multimedia.endsWith(".ogg") ? (
                           <Box
                             component="video"
-                            src={`http://localhost:4000${actividadSeleccionada.multimedia.startsWith("/uploads")
-                              ? actividadSeleccionada.multimedia
-                              : `/uploads/${actividadSeleccionada.multimedia}`}`}
+                            src={`http://localhost:4000${
+                              actividadSeleccionada.multimedia.startsWith(
+                                "/uploads"
+                              )
+                                ? actividadSeleccionada.multimedia
+                                : `/uploads/${actividadSeleccionada.multimedia}`
+                            }`}
                             controls
                             sx={{
                               maxWidth: "250px",
@@ -1308,9 +1519,13 @@ const GestionActividades = () => {
                         ) : (
                           <CardMedia
                             component="img"
-                            image={`http://localhost:4000${actividadSeleccionada.multimedia.startsWith("/uploads")
-                              ? actividadSeleccionada.multimedia
-                              : `/uploads/${actividadSeleccionada.multimedia}`}`}
+                            image={`http://localhost:4000${
+                              actividadSeleccionada.multimedia.startsWith(
+                                "/uploads"
+                              )
+                                ? actividadSeleccionada.multimedia
+                                : `/uploads/${actividadSeleccionada.multimedia}`
+                            }`}
                             alt="Imagen actual"
                             sx={{
                               maxWidth: "250px",
@@ -1332,7 +1547,8 @@ const GestionActividades = () => {
                       )}
 
                       {/* Botón para quitar archivo */}
-                      {(actividadSeleccionada.vistaPrevia || actividadSeleccionada.multimedia) && (
+                      {(actividadSeleccionada.vistaPrevia ||
+                        actividadSeleccionada.multimedia) && (
                         <Button
                           variant="outlined"
                           color="error"
@@ -1358,7 +1574,6 @@ const GestionActividades = () => {
                       )}
                     </Box>
                   </Box>
-
                 </Box>
               </Card>
 
@@ -1391,7 +1606,7 @@ const GestionActividades = () => {
                       boxShadow: "0 4px 12px rgba(9, 33, 129, 0.3)",
                     },
                     transition: "all 0.2s ease",
-                    flex: { xs: "1 1 100%", sm: "0 0 auto" }, 
+                    flex: { xs: "1 1 100%", sm: "0 0 auto" },
                   }}
                 >
                   Actualizar Actividad
@@ -1506,7 +1721,10 @@ const GestionActividades = () => {
                   >
                     Cancelar
                   </Button>
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Button
                       onClick={handleEliminar}
                       variant="contained"
@@ -1547,10 +1765,11 @@ const GestionActividades = () => {
                   },
                 }}
               >
-                <CheckCircle
-                  sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }}
-                />
-                <Typography variant="h6" sx={{ color: "#092181", fontWeight: 600 }}>
+                <CheckCircle sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }} />
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#092181", fontWeight: 600 }}
+                >
                   Actividad eliminada correctamente
                 </Typography>
                 <Typography variant="body2" sx={{ color: "#555", mt: 1 }}>
@@ -1617,7 +1836,7 @@ const GestionActividades = () => {
                   <video
                     src={archivoModal}
                     controls
-                    autoPlay={false} 
+                    autoPlay={false}
                     style={{
                       width: "100%",
                       height: "auto",
@@ -1652,8 +1871,6 @@ const GestionActividades = () => {
             </Box>
           </Fade>
         </Modal>
-
-
 
         {/* Snackbar para mensajes */}
         <Snackbar

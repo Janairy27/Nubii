@@ -40,17 +40,16 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import PersonIcon from '@mui/icons-material/Person';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import PersonIcon from "@mui/icons-material/Person";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import SchoolIcon from "@mui/icons-material/School";
 import ComputerIcon from "@mui/icons-material/Computer";
 import EditIcon from "@mui/icons-material/Edit";
 import SendIcon from "@mui/icons-material/Send";
 import LaptopMacIcon from "@mui/icons-material/LaptopMac";
 import CircleIcon from "@mui/icons-material/Circle";
-
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -64,13 +63,13 @@ const camposDetalle = [
   ["modalidad", "Modalidad en que se atenderá"],
   ["enlace", "Enlace de acceso a la cita"],
   ["comentario", "Comentarios recibidos"],
-  ["enviado", "¿Será solicitada?"]
+  ["enviado", "¿Será solicitada?"],
 ];
 
 export default function CitaProfesional() {
   const [idUsuario, setIdUsuario] = useState(null);
   const [idProfesional, setIdProfesional] = useState(null);
-  const [Nombre, setNombre] = useState('');
+  const [Nombre, setNombre] = useState("");
 
   const [idPaciente, setIdPaciente] = useState(null);
   const [pacientes, setPacientes] = useState([]);
@@ -87,14 +86,14 @@ export default function CitaProfesional() {
     paciente: false,
     fecha: false,
     modalidad: false,
-    comentario: false
+    comentario: false,
   });
 
   const [valoresFiltro, setValoresFiltro] = useState({
     paciente: "",
     fecha: "",
     modalidad: "",
-    comentario: ""
+    comentario: "",
   });
 
   const [CitaSeleccionada, setCitaSeleccionada] = useState(null);
@@ -118,13 +117,11 @@ export default function CitaProfesional() {
    });*/
 
   const modalidadMap = [
-    { value: 1, nombre: "Presencial", color: "#4CAF50", icon: <SchoolIcon />, },
-    { value: 2, nombre: "Virtual", color: "#2196F3", icon: <ComputerIcon />, },
+    { value: 1, nombre: "Presencial", color: "#4CAF50", icon: <SchoolIcon /> },
+    { value: 2, nombre: "Virtual", color: "#2196F3", icon: <ComputerIcon /> },
   ];
   // Abrir diálogo de confirmación
-  const handleOpenConfirm = () =>
-    setOpenConfirm(true);
-
+  const handleOpenConfirm = () => setOpenConfirm(true);
 
   // Cancelar
   const handleCloseConfirm = () => setOpenConfirm(false);
@@ -139,8 +136,6 @@ export default function CitaProfesional() {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
-
-
 
   useEffect(() => {
     const storedIdUsuario = localStorage.getItem("idUsuario");
@@ -167,9 +162,9 @@ export default function CitaProfesional() {
 
   const obtenerCitas = () => {
     axios
-      .get(`http://localhost:4000/api/citas/by-filter/`,
-        { params: { idProfesional } }
-      )
+      .get(`http://localhost:4000/api/citas/by-filter/`, {
+        params: { idProfesional },
+      })
       .then((res) => {
         setCitas(res.data);
         setCitaSeleccionada(null);
@@ -201,7 +196,8 @@ export default function CitaProfesional() {
     }
     try {
       const queryParams = new URLSearchParams(filtrosAplicados).toString();
-      const res = await axios.get(`http://localhost:4000/api/citas/by-filter?${queryParams}`,
+      const res = await axios.get(
+        `http://localhost:4000/api/citas/by-filter?${queryParams}`,
         { params: { idProfesional } }
       );
       if (res.data.length === 0) {
@@ -222,14 +218,14 @@ export default function CitaProfesional() {
       paciente: false,
       fecha: false,
       modalidad: false,
-      comentario: false
+      comentario: false,
     });
 
     setValoresFiltro({
       paciente: "",
       fecha: "",
       modalidad: "",
-      comentario: ""
+      comentario: "",
     });
 
     obtenerCitas();
@@ -250,30 +246,34 @@ export default function CitaProfesional() {
         obtenerCitas();
         setCitaSeleccionada(null);
       })
-       .catch((err) => {
-         //Log completo del error para depuración
+      .catch((err) => {
+        //Log completo del error para depuración
         console.error("Error completo de Axios:", err);
         let mensajeError = "Error al actualizar la cita.";
         // Verificar que la respuesta 400 tenga datos estructurados
-         if (err.response && err.response.data) {
-            const dataError = err.response.data;
-            
-    
-            if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
-                // Unir  los errores de validación en una sola cadena
-                mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-            } else if (dataError.message) {
-                mensajeError = dataError.message;
-            }
+        if (err.response && err.response.data) {
+          const dataError = err.response.data;
+
+          if (
+            dataError.errores &&
+            Array.isArray(dataError.errores) &&
+            dataError.errores.length > 0
+          ) {
+            // Unir  los errores de validación en una sola cadena
+            mensajeError = `Errores de validación: ${dataError.errores.join(
+              "; "
+            )}`;
+          } else if (dataError.message) {
+            mensajeError = dataError.message;
+          }
         }
-         // Mostrar el mensaje de error específico o el genérico 
-         mostrarMensaje(mensajeError, "error"); 
+        // Mostrar el mensaje de error específico o el genérico
+        mostrarMensaje(mensajeError, "error");
       });
   };
 
   const handleEliminar = async () => {
-    const url =
-      `http://localhost:4000/api/citas/eliminar-cita/${CitaSeleccionada.idCita}`;
+    const url = `http://localhost:4000/api/citas/eliminar-cita/${CitaSeleccionada.idCita}`;
 
     try {
       await axios.delete(url);
@@ -315,7 +315,8 @@ export default function CitaProfesional() {
 
   return (
     <Layout>
-      <Container maxWidth="md"
+      <Container
+        maxWidth="md"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -323,19 +324,22 @@ export default function CitaProfesional() {
           mt: 4,
           pb: 4,
           minHeight: "100vh",
-        }}>
+        }}
+      >
         {/* Header Principal */}
-        <Paper sx={{
-          p: { xs: 3, md: 4 },
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#F4F6F8",
-          width: "100%",
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}>
+        <Paper
+          sx={{
+            p: { xs: 3, md: 4 },
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F4F6F8",
+            width: "100%",
+            mx: "auto",
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
+        >
           {/* Título */}
           <Box
             sx={{
@@ -365,8 +369,6 @@ export default function CitaProfesional() {
             >
               Citas
             </Typography>
-
-
           </Box>
 
           {/* Filtros */}
@@ -381,12 +383,14 @@ export default function CitaProfesional() {
               boxShadow: "0 4px 12px rgba(9, 33, 129, 0.1)",
             }}
           >
-            <Box sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ mb: 3, display: "flex", alignItems: "center" }}>
               <FilterList sx={{ mr: 1, color: "#092181" }} />
-              <Typography variant="h6"
+              <Typography
+                variant="h6"
                 fontWeight="bold"
                 color="#092181"
-                sx={{ flex: 1 }}>
+                sx={{ flex: 1 }}
+              >
                 Filtros de Búsqueda
               </Typography>
             </Box>
@@ -450,7 +454,10 @@ export default function CitaProfesional() {
                 />
               )}
               {filtrosActivos.fecha && (
-                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
+                <LocalizationProvider
+                  dateAdapter={AdapterDateFns}
+                  adapterLocale={es}
+                >
                   <DatePicker
                     label="Fecha de la cita"
                     value={valoresFiltro.fecha}
@@ -562,40 +569,45 @@ export default function CitaProfesional() {
             </Box>
           </Card>
 
-
           {/* Contenido principal  */}
           {!CitaSeleccionada ? (
             <>
               <Box sx={{ mt: 3, px: 2 }}>
-                <Box sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", sm: "row" },
-                  alignItems: { xs: "flex-start", sm: "center" },
-                  justifyContent: { xs: "center", sm: "space-between" },
-                  flexWrap: "wrap",
-                  gap: 2,
-                  mb: 3,
-                }}>
-                  <Box sx={{
+                <Box
+                  sx={{
                     display: "flex",
-                    alignItems: "center",
-                    gap: 1.5,
-                    flex: 1,
-                    justifyContent: { xs: "center", sm: "flex-start" },
-                    textAlign: { xs: "center", sm: "left" },
-                  }}>
-                    <CalendarMonthIcon sx={{ color: "#092181", fontSize: 32 }} />
+                    flexDirection: { xs: "column", sm: "row" },
+                    alignItems: { xs: "flex-start", sm: "center" },
+                    justifyContent: { xs: "center", sm: "space-between" },
+                    flexWrap: "wrap",
+                    gap: 2,
+                    mb: 3,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                      flex: 1,
+                      justifyContent: { xs: "center", sm: "flex-start" },
+                      textAlign: { xs: "center", sm: "left" },
+                    }}
+                  >
+                    <CalendarMonthIcon
+                      sx={{ color: "#092181", fontSize: 32 }}
+                    />
 
-                    <Typography
-                      variant="h5"
-                      fontWeight="bold"
-                      color="#092181"
-                    >
-                      {Citas.length > 0 ? "Citas programadas" : "No hay citas programadas"}
+                    <Typography variant="h5" fontWeight="bold" color="#092181">
+                      {Citas.length > 0
+                        ? "Citas programadas"
+                        : "No hay citas programadas"}
                     </Typography>
                   </Box>
                   <Chip
-                    label={`${Citas.length} ${Citas.length === 1 ? "cita" : "citas"}`}
+                    label={`${Citas.length} ${
+                      Citas.length === 1 ? "cita" : "citas"
+                    }`}
                     sx={{
                       fontWeight: "bold",
                       backgroundColor: "#e3f2fd",
@@ -621,7 +633,10 @@ export default function CitaProfesional() {
                     );
 
                     return (
-                      <Tooltip title="Selecciona una tarjeta para ver más información y/o actualizar" arrow>
+                      <Tooltip
+                        title="Selecciona una tarjeta para ver más información y/o actualizar"
+                        arrow
+                      >
                         <Card
                           key={cita.idCita}
                           onClick={() => handleSeleccionar(cita)}
@@ -662,7 +677,9 @@ export default function CitaProfesional() {
                                 gap: 1.2,
                               }}
                             >
-                              <PersonIcon sx={{ color: "#092181", fontSize: 22 }} />
+                              <PersonIcon
+                                sx={{ color: "#092181", fontSize: 22 }}
+                              />
                               <Box>
                                 <Typography
                                   variant="subtitle1"
@@ -671,13 +688,21 @@ export default function CitaProfesional() {
                                 >
                                   {cita.nombrePaciente}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                >
                                   Paciente
                                 </Typography>
                               </Box>
                             </Box>
 
-                            <Divider sx={{ width: "100%", display: { xs: "block", sm: "none" } }} />
+                            <Divider
+                              sx={{
+                                width: "100%",
+                                display: { xs: "block", sm: "none" },
+                              }}
+                            />
 
                             {/* Fecha */}
                             <Box
@@ -687,16 +712,28 @@ export default function CitaProfesional() {
                                 gap: 1.2,
                               }}
                             >
-                              <CalendarTodayIcon sx={{ color: "#2D5D7B", fontSize: 20 }} />
+                              <CalendarTodayIcon
+                                sx={{ color: "#2D5D7B", fontSize: 20 }}
+                              />
                               <Box>
-                                <Typography variant="subtitle1" fontWeight={600}>
+                                <Typography
+                                  variant="subtitle1"
+                                  fontWeight={600}
+                                >
                                   {cita.fecha_cita
-                                    ? format(new Date(cita.fecha_cita), "dd 'de' MMMM yyyy, HH:mm", {
-                                      locale: es,
-                                    })
+                                    ? format(
+                                        new Date(cita.fecha_cita),
+                                        "dd 'de' MMMM yyyy, HH:mm",
+                                        {
+                                          locale: es,
+                                        }
+                                      )
                                     : "Sin fecha"}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                >
                                   Fecha de la cita
                                 </Typography>
                               </Box>
@@ -732,7 +769,6 @@ export default function CitaProfesional() {
                 </Box>
               </Box>
             </>
-
           ) : (
             <>
               <Box
@@ -775,7 +811,10 @@ export default function CitaProfesional() {
                         variant="h5"
                         fontWeight="bold"
                         color="#092181"
-                        sx={{ textAlign: { xs: "center", sm: "left" }, flex: 1 }}
+                        sx={{
+                          textAlign: { xs: "center", sm: "left" },
+                          flex: 1,
+                        }}
                       >
                         Detalles de la cita
                       </Typography>
@@ -783,8 +822,9 @@ export default function CitaProfesional() {
 
                     <Chip
                       label={
-                        modalidadMap.find((m) => m.value === CitaSeleccionada.modalidad)
-                          ?.nombre || "Sin modalidad"
+                        modalidadMap.find(
+                          (m) => m.value === CitaSeleccionada.modalidad
+                        )?.nombre || "Sin modalidad"
                       }
                       sx={{
                         backgroundColor: "#E8EDFF",
@@ -823,17 +863,19 @@ export default function CitaProfesional() {
                           : []),
                         ["comentario", "Comentarios", "text"],
                       ].map(([key, label, type]) => {
-                        const isEditable = ["duracion_horas", "enlace", "comentario"].includes(
-                          key
-                        );
+                        const isEditable = [
+                          "duracion_horas",
+                          "enlace",
+                          "comentario",
+                        ].includes(key);
                         const isDate = key === "fecha_cita";
                         const value = CitaSeleccionada[key];
 
                         const modalidadNombre =
                           key === "modalidad"
-                            ? modalidadMap.find((m) => m.value === value)?.nombre || "Sin modalidad"
+                            ? modalidadMap.find((m) => m.value === value)
+                                ?.nombre || "Sin modalidad"
                             : null;
-
 
                         return (
                           <TextField
@@ -870,10 +912,10 @@ export default function CitaProfesional() {
                             rows={key === "comentario" ? 3 : 1}
                             value={
                               key === "modalidad"
-                                ? modalidadNombre :
-                                isDate && value
-                                  ? new Date(value).toISOString().slice(0, 16)
-                                  : value || ""
+                                ? modalidadNombre
+                                : isDate && value
+                                ? new Date(value).toISOString().slice(0, 16)
+                                : value || ""
                             }
                             onChange={(e) =>
                               setCitaSeleccionada({
@@ -1022,7 +1064,10 @@ export default function CitaProfesional() {
                   >
                     Cancelar
                   </Button>
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Button
                       onClick={handleEliminar}
                       variant="contained"
@@ -1063,10 +1108,11 @@ export default function CitaProfesional() {
                   },
                 }}
               >
-                <CheckCircle
-                  sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }}
-                />
-                <Typography variant="h6" sx={{ color: "#092181", fontWeight: 600 }}>
+                <CheckCircle sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }} />
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#092181", fontWeight: 600 }}
+                >
                   Cita eliminada correctamente
                 </Typography>
                 <Typography variant="body2" sx={{ color: "#555", mt: 1 }}>
@@ -1082,7 +1128,7 @@ export default function CitaProfesional() {
           open={openSnackbar}
           autoHideDuration={3000}
           onClose={handleCloseSnackbar}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
         >
           <Alert
             onClose={handleCloseSnackbar}

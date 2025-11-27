@@ -1,14 +1,12 @@
-
 import React from "react";
 import { Box, Toolbar } from "@mui/material";
 import Header from "./Header";
 import CerrarSesion from "../hooks/cerrarSesion";
 
 export default function Layout({ children }) {
-
   return (
     <>
-      <Header  />
+      <Header />
       <Box
         component="main"
         sx={{
@@ -19,7 +17,7 @@ export default function Layout({ children }) {
       >
         {children}
       </Box>
-       <CerrarSesion tiempoSalida={30} /> 
+      <CerrarSesion tiempoSalida={30} />
     </>
   );
 }

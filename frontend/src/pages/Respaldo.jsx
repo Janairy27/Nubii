@@ -13,13 +13,13 @@ import {
   Alert,
   Paper,
   Container,
-  Card
+  Card,
 } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import BackupIcon from '@mui/icons-material/Backup';
-import RestoreIcon from '@mui/icons-material/Restore';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import BackupIcon from "@mui/icons-material/Backup";
+import RestoreIcon from "@mui/icons-material/Restore";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const RespaldoRestauracion = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const RespaldoRestauracion = () => {
   // Estados para el Snackbar/Mensajes
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [mensaje, setMensaje] = useState("");
-  const [tipo, setTipo] = useState("info"); // Cambiado a 'info' como default
+  const [tipo, setTipo] = useState("info"); 
 
   // Función para mostrar mensajes
   const mostrarMensaje = (msg, severity = "info") => {
@@ -46,7 +46,9 @@ const RespaldoRestauracion = () => {
   };
   const obtenerRespaldo = async () => {
     try {
-      const res = await axios.get("http://localhost:4000/api/respaldo/obtener-respaldos");
+      const res = await axios.get(
+        "http://localhost:4000/api/respaldo/obtener-respaldos"
+      );
       setRespaldo(res.data);
     } catch (error) {
       console.error(error);
@@ -101,7 +103,8 @@ const RespaldoRestauracion = () => {
           mt: 4,
           pb: 4,
           minHeight: "100vh",
-        }}>
+        }}
+      >
         <Paper
           sx={{
             p: { xs: 2, md: 4 },
@@ -116,19 +119,23 @@ const RespaldoRestauracion = () => {
           }}
         >
           {/* Título y Cabecera */}
-          <Box sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 1.5,
-            mb: 4,
-            position: "relative",
-          }}>
-            <BackupIcon sx={{
-              color: "#092181",
-              fontSize: 36,
-              filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
-            }} />
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 1.5,
+              mb: 4,
+              position: "relative",
+            }}
+          >
+            <BackupIcon
+              sx={{
+                color: "#092181",
+                fontSize: 36,
+                filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+              }}
+            />
             <Typography
               variant="h5"
               component="h1"
@@ -137,7 +144,6 @@ const RespaldoRestauracion = () => {
                 color: "#092181",
                 textAlign: "center",
                 letterSpacing: 0.5,
-
               }}
             >
               Gestión de Respaldo y Restauración
@@ -158,13 +164,9 @@ const RespaldoRestauracion = () => {
               textAlign: "center",
             }}
           >
-            <Box sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ mb: 3, display: "flex", alignItems: "center" }}>
               <BackupIcon sx={{ mr: 1, color: "#092181" }} />
-              <Typography
-                variant="h6"
-                fontWeight="bold"
-                color="#092181"
-              >
+              <Typography variant="h6" fontWeight="bold" color="#092181">
                 Crear Nuevo Respaldo
               </Typography>
             </Box>
@@ -183,7 +185,13 @@ const RespaldoRestauracion = () => {
                 variant="contained"
                 onClick={hacerRespaldo}
                 disabled={cargar}
-                startIcon={cargar ? <CircularProgress size={20} color="inherit" /> : <CloudUploadIcon />}
+                startIcon={
+                  cargar ? (
+                    <CircularProgress size={20} color="inherit" />
+                  ) : (
+                    <CloudUploadIcon />
+                  )
+                }
                 sx={{
                   minWidth: 150,
                   height: 50,
@@ -197,7 +205,6 @@ const RespaldoRestauracion = () => {
               </Button>
             </Box>
           </Card>
-
 
           {/* Sección de Restauración */}
           <Card
@@ -213,46 +220,47 @@ const RespaldoRestauracion = () => {
               textAlign: "center",
             }}
           >
-            <Box sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ mb: 3, display: "flex", alignItems: "center" }}>
               <RestoreIcon sx={{ mr: 1, color: "#092181" }} />
-              <Typography
-                variant="h6"
-                fontWeight="bold"
-                color="#092181"
-              >
+              <Typography variant="h6" fontWeight="bold" color="#092181">
                 Restaurar Base de Datos
               </Typography>
             </Box>
 
-            <FormControl sx={{
-              width: "100%",
-              maxWidth: "400px",
-              "& .MuiOutlinedInput-root": {
-                borderRadius: "12px",
-                backgroundColor: "#FFFFFF",
-                "& fieldset": {
-                  borderColor: "#CBD4D8",
+            <FormControl
+              sx={{
+                width: "100%",
+                maxWidth: "400px",
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "12px",
+                  backgroundColor: "#FFFFFF",
+                  "& fieldset": {
+                    borderColor: "#CBD4D8",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "#355C7D",
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#092181",
+                    borderWidth: "2px",
+                  },
                 },
-                "&:hover fieldset": {
-                  borderColor: "#355C7D",
+                "& .MuiInputLabel-root": {
+                  color: "#2D5D7B",
+                  fontWeight: "bold",
                 },
-                "&.Mui-focused fieldset": {
-                  borderColor: "#092181",
-                  borderWidth: "2px",
-                },
-              },
-              "& .MuiInputLabel-root": {
-                color: "#2D5D7B",
-                fontWeight: "bold",
-              },
-            }} disabled={cargar}>
-              <InputLabel id="backup-select-label">Selecciona un archivo de respaldo</InputLabel>
+              }}
+              disabled={cargar}
+            >
+              <InputLabel id="backup-select-label">
+                Selecciona un archivo de respaldo
+              </InputLabel>
               <Select
                 labelId="backup-select-label"
                 value={seleccionarRespaldo}
                 label="Selecciona un archivo de respaldo"
                 onChange={(e) => setSeleccionarRespaldo(e.target.value)}
-                MenuProps={{ PaperProps: { sx: { maxHeight: 300 } } }} // Limita la altura del menú
+                MenuProps={{ PaperProps: { sx: { maxHeight: 300 } } }} 
               >
                 {respaldo.length > 0 ? (
                   respaldo.map((b) => (
@@ -280,7 +288,13 @@ const RespaldoRestauracion = () => {
                 variant="contained"
                 onClick={seleccionarRestauracion}
                 disabled={cargar || !seleccionarRespaldo}
-                startIcon={cargar ? <CircularProgress size={20} color="inherit" /> : <RestoreIcon />}
+                startIcon={
+                  cargar ? (
+                    <CircularProgress size={20} color="inherit" />
+                  ) : (
+                    <RestoreIcon />
+                  )
+                }
                 sx={{
                   minWidth: 150,
                   height: 50,
@@ -297,18 +311,18 @@ const RespaldoRestauracion = () => {
         </Paper>
       </Container>
 
-      {/* Snackbar unificado para mensajes */}
+      {/* Snackbar  para mensajes */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert
           onClose={handleCloseSnackbar}
           severity={tipo}
           variant="filled"
-          sx={{ width: '100%' }}
+          sx={{ width: "100%" }}
         >
           {mensaje}
         </Alert>

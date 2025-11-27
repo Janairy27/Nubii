@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from "react";
 import Layout from "../components/LayoutProf";
-import axios from 'axios';
-import { Line } from 'react-chartjs-2';
-import { format } from 'date-fns';
+import axios from "axios";
+import { Line } from "react-chartjs-2";
+import { format } from "date-fns";
 import {
   Box,
   Typography,
@@ -37,11 +37,10 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 
-
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
-import TimelineIcon from '@mui/icons-material/Timeline';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
+import AutoGraphIcon from "@mui/icons-material/AutoGraph";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import {
   Chart as ChartJS,
@@ -51,30 +50,38 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
-} from 'chart.js';
+  Legend,
+} from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function ReporteEmocionalProf() {
   const theme = useTheme();
   const [idUsuario, setIdUsuario] = useState(null);
   const [tipoUsuario, setTipoUsuario] = useState(null);
   const [idProfesional, setIdProfesional] = useState(null);
-  const [Nombre, setNombre] = useState('');
+  const [Nombre, setNombre] = useState("");
 
   const [idPaciente, setIdPaciente] = useState(null);
   const [pacientes, setPacientes] = useState([]);
 
   const [nombrePaciente, setNombrePaciente] = useState("");
-  const [fechaInicio, setFechaInicio] = useState('');
-  const [fechaFin, setFechaFin] = useState('');
-  const [tipoReporte, setTipoReporte] = useState('diario');
+  const [fechaInicio, setFechaInicio] = useState("");
+  const [fechaFin, setFechaFin] = useState("");
+  const [tipoReporte, setTipoReporte] = useState("diario");
   const [reportData, setReportData] = useState([]);
 
-   const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [mensaje, setMensaje] = useState("");
-    const [tipo, setTipo] = useState("success");
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [mensaje, setMensaje] = useState("");
+  const [tipo, setTipo] = useState("success");
 
   const emocionesSaludMental = [
     {
@@ -113,7 +120,11 @@ export default function ReporteEmocionalProf() {
       emociones: [
         { id: 13, nombre: "Problemas de Sueño", icono: <LocalHotelIcon /> },
         { id: 14, nombre: "Cambios Apetito", icono: <RestaurantIcon /> },
-        { id: 15, nombre: "Dificultad Concentración", icono: <PsychologyIcon /> },
+        {
+          id: 15,
+          nombre: "Dificultad Concentración",
+          icono: <PsychologyIcon />,
+        },
         { id: 16, nombre: "Síntomas Somáticos", icono: <PsychologyIcon /> },
       ],
     },
@@ -123,13 +134,17 @@ export default function ReporteEmocionalProf() {
     const map = {};
     emocionesSaludMental.forEach((cat) =>
       cat.emociones.forEach((emo) => {
-        map[emo.id] = { nombre: emo.nombre, color: cat.color, icono: emo.icono };
+        map[emo.id] = {
+          nombre: emo.nombre,
+          color: cat.color,
+          icono: emo.icono,
+        };
       })
     );
     return map;
   }, [emocionesSaludMental]);
 
-    const mostrarMensaje = (msg, severity = "info") => {
+  const mostrarMensaje = (msg, severity = "info") => {
     setMensaje(msg);
     setTipo(severity);
     setOpenSnackbar(true);
@@ -139,8 +154,6 @@ export default function ReporteEmocionalProf() {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
-
-
 
   useEffect(() => {
     const storedIdUsuario = localStorage.getItem("idUsuario");
@@ -161,7 +174,8 @@ export default function ReporteEmocionalProf() {
   }, []);
 
   const obtenerPacientes = () => {
-    axios.get(`http://localhost:4000/api/citas/pacientes/${idProfesional}`)
+    axios
+      .get(`http://localhost:4000/api/citas/pacientes/${idProfesional}`)
       .then((res) => setPacientes(res.data))
       .catch((err) => console.log("Error al obtener pacientes", err));
   };
@@ -179,60 +193,64 @@ export default function ReporteEmocionalProf() {
   }, [idProfesional]);
 
   const fetchReport = async () => {
-    if (!idProfesional) return mostrarMensaje("No se ha encontrado el profesional.","warning");
+    if (!idProfesional)
+      return mostrarMensaje("No se ha encontrado el profesional.", "warning");
     //if (!fechaInicio || !fechaFin) return mostrarMensaje("Selecciona un rango de fechas.","warning");
     setReportData([]);
     try {
-      const res = await axios.get(`http://localhost:4000/api/repEmocional/info-emocional-pacientes`, {
-        params: {
-          idProfesional,
-          idPaciente,
-          fechaInicio,
-          fechaFin,
-          tipoReporte
+      const res = await axios.get(
+        `http://localhost:4000/api/repEmocional/info-emocional-pacientes`,
+        {
+          params: {
+            idProfesional,
+            idPaciente,
+            fechaInicio,
+            fechaFin,
+            tipoReporte,
+          },
         }
-      });
+      );
 
       if (res.data.length === 0) {
-        mostrarMensaje("No hay información disponible en el rango seleccionado.", "warning");
+        mostrarMensaje(
+          "No hay información disponible en el rango seleccionado.",
+          "warning"
+        );
       }
       setReportData(res.data);
     } catch (error) {
-      console.error('Error al obtener el reporte:', error);
+      console.error("Error al obtener el reporte:", error);
     }
   };
 
   const exportPDF = async () => {
     try {
-      if (reportData.length === 0) return mostrarMensaje("Primero genera el reporte.","warning");
+      if (reportData.length === 0)
+        return mostrarMensaje("Primero genera el reporte.", "warning");
 
       // Obtener imagen del gráfico
-      const chartCanvas = document.querySelector('canvas');
-      const grafico = chartCanvas ? chartCanvas.toDataURL('image/png') : null;
+      const chartCanvas = document.querySelector("canvas");
+      const grafico = chartCanvas ? chartCanvas.toDataURL("image/png") : null;
 
       const res = await axios.post(
         `http://localhost:4000/api/repEmocional/pdf`,
         { tipoUsuario: 2, datos: reportData, grafico },
-        { responseType: 'blob' }
+        { responseType: "blob" }
       );
 
       const url = window.URL.createObjectURL(new Blob([res.data]));
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
-      link.setAttribute('download', 'Reporte_Emocional.pdf');
+      link.setAttribute("download", "Reporte_Emocional.pdf");
       document.body.appendChild(link);
       link.click();
       link.remove();
       mostrarMensaje("Reporte exportado a PDF exitosamente.", "success");
     } catch (error) {
-      console.error('Error al exportar PDF:', error);
+      console.error("Error al exportar PDF:", error);
       mostrarMensaje("Error al exportar el reporte a PDF.", "error");
     }
   };
-
-  
-
-
 
   // Agrupar datos por emoción para graficar
   const chartData = useMemo(() => {
@@ -241,20 +259,24 @@ export default function ReporteEmocionalProf() {
     const emociones = {};
 
     reportData.forEach(({ periodo, emocion, promedio_intensidad }) => {
-      const fecha = format(new Date(periodo), 'yyyy-MM-dd');
+      const fecha = format(new Date(periodo), "yyyy-MM-dd");
       //const fecha = tiempo;
       if (!emociones[emocion]) emociones[emocion] = {};
       emociones[emocion][fecha] = promedio_intensidad;
     });
 
-    const periodosUnicos = [...new Set(reportData.map(d => format(new Date(d.periodo), 'yyyy-MM-dd')))].sort();
+    const periodosUnicos = [
+      ...new Set(
+        reportData.map((d) => format(new Date(d.periodo), "yyyy-MM-dd"))
+      ),
+    ].sort();
 
-    const datasets = Object.keys(emociones).map(emocion => ({
+    const datasets = Object.keys(emociones).map((emocion) => ({
       label: emocionesMap[emocion]?.nombre || emocion,
-      data: periodosUnicos.map(periodo => emociones[emocion][periodo] || 0),
+      data: periodosUnicos.map((periodo) => emociones[emocion][periodo] || 0),
       fill: false,
       borderColor: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
-      tension: 0.3
+      tension: 0.3,
     }));
 
     return { labels: periodosUnicos, datasets };
@@ -262,7 +284,8 @@ export default function ReporteEmocionalProf() {
 
   return (
     <Layout>
-      <Container maxWidth="md"
+      <Container
+        maxWidth="md"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -272,42 +295,49 @@ export default function ReporteEmocionalProf() {
           minHeight: "100vh",
         }}
       >
-        <Paper sx={{
-          p: { xs: 2, md: 4 },
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#F4F6F8",
-          width: "100%",
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}>
-
-          <Box sx={{
-            p: { xs: 2, sm: 3 },
+        <Paper
+          sx={{
+            p: { xs: 2, md: 4 },
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F4F6F8",
+            width: "100%",
+            mx: "auto",
             display: "flex",
             flexDirection: "column",
             gap: 3,
-            maxWidth: "1200px",
-            mx: "auto",
-            width: "100%"
-          }}>
-
-            {/* Header */}
-            <Box ox sx={{
+          }}
+        >
+          <Box
+            sx={{
+              p: { xs: 2, sm: 3 },
               display: "flex",
-              alignItems: "center",
-              gap: 1.5,
-              flex: 1,
-              justifyContent: "center",
-              textAlign: "center",
-            }}>
-              <AutoGraphIcon sx={{
-                color: "#092181",
-                fontSize: 36,
-                filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
-              }} />
+              flexDirection: "column",
+              gap: 3,
+              maxWidth: "1200px",
+              mx: "auto",
+              width: "100%",
+            }}
+          >
+            {/* Header */}
+            <Box
+              ox
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1.5,
+                flex: 1,
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
+              <AutoGraphIcon
+                sx={{
+                  color: "#092181",
+                  fontSize: 36,
+                  filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+                }}
+              />
               <Typography
                 variant="h4"
                 sx={{
@@ -318,7 +348,8 @@ export default function ReporteEmocionalProf() {
                   gap: 1,
                 }}
               >
-                Reporte Emocional del Paciente</Typography>
+                Reporte Emocional del Paciente
+              </Typography>
             </Box>
             <Box sx={{ textAlign: "center", mb: 4 }}>
               <Typography variant="subtitle1">
@@ -327,11 +358,11 @@ export default function ReporteEmocionalProf() {
               <Typography variant="subtitle1">
                 <strong>Paciente:</strong>{" "}
                 {idPaciente
-                  ? pacientes.find(p => p.idPaciente === idPaciente)?.nombrePaciente
+                  ? pacientes.find((p) => p.idPaciente === idPaciente)
+                      ?.nombrePaciente
                   : "Todos los pacientes"}
               </Typography>
             </Box>
-
 
             {/* Filtros */}
             <Card
@@ -349,9 +380,8 @@ export default function ReporteEmocionalProf() {
                 border: "1px solid #dbe3ff",
               }}
             >
-
-              <FormControl size="small"
-
+              <FormControl
+                size="small"
                 sx={{
                   minWidth: 400,
                   justifyContent: "center",
@@ -370,14 +400,15 @@ export default function ReporteEmocionalProf() {
                     fontWeight: "bold",
                   },
                   gap: 2,
-                }}>
+                }}
+              >
                 <InputLabel>Paciente</InputLabel>
                 <Select
                   name="paciente"
                   value={idPaciente ?? "todos"}
                   onChange={(e) => {
                     const value = e.target.value;
-                    setIdPaciente(value === "todos" ? null : Number(value))
+                    setIdPaciente(value === "todos" ? null : Number(value));
                   }}
                   label="paciente"
                   required
@@ -399,7 +430,6 @@ export default function ReporteEmocionalProf() {
                   alignItems: "center",
                 }}
               >
-
                 {/* Selector de rango */}
                 <FormControl
                   size="small"
@@ -422,21 +452,30 @@ export default function ReporteEmocionalProf() {
                   }}
                 >
                   <InputLabel> Tipo de reporte:</InputLabel>
-                  <Select value={tipoReporte} onChange={e => setTipoReporte(e.target.value)}>
+                  <Select
+                    value={tipoReporte}
+                    onChange={(e) => setTipoReporte(e.target.value)}
+                  >
                     <MenuItem value="diario">
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <CalendarTodayIcon sx={{ color: "#4CAF50" }} />
                         <Typography>Diario</Typography>
                       </Box>
                     </MenuItem>
                     <MenuItem value="semanal">
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <EventAvailableIcon sx={{ color: "#2196F3" }} />
                         <Typography>Semanal</Typography>
                       </Box>
                     </MenuItem>
                     <MenuItem value="mensual">
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <DateRangeIcon sx={{ color: "#FF9800" }} />
                         <Typography>Mensual</Typography>
                       </Box>
@@ -523,154 +562,211 @@ export default function ReporteEmocionalProf() {
                   PDF
                 </Button>
               </Box>
-
-
             </Card>
 
             {reportData.length > 0 ? (
               <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                <Card sx={{
-                p: 3,
-                display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
-                        cursor: "pointer",
-                        borderRadius: "20px",
-                        border: "1px solid #dbe3ff",
-                        backgroundColor: "#f9fbff",
-                        width:  "94%",
-                        //minHeight: "260px",
-                        transition: "all 0.3s ease",
-                        boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
-                        "&:hover": {
-                          transform: "translateY(-6px)",
-                          boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
-                          borderColor: "#092181",
-                        },
-              }}>
-                 <Box display="flex" alignItems="center" gap={1.5} mb={2}>
-                        <TimelineIcon sx={{ color: "#092181", fontSize: 28 }} />
-                        <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
-                  Gráfica de Emociones</Typography>
+                <Card
+                  sx={{
+                    p: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                    borderRadius: "20px",
+                    border: "1px solid #dbe3ff",
+                    backgroundColor: "#f9fbff",
+                    width: "94%",
+                    //minHeight: "260px",
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
+                    "&:hover": {
+                      transform: "translateY(-6px)",
+                      boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
+                      borderColor: "#092181",
+                    },
+                  }}
+                >
+                  <Box display="flex" alignItems="center" gap={1.5} mb={2}>
+                    <TimelineIcon sx={{ color: "#092181", fontSize: 28 }} />
+                    <Typography
+                      variant="h6"
+                      fontWeight="bold"
+                      sx={{ color: "#092181" }}
+                    >
+                      Gráfica de Emociones
+                    </Typography>
                   </Box>
                   <Box sx={{ height: { xs: 300, sm: 400 } }}>
-                    <Line data={chartData} options={{
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                      legend: { position: "top" },
-                       title: { display: true, text: 'Evolución de emociones de pacientes' }
-                      },
-                      scales: { 
-                        y: {
+                    <Line
+                      data={chartData}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                          legend: { position: "top" },
+                          title: {
+                            display: true,
+                            text: "Evolución de emociones de pacientes",
+                          },
+                        },
+                        scales: {
+                          y: {
                             beginAtZero: true,
                             title: {
                               display: true,
-                              text: 'Intensidad'
-                            }
+                              text: "Intensidad",
+                            },
                           },
                           x: {
-                            title: { 
+                            title: {
                               display: true,
-                              text: 'Fecha'
-                            }
-                          }
-                      }
-                  }} />
-                </Box>
-              </Card>
+                              text: "Fecha",
+                            },
+                          },
+                        },
+                      }}
+                    />
+                  </Box>
+                </Card>
 
-              {/*  Tabla  */}
-                <Card sx={{
-                  p: 3,
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  cursor: "pointer",
-                  borderRadius: "20px",
-                  border: "1px solid #dbe3ff",
-                  backgroundColor: "#f9fbff",
-                  width: "94%",
-                  //minHeight: "260px",
-                  transition: "all 0.3s ease",
-                  boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
-                  "&:hover": {
-                    transform: "translateY(-6px)",
-                    boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
-                    borderColor: "#092181",
-                  },
-                  overflowX: "auto"
-                }}>
+                {/*  Tabla  */}
+                <Card
+                  sx={{
+                    p: 3,
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                    borderRadius: "20px",
+                    border: "1px solid #dbe3ff",
+                    backgroundColor: "#f9fbff",
+                    width: "94%",
+                    //minHeight: "260px",
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
+                    "&:hover": {
+                      transform: "translateY(-6px)",
+                      boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
+                      borderColor: "#092181",
+                    },
+                    overflowX: "auto",
+                  }}
+                >
                   <Box display="flex" alignItems="center" gap={1.5} mb={2}>
                     <AssignmentIcon sx={{ color: "#092181", fontSize: 28 }} />
-                    <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
-                       Vista previa del reporte</Typography>
+                    <Typography
+                      variant="h6"
+                      fontWeight="bold"
+                      sx={{ color: "#092181" }}
+                    >
+                      Vista previa del reporte
+                    </Typography>
                   </Box>
-                  <Table sx={{ minWidth: 650, borderCollapse: "separate", borderSpacing: "0 10px" }}>
-                  <TableHead>
-                    <TableRow>
-                       {["Paciente", "Período", "Emoción", "Intensidad", "Registros"].map((head) => (
-                          <TableCell key={head} sx={{ fontWeight: "bold", color: theme.palette.primary.main }}>
-                          {head}
-                        </TableCell>
-                      ))}
-                    </TableRow>
+                  <Table
+                    sx={{
+                      minWidth: 650,
+                      borderCollapse: "separate",
+                      borderSpacing: "0 10px",
+                    }}
+                  >
+                    <TableHead>
+                      <TableRow>
+                        {[
+                          "Paciente",
+                          "Período",
+                          "Emoción",
+                          "Intensidad",
+                          "Registros",
+                        ].map((head) => (
+                          <TableCell
+                            key={head}
+                            sx={{
+                              fontWeight: "bold",
+                              color: theme.palette.primary.main,
+                            }}
+                          >
+                            {head}
+                          </TableCell>
+                        ))}
+                      </TableRow>
                     </TableHead>
-                  <TableBody>
-       
+                    <TableBody>
                       {reportData.map((row, index) => {
-                      const emo = emocionesMap[row.emocion] || {};
-                      return(
-                        <TableRow key={index} sx={{
-                          backgroundColor: index % 2 === 0 ? "#fafafa" : "#ffffff",
-                          borderRadius: "12px",
-                          boxShadow: "0 2px 6px rgba(0,0,0,0.04)"
-                        }}>
-                           <TableCell>{row.nombrePaciente}</TableCell>
-                           <TableCell>{row.periodo ? format(new Date(row.periodo), "yyyy-MM-dd") : "N/A"}</TableCell>
-                           <TableCell>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              {emo.icono} {emo.nombre || row.emocion}
-                            </Box>
-                          </TableCell>
-                           <TableCell sx={{ color: theme.palette.info.main, fontWeight: "bold" }}>
-                            {Number(row.promedio_intensidad).toFixed(2)}
-                          </TableCell>
-                           <TableCell sx={{ fontWeight: "bold" }}>
-                            {row.cantidad_registros || row.cantidad || row.total_registros}
-                          </TableCell>
-                        </TableRow>
-                         );
-                        })}
+                        const emo = emocionesMap[row.emocion] || {};
+                        return (
+                          <TableRow
+                            key={index}
+                            sx={{
+                              backgroundColor:
+                                index % 2 === 0 ? "#fafafa" : "#ffffff",
+                              borderRadius: "12px",
+                              boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
+                            }}
+                          >
+                            <TableCell>{row.nombrePaciente}</TableCell>
+                            <TableCell>
+                              {row.periodo
+                                ? format(new Date(row.periodo), "yyyy-MM-dd")
+                                : "N/A"}
+                            </TableCell>
+                            <TableCell>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 1,
+                                }}
+                              >
+                                {emo.icono} {emo.nombre || row.emocion}
+                              </Box>
+                            </TableCell>
+                            <TableCell
+                              sx={{
+                                color: theme.palette.info.main,
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {Number(row.promedio_intensidad).toFixed(2)}
+                            </TableCell>
+                            <TableCell sx={{ fontWeight: "bold" }}>
+                              {row.cantidad_registros ||
+                                row.cantidad ||
+                                row.total_registros}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                     </TableBody>
-                </Table>
-              </Card>
-             </Box>
+                  </Table>
+                </Card>
+              </Box>
             ) : (
               <Card sx={{ p: 3, textAlign: "center", borderRadius: 3 }}>
-              <Typography color="text.secondary">
-                No hay datos para mostrar. Selecciona un rango de fechas y genera el reporte.
-              </Typography>
-            </Card>
-          )}
+                <Typography color="text.secondary">
+                  No hay datos para mostrar. Selecciona un rango de fechas y
+                  genera el reporte.
+                </Typography>
+              </Card>
+            )}
           </Box>
         </Paper>
-        
-                {/* Snackbar para mensajes */}
-                <Snackbar
-                  open={openSnackbar}
-                  autoHideDuration={4000}
-                  onClose={handleCloseSnackbar}
-                  anchorOrigin={{ vertical: "top", horizontal: "center" }}
-                >
-                  <Alert
-                    onClose={handleCloseSnackbar}
-                    severity={tipo}
-                    variant="filled"
-                    sx={{ width: "100%" }}
-                  >
-                    {mensaje}
-                  </Alert>
-                </Snackbar>
+
+        {/* Snackbar para mensajes */}
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={4000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity={tipo}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {mensaje}
+          </Alert>
+        </Snackbar>
       </Container>
     </Layout>
   );

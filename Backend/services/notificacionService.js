@@ -1,12 +1,22 @@
-import {db } from "../config/db.js"; // tu conexión a MySQL
+import { db } from "../config/db.js"; 
 
-export const crearNotificacion = async ({ idUsuario, titulo, mensaje, tipo }) => {
+export const crearNotificacion = async ({
+  idUsuario,
+  titulo,
+  mensaje,
+  tipo,
+}) => {
   const query = `
     INSERT INTO Notificacion (idUsuario, titulo, mensaje, tipo)
     VALUES (?, ?, ?, ?)
   `;
   try {
-    const [result] = await db.execute(query, [idUsuario, titulo, mensaje, tipo]);
+    const [result] = await db.execute(query, [
+      idUsuario,
+      titulo,
+      mensaje,
+      tipo,
+    ]);
     return result.insertId;
   } catch (err) {
     console.error("Error creando notificación:", err);

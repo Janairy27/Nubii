@@ -1,5 +1,8 @@
 import nodemailer from "nodemailer";
 import path from "path";
+import fs from "fs";
+
+import { fileURLToPath } from "url";
 
 export const sendInicioSesion = async (email, nombreUsuario) => {
   const transporter = nodemailer.createTransport({
@@ -10,9 +13,23 @@ export const sendInicioSesion = async (email, nombreUsuario) => {
     },
   });
 
-  // Ruta absoluta del logo
-  const logoPath = path.resolve("F:\\Estadia\\Nubii\\frontend\\public\\logo.png");
+  //Obtenemos la ruta del directorio actual: .../Nubii/Backend/utils
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
 
+  // Construimos la ruta al logo.
+  // Usamos '../..' para salir de 'utils' -> 'Backend' -> Raíz del proyecto.
+  // Desde la raíz, entramos a 'frontend/public/logo.png'.
+  const logoPath = path.join(
+    __dirname,
+    "../..",
+    "frontend",
+    "public",
+    "logo.png"
+  );
+  if (!fs.existsSync(logoPath)) {
+    console.error("¡ALERTA! El sistema no encuentra la imagen en:", logoPath);
+  }
   // Contenido HTML del correo
   const htmlContent = `
     <div style="background-color:#f4f6f8;padding:40px 0;display:flex;justify-content:center;">

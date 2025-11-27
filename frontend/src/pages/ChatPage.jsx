@@ -29,17 +29,57 @@ import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 
-// 🌈 Mapa de especialidades
+//  Mapa de especialidades
 const especialidadMap = [
-  { value: 1, nombre: "Psicólogo", icono: <PsychologyIcon />, color: "#ab47bc" },
-  { value: 2, nombre: "Psiquiatra", icono: <MedicalServicesIcon />, color: "#42a5f5" },
+  {
+    value: 1,
+    nombre: "Psicólogo",
+    icono: <PsychologyIcon />,
+    color: "#ab47bc",
+  },
+  {
+    value: 2,
+    nombre: "Psiquiatra",
+    icono: <MedicalServicesIcon />,
+    color: "#42a5f5",
+  },
   { value: 3, nombre: "Terapeuta", icono: <HealingIcon />, color: "#26a69a" },
-  { value: 4, nombre: "Neurólogo", icono: <LocalHospitalIcon />, color: "#ef5350" },
-  { value: 5, nombre: "Médico General", icono: <FavoriteIcon />, color: "#66bb6a" },
-  { value: 6, nombre: "Psicoterapeuta", icono: <SelfImprovementIcon />, color: "#ffa726" },
-  { value: 7, nombre: "Psicoanalista", icono: <EmojiObjectsIcon />, color: "#8d6e63" },
-  { value: 8, nombre: "Consejero", icono: <SupportAgentIcon />, color: "#29b6f6" },
-  { value: 9, nombre: "Trabajador Social", icono: <SupervisorAccountIcon />, color: "#ffa726" },
+  {
+    value: 4,
+    nombre: "Neurólogo",
+    icono: <LocalHospitalIcon />,
+    color: "#ef5350",
+  },
+  {
+    value: 5,
+    nombre: "Médico General",
+    icono: <FavoriteIcon />,
+    color: "#66bb6a",
+  },
+  {
+    value: 6,
+    nombre: "Psicoterapeuta",
+    icono: <SelfImprovementIcon />,
+    color: "#ffa726",
+  },
+  {
+    value: 7,
+    nombre: "Psicoanalista",
+    icono: <EmojiObjectsIcon />,
+    color: "#8d6e63",
+  },
+  {
+    value: 8,
+    nombre: "Consejero",
+    icono: <SupportAgentIcon />,
+    color: "#29b6f6",
+  },
+  {
+    value: 9,
+    nombre: "Trabajador Social",
+    icono: <SupervisorAccountIcon />,
+    color: "#ffa726",
+  },
 ];
 
 //const socket = io("http://localhost:4000", {query: { role: "paciente", id: localStorage.getItem("idPaciente") }});
@@ -50,7 +90,8 @@ const ChatPage = () => {
   const [nombre, setNombre] = useState("");
   const [cargando, setCargando] = useState(true);
 
-  const [especialidadSeleccionada, setEspecialidadSeleccionada] = useState(null);
+  const [especialidadSeleccionada, setEspecialidadSeleccionada] =
+    useState(null);
   const [profesionales, setProfesionales] = useState([]);
   const [chatActual, setChatActual] = useState(null);
   const [mensajes, setMensajes] = useState([]);
@@ -58,13 +99,12 @@ const ChatPage = () => {
   const [mensajesNuevos, setMensajesNuevos] = useState({}); // {idPaciente: cantidad}
   // [mensaje, setMensaje] = useState("");
 
-    const chatActualRef = useRef(chatActual);
+  const chatActualRef = useRef(chatActual);
   useEffect(() => {
     chatActualRef.current = chatActual;
   }, [chatActual]);
 
-
-  // 1️⃣ Obtener paciente
+  // Obtener paciente
   useEffect(() => {
     const storedIdUsuario = localStorage.getItem("idUsuario");
     if (!storedIdUsuario) return;
@@ -77,8 +117,9 @@ const ChatPage = () => {
         const pacIdStr = Number(paciente.idPaciente);
         setIdPaciente(paciente.idPaciente);
         setNombre(res.data.nombre);
-        
-        if (paciente.especialidad) setEspecialidadSeleccionada(paciente.especialidad);
+
+        if (paciente.especialidad)
+          setEspecialidadSeleccionada(paciente.especialidad);
         socket = io("http://localhost:4000", {
           query: { role: "paciente", id: String(pacIdStr) }, // Aseguramos que sea un string
         });
@@ -94,26 +135,28 @@ const ChatPage = () => {
       .catch((err) => console.error("Error al obtener paciente:", err))
       .finally(() => setCargando(false));
 
-      return () => {
+    return () => {
       if (socket) {
         socket.disconnect();
       }
     };
   }, []);
 
-  // 2️⃣ Cargar profesionales
+  //  Cargar profesionales
   useEffect(() => {
     if (!especialidadSeleccionada) return;
     axios
-      .get(`http://localhost:4000/api/auth/profesionales/${especialidadSeleccionada}`)
+      .get(
+        `http://localhost:4000/api/auth/profesionales/${especialidadSeleccionada}`
+      )
       .then((res) => setProfesionales(res.data))
       .catch((err) => console.error("Error al obtener profesionales:", err));
   }, [especialidadSeleccionada]);
 
-  // 3️⃣ Escuchar mensajes nuevos
+  //  Escuchar mensajes nuevos
   useEffect(() => {
     if (!idPaciente || !socket) return;
-    
+
     const idPacStr = String(idPaciente);
 
     const handleNuevoMensaje = (msg) => {
@@ -123,113 +166,104 @@ const ChatPage = () => {
 
       if (pacId !== idPacStr) return;
 
-       // Si el mensaje vino del paciente 
+      // Si el mensaje vino del paciente
       if (isSenderPac) {
-          return; 
+        return;
       }
 
       const profesional = {
         idProfesional: profId,
         nombreProfesional: msg.nombreProfesional || `Profesional ${profId}`,
       };
-      // 🔹 Si chat abierto con este paciente → agregar mensaje
-      //const isChatOpen = chatActualRef.current?.idProfesional === profId;
+      // Si chat abierto con este paciente
       if (chatActualRef.current?.idProfesional === profId) {
-        const body = { lectorRol: 'paciente' };
+        const body = { lectorRol: "paciente" };
         setMensajes((prev) => [...prev, msg]);
 
-        // Marcar mensaje como leído en backend
+        // Marcar mensaje como leído
         axios.put(
-          `http://localhost:4000/api/chat/leido/${idPaciente}/${profId}`, 
+          `http://localhost:4000/api/chat/leido/${idPaciente}/${profId}`,
           body
         );
         // Limpiar el contador localmente
-         setMensajesNuevos((prev) => ({
+        setMensajesNuevos((prev) => ({
           ...prev,
           [profId]: 0,
         }));
-      
-       } else {
-         // 1. Incrementar contador
+      } else {
+        //  Incrementar contador
         setMensajesNuevos((prev) => ({
           ...prev,
           [profId]: (prev[profId] || 0) + 1,
         }));
         //setProfresionalSeleccionado(profesional);
-         setProfesionales((prev) =>
-          prev.some((p) => String(p.idProfesional) === profId) ? prev : [...prev, profesional]
+        setProfesionales((prev) =>
+          prev.some((p) => String(p.idProfesional) === profId)
+            ? prev
+            : [...prev, profesional]
         );
-         }
+      }
     };
-    
+
     socket.on("nuevo_mensaje", handleNuevoMensaje);
     return () => socket.off("nuevo_mensaje", handleNuevoMensaje);
-  }, [ idPaciente]);
+  }, [idPaciente]);
 
-
-  // -------------------------------
-  // 4️⃣ Obtener mensajes no leídos al cargar
-  // -------------------------------
+  // Obtener mensajes no leídos al cargar
   useEffect(() => {
-    // Soluciona la advertencia 'Esperando idProfesional válido...' al inicio
-    if (typeof idPaciente !== 'number' || idPaciente <= 0) { // Verificación adicional de Number
+    if (typeof idPaciente !== "number" || idPaciente <= 0) {
       console.warn("Esperando idPaciente válido para cargar no leídos...");
       return;
     }
 
     const idPacienteNum = idPaciente;
 
-
-    console.log("Solicitando mensajes no leídos para idProfesional:", idPacienteNum);
+    console.log(
+      "Solicitando mensajes no leídos para idProfesional:",
+      idPacienteNum
+    );
 
     axios
       .get(`http://localhost:4000/api/chat/no-leidosPac/${idPacienteNum}`)
       .then((res) => {
         console.log("Mensajes no leídos:", res.data);
-        //const nuevosNoLeidos = res.data.reduce((acc, item) => {
-        // Asumimos que res.data tiene la forma { idPaciente: string, count: number }
-        //  acc[String(item.idPaciente)] = Number(item.count);
-        // return acc;
-        //}, {});
 
         setMensajesNuevos(res.data);
       })
       .catch((err) => {
-        console.error("Error al obtener mensajes no leídos:", err.response?.data || err.message);
+        console.error(
+          "Error al obtener mensajes no leídos:",
+          err.response?.data || err.message
+        );
       });
   }, [idPaciente]);
 
-
-  // 4️⃣ Cargar chat
+  // Cargar chat
   const cargarChat = async (profesional) => {
     const profesionalId = String(profesional.idProfesional);
     setChatActual(profesional);
 
     const pacIdNum = idPaciente;
-    const body = { lectorRol: 'paciente' };
-    try{
-          const data = await obtenerChat( pacIdNum, profesionalId);
-              setMensajes(data);
-           await axios.put(`http://localhost:4000/api/chat/leido/${pacIdNum}/${profesionalId}`,
+    const body = { lectorRol: "paciente" };
+    try {
+      const data = await obtenerChat(pacIdNum, profesionalId);
+      setMensajes(data);
+      await axios.put(
+        `http://localhost:4000/api/chat/leido/${pacIdNum}/${profesionalId}`,
         body
       );
 
-       // Limpiar contador (poner en 0)
+      // Limpiar contador (poner en 0)
       setMensajesNuevos((prev) => ({
         ...prev,
         [profesionalId]: 0,
       }));
-
-      
-    }catch (err) {
+    } catch (err) {
       console.error("Error al cargar chat:", err.response?.data || err.message);
     }
-
-
-
   };
 
-  // 5️⃣ Enviar mensaje
+  // Enviar mensaje
   const handleSend = async (mensajeTexto) => {
     if (!chatActual || !mensajeTexto.trim()) return;
 
@@ -238,29 +272,33 @@ const ChatPage = () => {
       idProfesional: String(chatActualRef.current.idProfesional),
       mensaje: mensajeTexto,
       enviado: "paciente",
-      nombre: nombre
+      nombre: nombre,
     };
 
     try {
       let msg = await enviarMensaje(data);
       if (!msg.enviado) {
-          msg = { ...msg, enviado: 'paciente' };
+        msg = { ...msg, enviado: "paciente" };
       }
 
       setMensajes((prev) => [...prev, msg]);
       if (socket) {
-        // Usamos el objeto completo devuelto por la API (msg)
-        socket.emit("enviar_mensaje", msg); 
+        socket.emit("enviar_mensaje", msg);
       }
       //setMensaje("");
     } catch (err) {
-      console.error("❌ Error enviando mensaje:", err);
+      console.error(" Error enviando mensaje:", err);
     }
   };
 
   if (cargando) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100vh"
+      >
         <CircularProgress />
       </Box>
     );
@@ -268,7 +306,8 @@ const ChatPage = () => {
 
   return (
     <Layout>
-      <Container maxWidth="xl"
+      <Container
+        maxWidth="xl"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -289,7 +328,7 @@ const ChatPage = () => {
               boxShadow: "0 0 20px rgba(0,0,0,0.1)",
             }}
           >
-            {/* 🔹 Sidebar */}
+            {/*  Sidebar */}
             <Box
               width={320}
               sx={{
@@ -299,22 +338,42 @@ const ChatPage = () => {
                 overflowY: "auto",
               }}
             >
-
-              <Typography variant="h4" sx={{ mb: 2, fontWeight: "bold", textAlign: "center", color: "#092181" }}>
+              <Typography
+                variant="h4"
+                sx={{
+                  mb: 2,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  color: "#092181",
+                }}
+              >
                 Especialidades
               </Typography>
-              <Typography variant="subtitle2" sx={{ mb: 1, textAlign: "center", color: "#092181" }}>
-                Selecciona una especialidad para enviarle un mensaje a un profesional
+              <Typography
+                variant="subtitle2"
+                sx={{ mb: 1, textAlign: "center", color: "#092181" }}
+              >
+                Selecciona una especialidad para enviarle un mensaje a un
+                profesional
               </Typography>
-              <Box display="flex" flexWrap="wrap" gap={1.2} justifyContent="center">
+              <Box
+                display="flex"
+                flexWrap="wrap"
+                gap={1.2}
+                justifyContent="center"
+              >
                 {especialidadMap.map((esp) => (
                   <Tooltip key={esp.value} title={esp.nombre}>
                     <Avatar
                       sx={{
                         bgcolor:
-                          especialidadSeleccionada === esp.value ? esp.color : "#c4d1e9ff",
+                          especialidadSeleccionada === esp.value
+                            ? esp.color
+                            : "#c4d1e9ff",
                         color:
-                          especialidadSeleccionada === esp.value ? "#fff" : esp.color,
+                          especialidadSeleccionada === esp.value
+                            ? "#fff"
+                            : esp.color,
                         cursor: "pointer",
                         width: 50,
                         height: 50,
@@ -334,7 +393,6 @@ const ChatPage = () => {
 
               <Divider sx={{ my: 2, borderColor: "rgba(255,255,255,0.3)" }} />
 
-
               <Paper
                 elevation={3}
                 sx={{
@@ -350,12 +408,15 @@ const ChatPage = () => {
                   },
                 }}
               >
-                <ChatList profesionales={profesionales} onSelect={cargarChat}
-                  mensajesNuevos={mensajesNuevos} />
+                <ChatList
+                  profesionales={profesionales}
+                  onSelect={cargarChat}
+                  mensajesNuevos={mensajesNuevos}
+                />
               </Paper>
             </Box>
 
-            {/* 🔹 Chat principal */}
+            {/*  Chat principal */}
             <Box display="flex" flexDirection="column" flex={1}>
               {chatActual ? (
                 <>
@@ -405,8 +466,9 @@ const ChatPage = () => {
                           fontSize: "0.85rem",
                         }}
                       >
-                        {especialidadMap.find((e) => e.value === chatActual.especialidad)?.nombre ||
-                          "Especialista"}
+                        {especialidadMap.find(
+                          (e) => e.value === chatActual.especialidad
+                        )?.nombre || "Especialista"}
                       </Typography>
                     </Box>
                   </Box>

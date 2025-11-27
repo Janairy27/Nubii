@@ -1,8 +1,8 @@
 import { db } from "../config/db.js";
 
 // Consulta para obtener la información necesario y mostrarla a el profesional
-export const reporteCitaProf = async(filtros = {}, idProfesional) => {
-    let query = `
+export const reporteCitaProf = async (filtros = {}, idProfesional) => {
+  let query = `
         SELECT
         CONCAT(pa.nombre, ' ', pa.aPaterno, ' ', IFNULL(pa.aMaterno, '')) AS nombrePaciente,
         c.fecha_cita, c.duracion_horas, c.modalidad, ec.estado, c.comentario
@@ -21,39 +21,40 @@ export const reporteCitaProf = async(filtros = {}, idProfesional) => {
         WHERE c.idProfesional = ? 
     `;
 
-    const parametros = [idProfesional];
-    if(filtros.idPaciente){
-        query += "AND p.idPaciente = ? ";
-        parametros.push(filtros.idPaciente);
-    }
+  const parametros = [idProfesional];
+  if (filtros.idPaciente) {
+    query += "AND p.idPaciente = ? ";
+    parametros.push(filtros.idPaciente);
+  }
 
-    if(filtros.fechaInicio && filtros.fechaFin){
-        query += "AND c.fecha_cita BETWEEN ? AND ? ";
-        parametros.push(filtros.fechaInicio, filtros.fechaFin);
-    }
+  if (filtros.fechaInicio && filtros.fechaFin) {
+    query += "AND c.fecha_cita BETWEEN ? AND ? ";
+    parametros.push(filtros.fechaInicio, filtros.fechaFin);
+  }
 
-    let agruparPor = "";
-    if(filtros.tipoReporte === "semanal"){
-        agruparPor = "DATE_SUB(DATE(c.fecha_cita), INTERVAL (DAYOFWEEK(c.fecha_cita) - 2) DAY) ";
-    }else if(filtros.tipoReporte === "mensual"){
-        agruparPor = "DATE_FORMAT(c.fecha_cita, '%Y-%m') ";
-    }else{
-        agruparPor = "DATE(c.fecha_cita)";
-    }
+  let agruparPor = "";
+  if (filtros.tipoReporte === "semanal") {
+    agruparPor =
+      "DATE_SUB(DATE(c.fecha_cita), INTERVAL (DAYOFWEEK(c.fecha_cita) - 2) DAY) ";
+  } else if (filtros.tipoReporte === "mensual") {
+    agruparPor = "DATE_FORMAT(c.fecha_cita, '%Y-%m') ";
+  } else {
+    agruparPor = "DATE(c.fecha_cita)";
+  }
 
-    query += "ORDER BY c.fecha_cita DESC";
+  query += "ORDER BY c.fecha_cita DESC";
 
-    try{
-        const [rows] = await db.query(query, parametros);
-        return rows.length ? rows: [];
-    }catch(err){
-        console.log("Error al obtener reporte de citas:", err);
-        throw err;
-    }
+  try {
+    const [rows] = await db.query(query, parametros);
+    return rows.length ? rows : [];
+  } catch (err) {
+    console.log("Error al obtener reporte de citas:", err);
+    throw err;
+  }
 };
 
-export const reporteCitasAdm = async(filtros = {}) => {
-    let query = `
+export const reporteCitasAdm = async (filtros = {}) => {
+  let query = `
         SELECT 
         CONCAT(prof.Nombre, ' ', prof.aPaterno, ' ', IFNULL(prof.aMaterno, '')) AS nombreProfesional,
         prof.email, pr.especialidad, 
@@ -74,13 +75,13 @@ export const reporteCitasAdm = async(filtros = {}) => {
         ) ec ON c.idCita = ec.idCita
     `;
 
-    query += "GROUP BY nombreProfesional, prof.email ORDER BY nombreProfesional";
+  query += "GROUP BY nombreProfesional, prof.email ORDER BY nombreProfesional";
 
-    try{
-        const [rows] = await db.query(query);
-        return rows;
-    }catch(err){
-        console.log("Error al obtener reporte de citas:", err);
-        throw err;
-    }
+  try {
+    const [rows] = await db.query(query);
+    return rows;
+  } catch (err) {
+    console.log("Error al obtener reporte de citas:", err);
+    throw err;
+  }
 };

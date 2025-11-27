@@ -10,7 +10,7 @@ const ChatWindow = ({ mensajes, usuarioActual }) => {
   }, [mensajes]);
 
   return (
-    <Box 
+    <Box
       sx={{
         flex: 1,
         p: 2,
@@ -56,9 +56,7 @@ const ChatWindow = ({ mensajes, usuarioActual }) => {
                 sx={{
                   maxWidth: "70%",
                   p: 1.5,
-                  background: esPaciente
-                    ? "#F5E3E9 "
-                    : " #e5eef7ff",
+                  background: esPaciente ? "#F5E3E9 " : " #e5eef7ff",
                   color: esPaciente ? "#fff" : "#333",
                   borderRadius: "18px",
                   borderTopRightRadius: esPaciente ? "6px" : "18px",
@@ -86,7 +84,7 @@ const ChatWindow = ({ mensajes, usuarioActual }) => {
                     fontSize: "0.95rem",
                     lineHeight: 1.4,
                     whiteSpace: "pre-wrap",
-                    color: "#080808ff"
+                    color: "#080808ff",
                   }}
                 >
                   {msg.mensaje}

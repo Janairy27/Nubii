@@ -13,7 +13,7 @@ import {
   Card,
   CardContent,
   Chip,
-  Grid
+  Grid,
 } from "@mui/material";
 import { Snackbar, Alert } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -42,50 +42,150 @@ import GrainIcon from "@mui/icons-material/Grain";
 import OpacityIcon from "@mui/icons-material/Opacity";
 import WbTwilightIcon from "@mui/icons-material/WbTwilight";
 
-
 // Catálogo de emociones
 const emocionesSaludMental = [
   {
     categoria: "🔴 Ansiedad",
     emociones: [
-      { id: 1, nombre: "Ansiedad Generalizada", icono: <PsychologyIcon />, descripcion: "Preocupación constante y excesiva", color: "#af564cff" },
-      { id: 2, nombre: "Ataque de Pánico", icono: <MoodBadIcon />, descripcion: "Miedo intenso con síntomas físicos", color: "#d65e51ff" },
-      { id: 3, nombre: "Inquietud", icono: <HourglassEmptyIcon />, descripcion: "Dificultad para estar tranquilo", color: "#881a0eff" },
-      { id: 4, nombre: "Evitación", icono: <PsychologyIcon />, descripcion: "Escapar de situaciones temidas", color: "#af3e31ff" },
+      {
+        id: 1,
+        nombre: "Ansiedad Generalizada",
+        icono: <PsychologyIcon />,
+        descripcion: "Preocupación constante y excesiva",
+        color: "#af564cff",
+      },
+      {
+        id: 2,
+        nombre: "Ataque de Pánico",
+        icono: <MoodBadIcon />,
+        descripcion: "Miedo intenso con síntomas físicos",
+        color: "#d65e51ff",
+      },
+      {
+        id: 3,
+        nombre: "Inquietud",
+        icono: <HourglassEmptyIcon />,
+        descripcion: "Dificultad para estar tranquilo",
+        color: "#881a0eff",
+      },
+      {
+        id: 4,
+        nombre: "Evitación",
+        icono: <PsychologyIcon />,
+        descripcion: "Escapar de situaciones temidas",
+        color: "#af3e31ff",
+      },
     ],
   },
   {
     categoria: "🟠 Estrés",
     emociones: [
-      { id: 5, nombre: "Estrés Agudo", icono: <MoodBadIcon />, descripcion: "Respuesta inmediata a presión", color: "#ff9800" },
-      { id: 6, nombre: "Irritabilidad", icono: <PsychologyIcon />, descripcion: "Baja tolerancia a frustraciones", color: "#c6811bff" },
-      { id: 7, nombre: "Agobio", icono: <MoodBadIcon />, descripcion: "Sensación de estar sobrepasado", color: "#rgba(238, 158, 36, 1)" },
-      { id: 8, nombre: "Tensión Muscular", icono: <HourglassEmptyIcon />, descripcion: "Rigidez y dolor corporal", color: "#f3a838ff" },
+      {
+        id: 5,
+        nombre: "Estrés Agudo",
+        icono: <MoodBadIcon />,
+        descripcion: "Respuesta inmediata a presión",
+        color: "#ff9800",
+      },
+      {
+        id: 6,
+        nombre: "Irritabilidad",
+        icono: <PsychologyIcon />,
+        descripcion: "Baja tolerancia a frustraciones",
+        color: "#c6811bff",
+      },
+      {
+        id: 7,
+        nombre: "Agobio",
+        icono: <MoodBadIcon />,
+        descripcion: "Sensación de estar sobrepasado",
+        color: "#rgba(238, 158, 36, 1)",
+      },
+      {
+        id: 8,
+        nombre: "Tensión Muscular",
+        icono: <HourglassEmptyIcon />,
+        descripcion: "Rigidez y dolor corporal",
+        color: "#f3a838ff",
+      },
     ],
   },
   {
     categoria: "🔵 Depresión",
     emociones: [
-      { id: 9, nombre: "Tristeza Persistente", icono: <MoodBadIcon />, descripcion: "Melancolía prolongada en el tiempo", color: "#1d70b4ff" },
-      { id: 10, nombre: "Apatía", icono: <PsychologyIcon />, descripcion: "Falta de interés o motivación", color: "#087ddeff" },
-      { id: 11, nombre: "Desesperanza", icono: <MoodBadIcon />, descripcion: "Pérdida de expectativas futuras", color: "#3e64e4ff" },
-      { id: 12, nombre: "Fatiga Crónica", icono: <HourglassEmptyIcon />, descripcion: "Cansancio persistente", color: "#207ac3ff" },
+      {
+        id: 9,
+        nombre: "Tristeza Persistente",
+        icono: <MoodBadIcon />,
+        descripcion: "Melancolía prolongada en el tiempo",
+        color: "#1d70b4ff",
+      },
+      {
+        id: 10,
+        nombre: "Apatía",
+        icono: <PsychologyIcon />,
+        descripcion: "Falta de interés o motivación",
+        color: "#087ddeff",
+      },
+      {
+        id: 11,
+        nombre: "Desesperanza",
+        icono: <MoodBadIcon />,
+        descripcion: "Pérdida de expectativas futuras",
+        color: "#3e64e4ff",
+      },
+      {
+        id: 12,
+        nombre: "Fatiga Crónica",
+        icono: <HourglassEmptyIcon />,
+        descripcion: "Cansancio persistente",
+        color: "#207ac3ff",
+      },
     ],
   },
   {
     categoria: "🟢 Síntomas Físicos",
     emociones: [
-      { id: 13, nombre: "Problemas de Sueño", icono: <LocalHotelIcon />, descripcion: "Insomnio o exceso de sueño", color: "#1d9821ff" },
-      { id: 14, nombre: "Cambios Apetito", icono: <RestaurantIcon />, descripcion: "Aumento o disminución alimenticia", color: "#069c0bff" },
-      { id: 15, nombre: "Dificultad Concentración", icono: <PsychologyIcon />, descripcion: "Problemas para enfocarse", color: "#18b00eff" },
-      { id: 16, nombre: "Síntomas Somáticos", icono: <PsychologyIcon />, descripcion: "Molestias físicas sin causa médica", color: "#4eb91dff" },
+      {
+        id: 13,
+        nombre: "Problemas de Sueño",
+        icono: <LocalHotelIcon />,
+        descripcion: "Insomnio o exceso de sueño",
+        color: "#1d9821ff",
+      },
+      {
+        id: 14,
+        nombre: "Cambios Apetito",
+        icono: <RestaurantIcon />,
+        descripcion: "Aumento o disminución alimenticia",
+        color: "#069c0bff",
+      },
+      {
+        id: 15,
+        nombre: "Dificultad Concentración",
+        icono: <PsychologyIcon />,
+        descripcion: "Problemas para enfocarse",
+        color: "#18b00eff",
+      },
+      {
+        id: 16,
+        nombre: "Síntomas Somáticos",
+        icono: <PsychologyIcon />,
+        descripcion: "Molestias físicas sin causa médica",
+        color: "#4eb91dff",
+      },
     ],
   },
 ];
 
 const climaOptions = [
   { value: 1, icon: <WbSunnyIcon />, label: "Soleado", color: "#FFB74D" },
-  { value: 2, icon: <WbCloudyIcon />, label: "Parc. Nublado", color: "#90A4AE" },
+  {
+    value: 2,
+    icon: <WbCloudyIcon />,
+    label: "Parc. Nublado",
+    color: "#90A4AE",
+  },
   { value: 3, icon: <CloudIcon />, label: "Nublado", color: "#78909C" },
   { value: 4, icon: <BeachAccessIcon />, label: "Lluvioso", color: "#4FC3F7" },
   { value: 5, icon: <BlurOnIcon />, label: "Neblina", color: "#B0BEC5" },
@@ -148,7 +248,6 @@ const RegistroSintomas = () => {
     return "#092181";
   };
 
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -168,7 +267,6 @@ const RegistroSintomas = () => {
     axios
       .post("http://localhost:4000/api/sintomas/registrar-sintoma", data)
       .then(() => {
-
         mostrarMensaje("Síntoma registrado exitosamente.", "success");
         setOpenSnackbar(true);
         setTimeout(() => navigate("/dashboard"), 2000);
@@ -180,20 +278,23 @@ const RegistroSintomas = () => {
         // Verificar que la respuesta 400 tenga datos estructurados
         if (err.response && err.response.data) {
           const dataError = err.response.data;
-          if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
+          if (
+            dataError.errores &&
+            Array.isArray(dataError.errores) &&
+            dataError.errores.length > 0
+          ) {
             // Unir  los errores de validación en una sola cadena
-            mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-          }
-          
-          else if (dataError.message) {
+            mensajeError = `Errores de validación: ${dataError.errores.join(
+              "; "
+            )}`;
+          } else if (dataError.message) {
             mensajeError = dataError.message;
           }
         }
-        // Mostrar el mensaje de error específico o el genérico 
+        // Mostrar el mensaje de error específico o el genérico
         mostrarMensaje(mensajeError, "error");
       });
   };
-
 
   return (
     <Layout>
@@ -231,26 +332,32 @@ const RegistroSintomas = () => {
           >
             {/* Info Básica + Intensidad */}
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
-              <Card sx={{
-                flex: "1 1 100%", minWidth: "280px", flexBasis: "48%",
-                alignContent: "center",
-                borderRadius: 3,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-                background: " #f8f9ff",
-                border: "1px solid #e0e7ff",
-              }}>
+              <Card
+                sx={{
+                  flex: "1 1 100%",
+                  minWidth: "280px",
+                  flexBasis: "48%",
+                  alignContent: "center",
+                  borderRadius: 3,
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+                  background: " #f8f9ff",
+                  border: "1px solid #e0e7ff",
+                }}
+              >
                 <CardContent>
-                  <Typography variant="h6"
+                  <Typography
+                    variant="h6"
                     sx={{
                       color: "#092181",
                       mb: 2,
                       fontWeight: "bold",
-
-                    }}>
+                    }}
+                  >
                     👤 Información Básica
                   </Typography>
                   <TextField
-                    fullWidth l
+                    fullWidth
+                    l
                     abel="Paciente"
                     value={nombre}
                     disabled
@@ -278,10 +385,13 @@ const RegistroSintomas = () => {
                         color: "#777777",
                         opacity: 1,
                       },
-
                     }}
-                    size="small" />
-                  <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
+                    size="small"
+                  />
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
+                    adapterLocale={es}
+                  >
                     <DatePicker
                       label="Fecha del registro"
                       value={fecha}
@@ -289,7 +399,8 @@ const RegistroSintomas = () => {
                       onChange={(newValue) => setFecha(newValue)}
                       slotProps={{
                         textField: {
-                          fullWidth: true, size: "small",
+                          fullWidth: true,
+                          size: "small",
                           sx: {
                             mt: 2,
                             "& .MuiOutlinedInput-root": {
@@ -318,30 +429,40 @@ const RegistroSintomas = () => {
                 </CardContent>
               </Card>
 
-              <Card sx={{
-                flex: "1 1 100%",
-                minWidth: "280px",
-                borderRadius: 3,
-                flexBasis: "48%",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-                background: " #f8f9ff",
-                border: "1px solid #e0e7ff",
-              }}>
+              <Card
+                sx={{
+                  flex: "1 1 100%",
+                  minWidth: "280px",
+                  borderRadius: 3,
+                  flexBasis: "48%",
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+                  background: " #f8f9ff",
+                  border: "1px solid #e0e7ff",
+                }}
+              >
                 <CardContent>
-                  <Typography variant="h6" sx={{ color: "#092181", mb: 2, fontWeight: "bold" }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "#092181", mb: 2, fontWeight: "bold" }}
+                  >
                     📊 Intensidad del Síntoma
                   </Typography>
                   <Box sx={{ textAlign: "center", mb: 2 }}>
                     <Chip
                       label={`Nivel ${intensidad}/10`}
-                      color={intensidad > 7 ? "error" : intensidad > 3 ? "warning" : "primary"}
+                      color={
+                        intensidad > 7
+                          ? "error"
+                          : intensidad > 3
+                          ? "warning"
+                          : "primary"
+                      }
                       sx={{
                         fontSize: "1.1rem",
                         fontWeight: "bold",
                         px: 2,
-                        py: 1
+                        py: 1,
                       }}
-
                     />
                   </Box>
                   <Slider
@@ -354,10 +475,31 @@ const RegistroSintomas = () => {
                     valueLabelDisplay="auto"
                     sx={{ color: getSliderColor(intensidad) }}
                   />
-                  <Box sx={{ display: "flex", justifyContent: "space-between", px: 1 }}>
-                    <Typography variant="caption" sx={{ color: "#092181", fontWeight: "bold" }}>Leve</Typography>
-                    <Typography variant="caption" sx={{ color: "#2D5D7B", fontWeight: "bold" }}>Moderado</Typography>
-                    <Typography variant="caption" sx={{ color: "#67121A", fontWeight: "bold" }}>Severo</Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      px: 1,
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      sx={{ color: "#092181", fontWeight: "bold" }}
+                    >
+                      Leve
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      sx={{ color: "#2D5D7B", fontWeight: "bold" }}
+                    >
+                      Moderado
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      sx={{ color: "#67121A", fontWeight: "bold" }}
+                    >
+                      Severo
+                    </Typography>
                   </Box>
                 </CardContent>
               </Card>
@@ -374,7 +516,10 @@ const RegistroSintomas = () => {
               }}
             >
               <CardContent>
-                <Typography variant="h6" sx={{ color: "#092181", mb: 3, fontWeight: "bold" }}>
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#092181", mb: 3, fontWeight: "bold" }}
+                >
                   💭 Selecciona tu Estado Emocional
                 </Typography>
 
@@ -383,12 +528,16 @@ const RegistroSintomas = () => {
                     <Typography
                       variant="subtitle1"
                       sx={{
-                        color: grupo.categoria.includes("🔴") ? "#d32f2f" :
-                          grupo.categoria.includes("🟠") ? "#f57c00" :
-                            grupo.categoria.includes("🔵") ? "#1976d2" : "#388e3c",
+                        color: grupo.categoria.includes("🔴")
+                          ? "#d32f2f"
+                          : grupo.categoria.includes("🟠")
+                          ? "#f57c00"
+                          : grupo.categoria.includes("🔵")
+                          ? "#1976d2"
+                          : "#388e3c",
                         mb: 2,
                         fontWeight: "bold",
-                        fontSize: "1rem"
+                        fontSize: "1rem",
                       }}
                     >
                       {grupo.categoria}
@@ -400,7 +549,9 @@ const RegistroSintomas = () => {
                           <ToggleButton
                             value={emo.id}
                             selected={emocion === emo.id}
-                            onChange={() => setEmocion(emocion === emo.id ? "" : emo.id)}
+                            onChange={() =>
+                              setEmocion(emocion === emo.id ? "" : emo.id)
+                            }
                             sx={{
                               cursor: "pointer",
                               borderRadius: 2,
@@ -415,26 +566,35 @@ const RegistroSintomas = () => {
                               justifyContent: "center",
                               gap: 0.5,
                               borderColor: emo.color,
-                              backgroundColor: emocion === emo.id ? emo.color : "transparent",
+                              backgroundColor:
+                                emocion === emo.id ? emo.color : "transparent",
                               color: emocion === emo.id ? "white" : emo.color,
                               borderWidth: 2,
-                              boxShadow: emocion === emo.id
-                                ? `0 4px 12px ${emo.color}40`
-                                : "0 2px 4px rgba(0,0,0,0.08)",
+                              boxShadow:
+                                emocion === emo.id
+                                  ? `0 4px 12px ${emo.color}40`
+                                  : "0 2px 4px rgba(0,0,0,0.08)",
                               transition: "all 0.2s ease",
                               "&:hover": {
                                 transform: "translateY(-2px)",
-                                boxShadow: emocion === emo.id
-                                  ? `0 6px 16px ${emo.color}60`
-                                  : `0 4px 8px ${emo.color}30`,
-                                backgroundColor: emocion === emo.id ? emo.color : `${emo.color}10`,
+                                boxShadow:
+                                  emocion === emo.id
+                                    ? `0 6px 16px ${emo.color}60`
+                                    : `0 4px 8px ${emo.color}30`,
+                                backgroundColor:
+                                  emocion === emo.id
+                                    ? emo.color
+                                    : `${emo.color}10`,
                               },
                             }}
                           >
-                            <Box sx={{
-                              fontSize: "1.5rem",
-                              color: emocion === emo.id ? "#363535ff" : emo.color
-                            }}>
+                            <Box
+                              sx={{
+                                fontSize: "1.5rem",
+                                color:
+                                  emocion === emo.id ? "#363535ff" : emo.color,
+                              }}
+                            >
                               {emo.icono}
                             </Box>
                             <Typography
@@ -442,7 +602,7 @@ const RegistroSintomas = () => {
                               sx={{
                                 fontWeight: "bold",
                                 textAlign: "center",
-                                lineHeight: 1.2
+                                lineHeight: 1.2,
                               }}
                             >
                               {emo.nombre}
@@ -454,11 +614,12 @@ const RegistroSintomas = () => {
                                 opacity: 0.8,
                                 fontSize: "0.65rem",
                                 lineHeight: 1.1,
-                                color: emocion === emo.id ? "#363535ff" : "#666",
+                                color:
+                                  emocion === emo.id ? "#363535ff" : "#666",
                                 display: "-webkit-box",
                                 WebkitLineClamp: 2,
                                 WebkitBoxOrient: "vertical",
-                                overflow: "hidden"
+                                overflow: "hidden",
                               }}
                             >
                               {emo.descripcion}
@@ -482,7 +643,10 @@ const RegistroSintomas = () => {
               }}
             >
               <CardContent>
-                <Typography variant="h6" sx={{ color: "#092181", mb: 2, fontWeight: "bold" }}>
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#092181", mb: 2, fontWeight: "bold" }}
+                >
                   🏠 Contexto y Ambiente
                 </Typography>
                 <TextField
@@ -593,39 +757,58 @@ const RegistroSintomas = () => {
             {/* Clima + Notas */}
             <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
               {/* Card Clima */}
-              <Card sx={{
-                flex: "1 1 48%",
-                minWidth: "300px",
-                borderRadius: 3,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-                background: "#f8f9ff",
-                border: "1px solid #e0e7ff",
-                height: "380px",
-                display: "flex",
-                flexDirection: "column"
-              }}>
-                <CardContent sx={{ p: 3, flex: 1, display: "flex", flexDirection: "column" }}>
-                  <Typography variant="h6" sx={{ color: "#092181", mb: 2, fontWeight: "bold" }}>
+              <Card
+                sx={{
+                  flex: "1 1 48%",
+                  minWidth: "300px",
+                  borderRadius: 3,
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+                  background: "#f8f9ff",
+                  border: "1px solid #e0e7ff",
+                  height: "380px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <CardContent
+                  sx={{
+                    p: 3,
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "#092181", mb: 2, fontWeight: "bold" }}
+                  >
                     🌤️ Condiciones Climáticas
                   </Typography>
 
                   {/* Botones de clima con flex */}
-                  <Box sx={{
-                    flex: 1,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 1.5
-                  }}>
+                  <Box
+                    sx={{
+                      flex: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 1.5,
+                    }}
+                  >
                     {[0, 1, 2].map((filaIndex) => (
-                      <Box key={filaIndex} sx={{
-                        display: "flex",
-                        gap: 1.5,
-                        flex: 1
-                      }}>
+                      <Box
+                        key={filaIndex}
+                        sx={{
+                          display: "flex",
+                          gap: 1.5,
+                          flex: 1,
+                        }}
+                      >
                         {climaOptions
                           .slice(
                             Math.floor((filaIndex * climaOptions.length) / 3),
-                            Math.floor(((filaIndex + 1) * climaOptions.length) / 3)
+                            Math.floor(
+                              ((filaIndex + 1) * climaOptions.length) / 3
+                            )
                           )
                           .map((climaOption) => (
                             <ToggleButton
@@ -633,7 +816,11 @@ const RegistroSintomas = () => {
                               value={climaOption.value}
                               selected={clima === climaOption.value}
                               onChange={() =>
-                                setClima(clima === climaOption.value ? null : climaOption.value)
+                                setClima(
+                                  clima === climaOption.value
+                                    ? null
+                                    : climaOption.value
+                                )
                               }
                               sx={{
                                 cursor: "pointer",
@@ -642,9 +829,18 @@ const RegistroSintomas = () => {
                                 textTransform: "capitalize",
                                 borderRadius: 2,
                                 border: "2px solid",
-                                borderColor: clima === climaOption.value ? climaOption.color : "#e0e7ff",
-                                backgroundColor: clima === climaOption.value ? climaOption.color : "transparent",
-                                color: clima === climaOption.value ? "white" : "#424242",
+                                borderColor:
+                                  clima === climaOption.value
+                                    ? climaOption.color
+                                    : "#e0e7ff",
+                                backgroundColor:
+                                  clima === climaOption.value
+                                    ? climaOption.color
+                                    : "transparent",
+                                color:
+                                  clima === climaOption.value
+                                    ? "white"
+                                    : "#424242",
                                 boxShadow: `0 4px 12px ${climaOption.color}40`,
                                 transition: "all 0.2s ease",
                                 "&:hover": {
@@ -658,14 +854,16 @@ const RegistroSintomas = () => {
                                 gap: 0.5,
                               }}
                             >
-                              <Box sx={{ fontSize: "1.3rem" }}>{climaOption.icon}</Box>
+                              <Box sx={{ fontSize: "1.3rem" }}>
+                                {climaOption.icon}
+                              </Box>
                               <Typography
                                 variant="caption"
                                 sx={{
                                   fontWeight: "bold",
                                   textAlign: "center",
                                   fontSize: "0.65rem",
-                                  lineHeight: 1
+                                  lineHeight: 1,
                                 }}
                               >
                                 {climaOption.label}
@@ -679,23 +877,37 @@ const RegistroSintomas = () => {
               </Card>
 
               {/* Card Notas */}
-              <Card sx={{
-                flex: "1 1 48%",
-                minWidth: "300px",
-                borderRadius: 3,
-                boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-                background: "#f8f9ff",
-                border: "1px solid #e0e7ff",
-                height: "380px",
-                display: "flex",
-                flexDirection: "column"
-              }}>
-                <CardContent sx={{ p: 3, flex: 1, display: "flex", flexDirection: "column" }}>
-                  <Typography variant="h6" sx={{ color: "#092181", mb: 2, fontWeight: "bold" }}>
+              <Card
+                sx={{
+                  flex: "1 1 48%",
+                  minWidth: "300px",
+                  borderRadius: 3,
+                  boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+                  background: "#f8f9ff",
+                  border: "1px solid #e0e7ff",
+                  height: "380px",
+                  display: "flex",
+                  flexDirection: "column",
+                }}
+              >
+                <CardContent
+                  sx={{
+                    p: 3,
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{ color: "#092181", mb: 2, fontWeight: "bold" }}
+                  >
                     📝 Notas
                   </Typography>
 
-                  <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
+                  <Box
+                    sx={{ flex: 1, display: "flex", flexDirection: "column" }}
+                  >
                     <TextField
                       fullWidth
                       multiline
@@ -743,19 +955,21 @@ const RegistroSintomas = () => {
                           "& textarea": {
                             height: "100% !important",
                             resize: "none",
-                          }
-                        }
+                          },
+                        },
                       }}
                     />
 
                     {/* Contador de caracteres */}
-                    <Box sx={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      mt: 1,
-                      px: 0.5
-                    }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        mt: 1,
+                        px: 0.5,
+                      }}
+                    >
                       <Typography variant="caption" sx={{ color: "#718096" }}>
                         Escribe tus observaciones...
                       </Typography>
@@ -763,7 +977,7 @@ const RegistroSintomas = () => {
                         variant="caption"
                         sx={{
                           color: notas.length > 400 ? "#d32f2f" : "#718096",
-                          fontWeight: notas.length > 400 ? "bold" : "normal"
+                          fontWeight: notas.length > 400 ? "bold" : "normal",
                         }}
                       >
                         {notas.length}/1000
@@ -780,7 +994,6 @@ const RegistroSintomas = () => {
                 mt: 3,
                 p: 2,
               }}
-
             >
               {/* Botón */}
               <Button
@@ -794,13 +1007,14 @@ const RegistroSintomas = () => {
                   px: 5,
                   py: 1.5,
                   fontWeight: "bold",
-                  textTransform: "capitalize"
+                  textTransform: "capitalize",
                 }}
               >
-                {emocion ? "💾 Guardar Registro" : "Selecciona una emoción para guardar"}
+                {emocion
+                  ? "💾 Guardar Registro"
+                  : "Selecciona una emoción para guardar"}
               </Button>
             </Box>
-
           </Box>
 
           {/*  Snackbar para mensajes*/}

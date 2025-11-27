@@ -2,22 +2,23 @@ import express from "express";
 import {
   registrarNotificacion,
   listarNotificaciones,
-  borrarNotificacion
+  borrarNotificacion,
 } from "../controllers/notificacionController.js";
 
-import { marcarLeido, marcarTodasLeidas } from "../controllers/notificacionController.js";
+import {
+  marcarLeido,
+  marcarTodasLeidas,
+} from "../controllers/notificacionController.js";
 
 const router = express.Router();
 
-router.post("/", registrarNotificacion); // Crear nueva
-router.get("/:idUsuario", listarNotificaciones); // Ver notificaciones por usuario
+router.post("/", registrarNotificacion); 
+router.get("/:idUsuario", listarNotificaciones); 
 
-router.delete("/:idNotificacion", borrarNotificacion); // Eliminar
+router.delete("/:idNotificacion", borrarNotificacion); 
 
-// Endpoint para marcar notificación como leída
 router.put("/marcar-leido/:idNotificacion", marcarLeido);
 
 router.put("/marcar-todas/:idUsuario", marcarTodasLeidas);
-
 
 export default router;

@@ -21,16 +21,16 @@ import {
   Chip,
 } from "@mui/material";
 import { Drafts, Public, Close, CheckCircle } from "@mui/icons-material";
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import Person2Icon from '@mui/icons-material/Person2';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import SettingsIcon from '@mui/icons-material/Settings';
-import AssignmentAddIcon from '@mui/icons-material/AssignmentAdd';
-import DescriptionIcon from '@mui/icons-material/Description';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Cancel';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import Person2Icon from "@mui/icons-material/Person2";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import SettingsIcon from "@mui/icons-material/Settings";
+import AssignmentAddIcon from "@mui/icons-material/AssignmentAdd";
+import DescriptionIcon from "@mui/icons-material/Description";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 
 export const PublicoMap = {
@@ -43,12 +43,10 @@ export const recomendacionMap = {
   2: { label: "Sí", color: "#43A047", icon: <CheckCircle /> },
 };
 
-
-
 export default function ActividadPersonalizada() {
   const [idUsuario, setIdUsuario] = useState(null);
   const [idProfesional, setIdProfesional] = useState(null);
-  const [Nombre, setNombre] = useState('');
+  const [Nombre, setNombre] = useState("");
 
   const [idPaciente, setIdPaciente] = useState(null);
   const [pacientes, setPacientes] = useState([]);
@@ -70,7 +68,6 @@ export default function ActividadPersonalizada() {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [mensajeSnackbar, setMensajeSnackbar] = useState("");
   const [tipoSnackbar, setTipoSnackbar] = useState("success");
-
 
   const mostrarMensaje = (msg, severity = "info") => {
     setMensajeSnackbar(msg);
@@ -101,15 +98,18 @@ export default function ActividadPersonalizada() {
     }
   }, []);
 
-  { /* useEffect(() => {
+  {
+    /* useEffect(() => {
     if(idProfesional){
         obtenerActividades();
     }
-  }, [idProfesional]);*/}
+  }, [idProfesional]);*/
+  }
 
   const obtenerActividades = (enviadoParam = vista) => {
     axios
-      .get(`http://localhost:4000/api/Recomendacion/obtener-recomendaciones/${idProfesional}/${vista}`,
+      .get(
+        `http://localhost:4000/api/Recomendacion/obtener-recomendaciones/${idProfesional}/${vista}`
       )
       .then((res) => {
         setActividadPersonalizada(res.data);
@@ -133,12 +133,16 @@ export default function ActividadPersonalizada() {
       idPaciente,
       actividad,
       descripcion,
-      publico
+      publico,
     };
 
     console.log("Enviando data:", data);
 
-    axios.post("http://localhost:4000/api/recomendacion/registro-recomendacion", data)
+    axios
+      .post(
+        "http://localhost:4000/api/recomendacion/registro-recomendacion",
+        data
+      )
       .then(() => {
         navigate("/actividad-personalizada");
         mostrarMensaje("Resultado registrado exitosamente.", "success");
@@ -152,16 +156,20 @@ export default function ActividadPersonalizada() {
           const dataError = err.response.data;
 
           // 2. Si el backend devolvió una lista de errores
-          if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
+          if (
+            dataError.errores &&
+            Array.isArray(dataError.errores) &&
+            dataError.errores.length > 0
+          ) {
             // Unir  los errores de validación en una sola cadena
-            mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-          }
-
-          else if (dataError.message) {
+            mensajeError = `Errores de validación: ${dataError.errores.join(
+              "; "
+            )}`;
+          } else if (dataError.message) {
             mensajeError = dataError.message;
           }
         }
-        // Mostrar el mensaje de error específico o el genérico 
+        // Mostrar el mensaje de error específico o el genérico
         mostrarMensaje(mensajeError, "error");
       });
   };
@@ -185,21 +193,27 @@ export default function ActividadPersonalizada() {
           const dataError = err.response.data;
 
           // Verificar que la respuesta 400 tenga datos estructurados
-          if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
+          if (
+            dataError.errores &&
+            Array.isArray(dataError.errores) &&
+            dataError.errores.length > 0
+          ) {
             // Unir  los errores de validación en una sola cadena
-            mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-          }
-          else if (dataError.message) {
+            mensajeError = `Errores de validación: ${dataError.errores.join(
+              "; "
+            )}`;
+          } else if (dataError.message) {
             mensajeError = dataError.message;
           }
         }
-        // Mostrar el mensaje de error específico o el genérico 
+        // Mostrar el mensaje de error específico o el genérico
         mostrarMensaje(mensajeError, "error");
       });
   };
 
   const obtenerPacientes = () => {
-    axios.get(`http://localhost:4000/api/citas/pacientes/${idProfesional}`)
+    axios
+      .get(`http://localhost:4000/api/citas/pacientes/${idProfesional}`)
       .then((res) => setPacientes(res.data))
       .catch((err) => console.log("Error al obtener pacientes", err));
   };
@@ -212,22 +226,31 @@ export default function ActividadPersonalizada() {
   }, [idProfesional, vista]);
 
   const InfoItem = ({ icon, label, value }) => (
-    <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
-      <Box sx={{
-        mr: 2,
-        color: '#355C7D',
-        display: 'flex',
-        alignItems: 'center',
-        minWidth: '24px',
-        mt: 0.5
-      }}>
+    <Box sx={{ display: "flex", alignItems: "flex-start", mb: 2 }}>
+      <Box
+        sx={{
+          mr: 2,
+          color: "#355C7D",
+          display: "flex",
+          alignItems: "center",
+          minWidth: "24px",
+          mt: 0.5,
+        }}
+      >
         {icon}
       </Box>
       <Box sx={{ flex: 1 }}>
-        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ fontSize: "0.8rem" }}
+        >
           {label}
         </Typography>
-        <Typography variant="body1" sx={{ fontWeight: 'medium', wordBreak: 'break-word' }}>
+        <Typography
+          variant="body1"
+          sx={{ fontWeight: "medium", wordBreak: "break-word" }}
+        >
           {value || "No especificado"}
         </Typography>
       </Box>
@@ -247,17 +270,19 @@ export default function ActividadPersonalizada() {
           minHeight: "100vh",
         }}
       >
-        <Paper sx={{
-          p: { xs: 2, md: 4 },
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#F4F6F8",
-          width: "100%",
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}>
+        <Paper
+          sx={{
+            p: { xs: 2, md: 4 },
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F4F6F8",
+            width: "100%",
+            mx: "auto",
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
+        >
           {/* Título */}
           <Box
             sx={{
@@ -331,17 +356,20 @@ export default function ActividadPersonalizada() {
             )}
           </Box>
 
-
           {msg && (
-            <Alert severity={msg.includes("✅") ? "success" : "error"} sx={{ mt: 2 }}>
+            <Alert
+              severity={msg.includes("✅") ? "success" : "error"}
+              sx={{ mt: 2 }}
+            >
               {msg}
             </Alert>
           )}
 
           {/* Formulario */}
           {mostrarFormulario && (
-
-            <Box component="form" onSubmit={handleSubmit}
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
               sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -361,26 +389,29 @@ export default function ActividadPersonalizada() {
                 }}
               >
                 {/*  Datos generales */}
-                <Card sx={{
-                  flex: 1,
-                  width: "100%",
-                  maxWidth: 400,
-                  borderRadius: 4,
-                  backgroundColor: "#f8f9ff",
-                  border: "1px solid #d8e0ff",
-                  boxShadow: "0 6px 18px rgba(9, 33, 129, 0.08)",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    boxShadow: "0 8px 24px rgba(9, 33, 129, 0.15)",
-                    transform: "translateY(-3px)",
-                  },
-                }}>
+                <Card
+                  sx={{
+                    flex: 1,
+                    width: "100%",
+                    maxWidth: 400,
+                    borderRadius: 4,
+                    backgroundColor: "#f8f9ff",
+                    border: "1px solid #d8e0ff",
+                    boxShadow: "0 6px 18px rgba(9, 33, 129, 0.08)",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      boxShadow: "0 8px 24px rgba(9, 33, 129, 0.15)",
+                      transform: "translateY(-3px)",
+                    },
+                  }}
+                >
                   <CardContent
                     sx={{
                       display: "flex",
                       flexDirection: "column",
                       gap: 2,
-                    }}>
+                    }}
+                  >
                     <Box
                       sx={{
                         display: "flex",
@@ -447,7 +478,8 @@ export default function ActividadPersonalizada() {
                           color: "#2D5D7B",
                           fontWeight: "bold",
                         },
-                      }}>
+                      }}
+                    >
                       <InputLabel>Paciente</InputLabel>
                       <Select
                         name="paciente"
@@ -481,13 +513,15 @@ export default function ActividadPersonalizada() {
                       boxShadow: "0 8px 24px rgba(9, 33, 129, 0.15)",
                       transform: "translateY(-3px)",
                     },
-                  }}>
+                  }}
+                >
                   <CardContent
                     sx={{
                       display: "flex",
                       flexDirection: "column",
                       gap: 2,
-                    }}>
+                    }}
+                  >
                     <Box
                       sx={{
                         display: "flex",
@@ -575,24 +609,24 @@ export default function ActividadPersonalizada() {
                   width: "100%",
                 }}
               >
-
-                <Card sx={{
-                  flex: 1,
-                  width: "100%",
-                  maxWidth: 500,
-                  borderRadius: 4,
-                  backgroundColor: "#f8f9ff",
-                  border: "1px solid #d8e0ff",
-                  boxShadow: "0 6px 18px rgba(9, 33, 129, 0.08)",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    boxShadow: "0 8px 24px rgba(9, 33, 129, 0.15)",
-                    transform: "translateY(-3px)",
-                  },
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center"
-                }}
+                <Card
+                  sx={{
+                    flex: 1,
+                    width: "100%",
+                    maxWidth: 500,
+                    borderRadius: 4,
+                    backgroundColor: "#f8f9ff",
+                    border: "1px solid #d8e0ff",
+                    boxShadow: "0 6px 18px rgba(9, 33, 129, 0.08)",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      boxShadow: "0 8px 24px rgba(9, 33, 129, 0.15)",
+                      transform: "translateY(-3px)",
+                    },
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                  }}
                 >
                   <CardContent
                     sx={{
@@ -600,13 +634,15 @@ export default function ActividadPersonalizada() {
                       flexDirection: "column",
                       gap: 2,
                     }}
-                  > <Box
-                    sx={{
-                      display: "flex",
-                      gap: 1,
-                      mb: 1,
-                    }}
                   >
+                    {" "}
+                    <Box
+                      sx={{
+                        display: "flex",
+                        gap: 1,
+                        mb: 1,
+                      }}
+                    >
                       <SettingsIcon sx={{ color: "#092181", fontSize: 28 }} />
                       <Typography
                         variant="h6"
@@ -621,25 +657,26 @@ export default function ActividadPersonalizada() {
                       </Typography>
                     </Box>
                     <Divider sx={{ mb: 3 }} />
-
-                    <FormControl sx={{
-                      width: "100%",
-                      maxWidth: "400px",
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        backgroundColor: "#FFFFFF",
-                        "& fieldset": { borderColor: "#CBD4D8" },
-                        "&:hover fieldset": { borderColor: "#355C7D" },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#092181",
-                          borderWidth: "2px",
+                    <FormControl
+                      sx={{
+                        width: "100%",
+                        maxWidth: "400px",
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "12px",
+                          backgroundColor: "#FFFFFF",
+                          "& fieldset": { borderColor: "#CBD4D8" },
+                          "&:hover fieldset": { borderColor: "#355C7D" },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#092181",
+                            borderWidth: "2px",
+                          },
                         },
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "#2D5D7B",
-                        fontWeight: "bold",
-                      },
-                    }}>
+                        "& .MuiInputLabel-root": {
+                          color: "#2D5D7B",
+                          fontWeight: "bold",
+                        },
+                      }}
+                    >
                       <InputLabel>Publicar actividad</InputLabel>
                       <Select
                         name="publico"
@@ -649,15 +686,22 @@ export default function ActividadPersonalizada() {
                       >
                         {Object.entries(PublicoMap).map(([key, pub]) => (
                           <MenuItem key={key} value={Number(key)}>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <Box sx={{ color: pub.color, fontSize: 20 }}>{pub.icon}</Box>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
+                              <Box sx={{ color: pub.color, fontSize: 20 }}>
+                                {pub.icon}
+                              </Box>
                               {pub.label}
                             </Box>
                           </MenuItem>
                         ))}
                       </Select>
                     </FormControl>
-
                     <Box
                       sx={{
                         display: "flex",
@@ -670,7 +714,7 @@ export default function ActividadPersonalizada() {
                         variant="contained"
                         startIcon={<AssignmentAddIcon />}
                         sx={{
-                          minWidth: '140px',
+                          minWidth: "140px",
                           textTransform: "capitalize",
                           borderRadius: 2,
                           background: "#2D5D7B",
@@ -684,10 +728,11 @@ export default function ActividadPersonalizada() {
                 </Card>
               </Box>
             </Box>
-
           )}
 
-          <Box sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 3 }}>
+          <Box
+            sx={{ display: "flex", justifyContent: "center", gap: 2, mb: 3 }}
+          >
             {Object.entries(PublicoMap).map(([key, pub]) => (
               <Button
                 key={key}
@@ -704,12 +749,12 @@ export default function ActividadPersonalizada() {
                   alignItems: "center",
                   gap: 1.2,
                   transition: "all 0.3s ease",
-                  backgroundColor: vista === Number(key) ? pub.color : "transparent",
+                  backgroundColor:
+                    vista === Number(key) ? pub.color : "transparent",
                   borderColor: pub.color,
                   "&:hover": {
-                    backgroundColor: vista === Number(key)
-                      ? pub.color
-                      : `${pub.color}22`,
+                    backgroundColor:
+                      vista === Number(key) ? pub.color : `${pub.color}22`,
                   },
                 }}
                 startIcon={pub.icon}
@@ -719,7 +764,6 @@ export default function ActividadPersonalizada() {
               </Button>
             ))}
           </Box>
-
 
           {/* Listado o Detalle */}
           {!ActividadSeleccionada ? (
@@ -763,8 +807,8 @@ export default function ActividadPersonalizada() {
                           ? "Borradores de actividades recomendadas"
                           : "Actividades recomendadas enviadas"
                         : vista === 1
-                          ? "Aún no hay actividades guardadas"
-                          : "No se han enviado recomendaciones aún"}
+                        ? "Aún no hay actividades guardadas"
+                        : "No se han enviado recomendaciones aún"}
                     </Typography>
                   </Box>
 
@@ -846,7 +890,9 @@ export default function ActividadPersonalizada() {
                               fontWeight: 600,
                             }}
                           >
-                            {recomendacion.publico === 1 ? "Borrador" : "Publicado"}
+                            {recomendacion.publico === 1
+                              ? "Borrador"
+                              : "Publicado"}
                           </Box>
                         </Box>
 
@@ -859,7 +905,9 @@ export default function ActividadPersonalizada() {
                             mt: 1,
                           }}
                         >
-                          <Person2Icon sx={{ color: "#0A2472", fontSize: 24 }} />
+                          <Person2Icon
+                            sx={{ color: "#0A2472", fontSize: 24 }}
+                          />
                           <Typography
                             variant="subtitle1"
                             sx={{
@@ -880,7 +928,9 @@ export default function ActividadPersonalizada() {
                             flexGrow: 1,
                           }}
                         >
-                          <DescriptionIcon sx={{ color: "#0A2472", fontSize: 24, mt: "3px" }} />
+                          <DescriptionIcon
+                            sx={{ color: "#0A2472", fontSize: 24, mt: "3px" }}
+                          />
                           <Typography
                             variant="body2"
                             sx={{
@@ -892,16 +942,12 @@ export default function ActividadPersonalizada() {
                             {recomendacion.descripcion}
                           </Typography>
                         </Box>
-
-
                       </CardContent>
                     </Card>
                   ))}
                 </Box>
               </Box>
             </Tooltip>
-
-
           ) : (
             <Box
               sx={{
@@ -938,7 +984,8 @@ export default function ActividadPersonalizada() {
                   textAlign: { xs: "center", sm: "left" },
                 }}
               >
-                <strong>Paciente:</strong> {ActividadSeleccionada.nombrePaciente}
+                <strong>Paciente:</strong>{" "}
+                {ActividadSeleccionada.nombrePaciente}
               </Typography>
 
               {/* Campos */}
@@ -953,20 +1000,26 @@ export default function ActividadPersonalizada() {
                 {[
                   ["actividad", "Actividad a realizar"],
                   ["descripcion", "Descripción de la actividad"],
-                  ["mejoramiento", "¿Qué tanto le ayudó al paciente esta actividad?"],
-                  ["mas_recomendacion", "¿Le interesa recibir más recomendaciones?"],
+                  [
+                    "mejoramiento",
+                    "¿Qué tanto le ayudó al paciente esta actividad?",
+                  ],
+                  [
+                    "mas_recomendacion",
+                    "¿Le interesa recibir más recomendaciones?",
+                  ],
                   ["publico", "¿Mandar actividad?"],
                 ]
                   .filter(([key]) =>
                     vista === 1
                       ? ["actividad", "descripcion", "publico"].includes(key)
                       : [
-                        "actividad",
-                        "descripcion",
-                        "publico",
-                        "mejoramiento",
-                        "mas_recomendacion",
-                      ].includes(key)
+                          "actividad",
+                          "descripcion",
+                          "publico",
+                          "mejoramiento",
+                          "mas_recomendacion",
+                        ].includes(key)
                   )
                   .map(([key, label]) => {
                     const isSelect = ["publico"].includes(key);
@@ -978,8 +1031,8 @@ export default function ActividadPersonalizada() {
                       key === "mas_recomendacion"
                         ? recomendacionMap[value]
                         : key === "publico"
-                          ? PublicoMap[value]
-                          : null;
+                        ? PublicoMap[value]
+                        : null;
 
                     const displayValue = valueMap
                       ? valueMap.label
@@ -1016,7 +1069,9 @@ export default function ActividadPersonalizada() {
                                   borderRadius: "12px",
                                   backgroundColor: "#FFFFFF",
                                   "& fieldset": { borderColor: "#CBD4D8" },
-                                  "&:hover fieldset": { borderColor: "#355C7D" },
+                                  "&:hover fieldset": {
+                                    borderColor: "#355C7D",
+                                  },
                                   "&.Mui-focused fieldset": {
                                     borderColor: "#092181",
                                     borderWidth: "2px",
@@ -1041,26 +1096,27 @@ export default function ActividadPersonalizada() {
                                   "& .MuiSelect-select": { py: 1.2 },
                                 }}
                               >
-                                {Object.entries(PublicoMap).map(([val, item]) => (
-                                  <MenuItem key={val} value={val}>
-                                    <Box
-                                      sx={{
-                                        display: "flex",
-                                        alignItems: "center",
-                                        gap: 1,
-                                        color: item.color,
-                                      }}
-                                    >
-                                      {item.icon}
-                                      {item.label}
-                                    </Box>
-                                  </MenuItem>
-                                ))}
+                                {Object.entries(PublicoMap).map(
+                                  ([val, item]) => (
+                                    <MenuItem key={val} value={val}>
+                                      <Box
+                                        sx={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                          gap: 1,
+                                          color: item.color,
+                                        }}
+                                      >
+                                        {item.icon}
+                                        {item.label}
+                                      </Box>
+                                    </MenuItem>
+                                  )
+                                )}
                               </Select>
                             </FormControl>
                           ) : (
                             <TextField
-
                               multiline={key === "descripcion"}
                               rows={key === "descripcion" ? 3 : 1}
                               value={value || ""}
@@ -1078,7 +1134,9 @@ export default function ActividadPersonalizada() {
                                   borderRadius: "12px",
                                   backgroundColor: "#FFFFFF",
                                   "& fieldset": { borderColor: "#CBD4D8" },
-                                  "&:hover fieldset": { borderColor: "#355C7D" },
+                                  "&:hover fieldset": {
+                                    borderColor: "#355C7D",
+                                  },
                                   "&.Mui-focused fieldset": {
                                     borderColor: "#092181",
                                     borderWidth: "2px",
@@ -1105,7 +1163,13 @@ export default function ActividadPersonalizada() {
                             }}
                           >
                             {icon && (
-                              <Box sx={{ color: color, display: "flex", alignItems: "center" }}>
+                              <Box
+                                sx={{
+                                  color: color,
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
                                 {icon}
                               </Box>
                             )}
@@ -1137,7 +1201,6 @@ export default function ActividadPersonalizada() {
                   mt: 1,
                 }}
               >
-
                 {vista === 1 && (
                   <>
                     <Button
@@ -1180,11 +1243,9 @@ export default function ActividadPersonalizada() {
                       Cancelar
                     </Button>
                   </>
-
                 )}
 
                 {vista === 2 && (
-
                   <Button
                     variant="outlined"
                     onClick={() => setActividadSeleccionada(null)}
@@ -1209,7 +1270,6 @@ export default function ActividadPersonalizada() {
                 )}
               </Box>
             </Box>
-
           )}
         </Paper>
 

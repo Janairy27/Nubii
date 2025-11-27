@@ -1,26 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Layout from '../components/LayoutProf';
+import Layout from "../components/LayoutProf";
 import CalendarioProf from "../components/CalendarioProf";
 import LineaTiempoProf from "../components/LineaTiempoProf";
-import {
-  Box,
-  Container,
-  Typography,
-  Paper,
-  Button
-} from "@mui/material";
-import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import { Box, Container, Typography, Paper, Button } from "@mui/material";
+import MarkUnreadChatAltIcon from "@mui/icons-material/MarkUnreadChatAlt";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 
 import { useNavigate } from "react-router-dom";
 
 export default function MenuProfesional() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [idUsuario, setIdUsuario] = useState(null);
   const [idProfesional, setIdProfesional] = useState(null);
-  const [Nombre, setNombre] = useState('');
-
+  const [Nombre, setNombre] = useState("");
 
   useEffect(() => {
     const storedIdUsuario = localStorage.getItem("idUsuario");
@@ -39,17 +32,17 @@ export default function MenuProfesional() {
     }
   }, []);
 
-
   return (
     <Layout>
-      <Box sx={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-        backgroundColor: "#F4F6F8",
-        p: { xs: 2, sm: 3, md: 4 },
-        gap: 4,
-      }}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+          backgroundColor: "#F4F6F8",
+          p: { xs: 2, sm: 3, md: 4 },
+          gap: 4,
+        }}
       >
         <Typography
           variant="h6"
@@ -57,7 +50,7 @@ export default function MenuProfesional() {
             fontWeight: 700,
             color: "#092181",
             textAlign: "center",
-            width: "100%"
+            width: "100%",
           }}
         >
           Bienvenido usuario profesional {Nombre && `- ${Nombre}`}
@@ -70,7 +63,7 @@ export default function MenuProfesional() {
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
             justifyContent: "center",
-            alignItems: "flex-start", 
+            alignItems: "flex-start",
             gap: 9,
             width: "100%",
           }}
@@ -91,31 +84,40 @@ export default function MenuProfesional() {
           </Box>
           {/*  Tarjeta del calendario */}
           <Box
-           sx={{
+            sx={{
               flex: { xs: "1 1 100%", md: "1 1 35%" },
               display: "flex",
               flexDirection: "column",
-              alignItems: "stretch", 
+              alignItems: "stretch",
               width: "100%",
               minWidth: { xs: "100%", md: 400 },
               gap: 3,
             }}
           >
-             <Box sx={{ width: "100%" }}>
-            <CalendarioProf mini /> 
+            <Box sx={{ width: "100%" }}>
+              <CalendarioProf mini />
             </Box>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2,   width: "100%" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                width: "100%",
+              }}
+            >
               <Button
                 variant="contained"
                 startIcon={<MarkUnreadChatAltIcon />}
                 onClick={() => navigate("/chat-prof")}
-                sx={{  minHeight: 48, fontWeight: 600,
-                   minWidth: 400,
-                  textTransform:"none",
-                    background: "#092181",
-                    "&:hover": { background: "#1c3cc9" },
-                    borderRadius: 2,
-                 }}
+                sx={{
+                  minHeight: 48,
+                  fontWeight: 600,
+                  minWidth: 400,
+                  textTransform: "none",
+                  background: "#092181",
+                  "&:hover": { background: "#1c3cc9" },
+                  borderRadius: 2,
+                }}
               >
                 Ir al Chat de Emergencia
               </Button>
@@ -124,16 +126,19 @@ export default function MenuProfesional() {
                 variant="outlined"
                 startIcon={<AssignmentIndIcon />}
                 onClick={() => navigate("/actividad-personalizada")}
-                sx={{ width: "100%", minHeight: 48, fontWeight: 600,
+                sx={{
+                  width: "100%",
+                  minHeight: 48,
+                  fontWeight: 600,
                   textTransform: "none",
+                  borderColor: "#092181",
+                  color: "#092181",
+                  borderRadius: 2,
+                  "&:hover": {
+                    backgroundColor: "#eef2ff",
                     borderColor: "#092181",
-                    color: "#092181",
-                    borderRadius: 2,
-                    "&:hover": {
-                      backgroundColor: "#eef2ff",
-                      borderColor: "#092181",
-                    },
-                 }}
+                  },
+                }}
               >
                 Ir a Actividades Personalizadas
               </Button>

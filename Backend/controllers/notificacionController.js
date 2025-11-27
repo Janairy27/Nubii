@@ -3,7 +3,7 @@ import {
   obtenerNotificaciones,
   marcarComoLeido,
   marcarTodasComoLeidas,
-  eliminarNotificacion
+  eliminarNotificacion,
 } from "../models/notificacionModel.js";
 
 // Crear una nueva notificación
@@ -15,7 +15,12 @@ export const registrarNotificacion = async (req, res) => {
       return res.status(400).json({ message: "Faltan campos obligatorios" });
     }
 
-    const idNotificacion = await crearNotificacion({ idUsuario, titulo, mensaje, tipo });
+    const idNotificacion = await crearNotificacion({
+      idUsuario,
+      titulo,
+      mensaje,
+      tipo,
+    });
     res.status(201).json({ message: "Notificación creada", idNotificacion });
   } catch (error) {
     console.error("Error al registrar notificación:", error);

@@ -17,7 +17,6 @@ import {
   CardContent,
   Fade,
   Chip,
-
 } from "@mui/material";
 import {
   ArrowBackIosNewOutlined,
@@ -42,8 +41,8 @@ import LinearProgress from "@mui/material/LinearProgress";
 export default function RegistroEvidencia() {
   const [idUsuario, setIdUsuario] = useState("");
   const [idPaciente, setIdPaciente] = useState(null);
-  const [nombre, setNombre] = useState('');
-  const [nombreActividad, setNombreActividad] = useState('');
+  const [nombre, setNombre] = useState("");
+  const [nombreActividad, setNombreActividad] = useState("");
   const [fechaSugerida, setFechaSug] = useState("");
   const [fechaRealizada, setFechaRea] = useState("");
   const [completa, setCompleta] = useState(1);
@@ -54,10 +53,8 @@ export default function RegistroEvidencia() {
   const { idActividad } = useParams();
   const navigate = useNavigate();
 
-
   const [mensaje, setMensaje] = useState("");
   const [tipo, setTipo] = useState("success");
-
 
   const mostrarMensaje = (msg, severity = "info") => {
     setMensaje(msg);
@@ -69,7 +66,6 @@ export default function RegistroEvidencia() {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
-
 
   useEffect(() => {
     const storedIdUsuario = localStorage.getItem("idUsuario");
@@ -90,12 +86,12 @@ export default function RegistroEvidencia() {
     } else {
       mostrarMensaje("No se encontró el usuario en sesión.", "warning");
     }
-
   }, []);
 
   useEffect(() => {
     if (idActividad) {
-      axios.get(`http://localhost:4000/api/actividades/actividad/${idActividad}`)
+      axios
+        .get(`http://localhost:4000/api/actividades/actividad/${idActividad}`)
         .then((res) => {
           const actividad = res.data;
           setNombreActividad(actividad.nombreAct);
@@ -117,12 +113,14 @@ export default function RegistroEvidencia() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
 
     let formattedFecha = null;
 
     if (!completa) {
-      mostrarMensaje("Debes marcar la actividad como completada antes de continuar.", "warning");
+      mostrarMensaje(
+        "Debes marcar la actividad como completada antes de continuar.",
+        "warning"
+      );
       setIsSubmitting(false);
       return;
     }
@@ -136,43 +134,50 @@ export default function RegistroEvidencia() {
       return;
     }
 
-
     const data = {
       idPaciente,
       idActividad: Number(idActividad),
       fecha_sugerida: new Date(fechaSugerida).toISOString().split("T")[0],
       fecha_realizada: formattedFecha,
-      completada: completa ,
+      completada: completa,
       satisfaccion,
       comentario_Evidencia: comentarios,
     };
 
     try {
-      await axios.post("http://localhost:4000/api/evidencia/registro-evidencia", data);
+      await axios.post(
+        "http://localhost:4000/api/evidencia/registro-evidencia",
+        data
+      );
       mostrarMensaje("Evidencia registrada exitosamente.", "success");
       setOpenSnackbar(true);
       setTimeout(() => navigate("/listado-actividades"), 2000);
     } catch (err) {
-        //Log completo del error para depuración
-        console.error("Error completo de Axios:", err); 
+      //Log completo del error para depuración
+      console.error("Error completo de Axios:", err);
 
-        let mensajeError = "Error al registrar la evidencia.";
-        
-        // Verificar que la respuesta 400 tenga datos estructurados
-        if (err.response && err.response.data) {
-            const dataError = err.response.data;
-            
-            if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
-                // Unir  los errores de validación en una sola cadena
-                mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-            } 
-            else if (dataError.message) {
-                 mensajeError = dataError.message;
-            }
+      let mensajeError = "Error al registrar la evidencia.";
+
+      // Verificar que la respuesta 400 tenga datos estructurados
+      if (err.response && err.response.data) {
+        const dataError = err.response.data;
+
+        if (
+          dataError.errores &&
+          Array.isArray(dataError.errores) &&
+          dataError.errores.length > 0
+        ) {
+          // Unir  los errores de validación en una sola cadena
+          mensajeError = `Errores de validación: ${dataError.errores.join(
+            "; "
+          )}`;
+        } else if (dataError.message) {
+          mensajeError = dataError.message;
         }
+      }
 
-        // Mostrar el mensaje de error específico o el genérico 
-        mostrarMensaje(mensajeError, "error");
+      // Mostrar el mensaje de error específico o el genérico
+      mostrarMensaje(mensajeError, "error");
       setIsSubmitting(false);
     }
   };
@@ -181,19 +186,43 @@ export default function RegistroEvidencia() {
     navigate("/listado-actividades");
   };
 
-
-
   const satisfactionIcons = [
-    { value: 1, icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />, label: "Muy insatisfecho", color: "#f44336" },
-    { value: 2, icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />, label: "Insatisfecho", color: "#ff9800" },
-    { value: 3, icon: <SentimentNeutral sx={{ fontSize: 32 }} />, label: "Neutral", color: "#ffeb3b" },
-    { value: 4, icon: <SentimentSatisfied sx={{ fontSize: 32 }} />, label: "Satisfecho", color: "#4caf50" },
-    { value: 5, icon: <SentimentVerySatisfied sx={{ fontSize: 32 }} />, label: "Muy satisfecho", color: "#2196f3" },
+    {
+      value: 1,
+      icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />,
+      label: "Muy insatisfecho",
+      color: "#f44336",
+    },
+    {
+      value: 2,
+      icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />,
+      label: "Insatisfecho",
+      color: "#ff9800",
+    },
+    {
+      value: 3,
+      icon: <SentimentNeutral sx={{ fontSize: 32 }} />,
+      label: "Neutral",
+      color: "#ffeb3b",
+    },
+    {
+      value: 4,
+      icon: <SentimentSatisfied sx={{ fontSize: 32 }} />,
+      label: "Satisfecho",
+      color: "#4caf50",
+    },
+    {
+      value: 5,
+      icon: <SentimentVerySatisfied sx={{ fontSize: 32 }} />,
+      label: "Muy satisfecho",
+      color: "#2196f3",
+    },
   ];
 
-
   const getSatisfactionLabel = () => {
-    const selected = satisfactionIcons.find(opt => opt.value === satisfaccion);
+    const selected = satisfactionIcons.find(
+      (opt) => opt.value === satisfaccion
+    );
     return selected ? selected.label : "Selecciona tu nivel de satisfacción";
   };
   const colores = ["#f44336", "#ff9800", "#ffeb3b", "#4caf50", "#2196f3"];
@@ -201,9 +230,7 @@ export default function RegistroEvidencia() {
 
   return (
     <Layout>
-
       <Container maxWidth="md" sx={{ position: "relative", zIndex: 1 }}>
-
         <Fade in timeout={800}>
           <Paper
             elevation={24}
@@ -218,7 +245,6 @@ export default function RegistroEvidencia() {
           >
             {/* Header */}
             <Box sx={{ textAlign: "center", mb: 4 }}>
-
               <Typography
                 variant="h4"
                 sx={{
@@ -234,14 +260,18 @@ export default function RegistroEvidencia() {
               </Typography>
             </Box>
 
-            <Box component="form" onSubmit={handleSubmit}
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
               sx={{ display: "flex", flexDirection: "column", gap: 3 }}
             >
               {/* Datos del paciente */}
               <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
                 <Card
                   sx={{
-                    flex: "1 1 100%", minWidth: "280px", flexBasis: "48%",
+                    flex: "1 1 100%",
+                    minWidth: "280px",
+                    flexBasis: "48%",
                     alignContent: "center",
                     borderRadius: 3,
                     boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
@@ -250,9 +280,19 @@ export default function RegistroEvidencia() {
                   }}
                 >
                   <CardContent>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        mb: 2,
+                      }}
+                    >
                       <PersonOutline sx={{ color: "#092181" }} />
-                      <Typography variant="h6" sx={{ fontWeight: "600", color: "#092181" }}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontWeight: "600", color: "#092181" }}
+                      >
                         Datos del Paciente
                       </Typography>
                     </Box>
@@ -294,9 +334,19 @@ export default function RegistroEvidencia() {
                   }}
                 >
                   <CardContent>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 1,
+                        mb: 2,
+                      }}
+                    >
                       <CommentOutlined sx={{ color: "#092181" }} />
-                      <Typography variant="h6" sx={{ fontWeight: "600", color: "#092181" }}>
+                      <Typography
+                        variant="h6"
+                        sx={{ fontWeight: "600", color: "#092181" }}
+                      >
                         Comentarios
                       </Typography>
                     </Box>
@@ -314,24 +364,24 @@ export default function RegistroEvidencia() {
                         mb: 2,
                         "& .MuiOutlinedInput-root": {
                           borderRadius: "12px",
-                          backgroundColor: "#fff", 
+                          backgroundColor: "#fff",
                           "& fieldset": {
-                            borderColor: "#CBD4D8", 
+                            borderColor: "#CBD4D8",
                           },
                           "&:hover fieldset": {
-                            borderColor: "#355C7D", 
+                            borderColor: "#355C7D",
                           },
                           "&.Mui-focused fieldset": {
-                            borderColor: "#092181", 
+                            borderColor: "#092181",
                             borderWidth: "2px",
                           },
                         },
                         "& .MuiInputLabel-root": {
-                          color: "#2D5D7B", 
+                          color: "#2D5D7B",
                           fontWeight: "bold",
                         },
                         "& .MuiInputBase-input::placeholder": {
-                          color: "#777777", 
+                          color: "#777777",
                           opacity: 1,
                         },
                       }}
@@ -351,18 +401,33 @@ export default function RegistroEvidencia() {
                 }}
               >
                 <CardContent>
-                  <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1,
+                      mb: 2,
+                    }}
+                  >
                     <AssignmentOutlined sx={{ color: "#092181" }} />
-                    <Typography variant="h6" sx={{ fontWeight: "600", color: "#092181" }}>
+                    <Typography
+                      variant="h6"
+                      sx={{ fontWeight: "600", color: "#092181" }}
+                    >
                       Detalles de la Actividad
                     </Typography>
                   </Box>
                   <Divider sx={{ mb: 3 }} />
 
-                  <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                  <Box
+                    sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+                  >
                     {/* Actividad */}
                     <Box>
-                      <Typography variant="subtitle2" sx={{ fontWeight: "bold", color: "#2D5D7B", mb: 1 }}>
+                      <Typography
+                        variant="subtitle2"
+                        sx={{ fontWeight: "bold", color: "#2D5D7B", mb: 1 }}
+                      >
                         Actividad
                       </Typography>
                       <Chip
@@ -374,24 +439,40 @@ export default function RegistroEvidencia() {
                     </Box>
 
                     {/* Fechas */}
-                    <Box sx={{ display: "flex", flexDirection: { xs: "column", sm: "row" }, gap: 2 }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: { xs: "column", sm: "row" },
+                        gap: 2,
+                      }}
+                    >
                       <Box sx={{ flex: 1 }}>
-                        <Typography variant="subtitle2" sx={{ fontWeight: "bold", color: "#2D5D7B", mb: 1 }}>
+                        <Typography
+                          variant="subtitle2"
+                          sx={{ fontWeight: "bold", color: "#2D5D7B", mb: 1 }}
+                        >
                           Fecha Sugerida
                         </Typography>
                         <TextField
                           fullWidth
                           type="date"
                           InputLabelProps={{ shrink: true }}
-                          value={fechaSugerida ? new Date(fechaSugerida).toISOString().split("T")[0] : ""}
+                          value={
+                            fechaSugerida
+                              ? new Date(fechaSugerida)
+                                  .toISOString()
+                                  .split("T")[0]
+                              : ""
+                          }
                           disabled
                           slotProps={{
                             textField: {
-                              fullWidth: true, size: "small",
+                              fullWidth: true,
+                              size: "small",
                               sx: {
                                 mt: 2,
                                 "& .MuiOutlinedInput-root": {
-                                  borderRadius: "12px", 
+                                  borderRadius: "12px",
                                   backgroundColor: "#FFFFFF",
                                   "& fieldset": {
                                     borderColor: "#CBD4D8",
@@ -415,14 +496,20 @@ export default function RegistroEvidencia() {
                       </Box>
 
                       <Box sx={{ flex: 1 }}>
-                        <Typography variant="subtitle2" sx={{ fontWeight: "bold", color: "#2D5D7B", mb: 1 }}>
+                        <Typography
+                          variant="subtitle2"
+                          sx={{ fontWeight: "bold", color: "#2D5D7B", mb: 1 }}
+                        >
                           Fecha Realizada
                         </Typography>
-                        <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
+                        <LocalizationProvider
+                          dateAdapter={AdapterDateFns}
+                          adapterLocale={es}
+                        >
                           <DatePicker
                             value={fechaRealizada}
                             disabled
-                            onChange={() => { }}
+                            onChange={() => {}}
                             slotProps={{
                               textField: {
                                 fullWidth: true,
@@ -444,13 +531,20 @@ export default function RegistroEvidencia() {
                       control={
                         <Checkbox
                           checked={completa === 2}
-                          onChange={(e) => setCompleta(e.target.checked ? 2 : 1)}
+                          onChange={(e) =>
+                            setCompleta(e.target.checked ? 2 : 1)
+                          }
                           icon={<CheckCircleOutline />}
-                          checkedIcon={<CheckCircleOutline sx={{ color: "#4caf50" }} />}
+                          checkedIcon={
+                            <CheckCircleOutline sx={{ color: "#4caf50" }} />
+                          }
                         />
                       }
                       label={
-                        <Typography variant="body1" sx={{ fontWeight: "bold", color: "#2D5D7B" }}>
+                        <Typography
+                          variant="body1"
+                          sx={{ fontWeight: "bold", color: "#2D5D7B" }}
+                        >
                           Actividad Completada
                         </Typography>
                       }
@@ -458,7 +552,10 @@ export default function RegistroEvidencia() {
 
                     {/* Nivel de satisfacción */}
                     <Box>
-                      <Typography variant="subtitle2" sx={{ fontWeight: "bold", color: "#2D5D7B", mb: 2 }}>
+                      <Typography
+                        variant="subtitle2"
+                        sx={{ fontWeight: "bold", color: "#2D5D7B", mb: 2 }}
+                      >
                         {getSatisfactionLabel()}
                       </Typography>
 
@@ -502,7 +599,14 @@ export default function RegistroEvidencia() {
                               }),
                             }}
                           >
-                            <Box sx={{ color: satisfaccion === option.value ? option.color : "#666" }}>
+                            <Box
+                              sx={{
+                                color:
+                                  satisfaccion === option.value
+                                    ? option.color
+                                    : "#666",
+                              }}
+                            >
                               {option.icon}
                             </Box>
                             <Typography
@@ -511,7 +615,8 @@ export default function RegistroEvidencia() {
                                 mt: 0.5,
                                 fontSize: "0.6rem",
                                 textAlign: "center",
-                                fontWeight: satisfaccion === option.value ? 600 : 400,
+                                fontWeight:
+                                  satisfaccion === option.value ? 600 : 400,
                               }}
                             >
                               {option.value}
@@ -536,7 +641,6 @@ export default function RegistroEvidencia() {
                               },
                             }}
                           />
-
                         </Box>
                       )}
                     </Box>
@@ -544,8 +648,7 @@ export default function RegistroEvidencia() {
                 </CardContent>
               </Card>
 
-
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2 }}>
                 {/* Botón guardar */}
                 <Button
                   type="submit"
@@ -575,8 +678,9 @@ export default function RegistroEvidencia() {
                     transition: "all 0.3s ease",
                   }}
                 >
-
-                  {satisfaccion ? "Guardar registro" : "Selecciona un nivel de satisfacción para guardar"}
+                  {satisfaccion
+                    ? "Guardar registro"
+                    : "Selecciona un nivel de satisfacción para guardar"}
                 </Button>
                 {/* Botón volver */}
                 <Button
@@ -619,11 +723,7 @@ export default function RegistroEvidencia() {
               </Alert>
             </Snackbar>
           </Paper>
-
-
         </Fade>
-
-
       </Container>
     </Layout>
   );

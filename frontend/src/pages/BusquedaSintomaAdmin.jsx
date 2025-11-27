@@ -48,14 +48,14 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import PersonIcon from '@mui/icons-material/Person';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import InsightsIcon from '@mui/icons-material/Insights';
-import ReportProblemIcon from '@mui/icons-material/ReportProblem';
-import PlaceIcon from '@mui/icons-material/Place';
-import WorkIcon from '@mui/icons-material/Work';
-import PublicIcon from '@mui/icons-material/Public';
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PersonIcon from "@mui/icons-material/Person";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import InsightsIcon from "@mui/icons-material/Insights";
+import ReportProblemIcon from "@mui/icons-material/ReportProblem";
+import PlaceIcon from "@mui/icons-material/Place";
+import WorkIcon from "@mui/icons-material/Work";
+import PublicIcon from "@mui/icons-material/Public";
 
 const BusquedaSintoma = () => {
   const [idUsuario, setIdUsuario] = useState("");
@@ -69,7 +69,7 @@ const BusquedaSintoma = () => {
     fecha: false,
     emocion: false,
     intensidad: false,
-    clima: false
+    clima: false,
   });
 
   const [valoresFiltro, setValoresFiltro] = useState({
@@ -78,7 +78,7 @@ const BusquedaSintoma = () => {
     fecha: "",
     emocion: "",
     intensidad: "",
-    clima: ""
+    clima: "",
   });
 
   const [sintomaSeleccionado, setSintomaSeleccionado] = useState(null);
@@ -126,18 +126,22 @@ const BusquedaSintoma = () => {
       emociones: [
         { id: 13, nombre: "Problemas de Sueño", icono: <LocalHotelIcon /> },
         { id: 14, nombre: "Cambios Apetito", icono: <RestaurantIcon /> },
-        { id: 15, nombre: "Dificultad Concentración", icono: <PsychologyIcon /> },
+        {
+          id: 15,
+          nombre: "Dificultad Concentración",
+          icono: <PsychologyIcon />,
+        },
         { id: 16, nombre: "Síntomas Somáticos", icono: <PsychologyIcon /> },
       ],
     },
   ];
 
-  // Función para encontrar la emoción entre cada grupo 
+  // Función para encontrar la emoción entre cada grupo
   const findEmocionById = (id) => {
     // Iteramos sobre cada grupo de categorías
     for (const grupo of emocionMap) {
       // Buscamos la emoción dentro del array 'emociones' de ese grupo
-      const emocionEncontrada = grupo.emociones.find(e => e.id === id);
+      const emocionEncontrada = grupo.emociones.find((e) => e.id === id);
 
       // Si encontramos la emoción, devolvemos un objeto con todos los datos necesarios
       if (emocionEncontrada) {
@@ -145,7 +149,7 @@ const BusquedaSintoma = () => {
           value: emocionEncontrada.id,
           label: emocionEncontrada.nombre,
           icon: emocionEncontrada.icono,
-          color: grupo.color
+          color: grupo.color,
         };
       }
     }
@@ -154,9 +158,19 @@ const BusquedaSintoma = () => {
 
   const climaMap = [
     { value: 1, icon: <WbSunnyIcon />, label: "Soleado", color: "#ffb300" },
-    { value: 2, icon: <WbCloudyIcon />, label: "Parc. Nublado", color: "#90a4ae" },
+    {
+      value: 2,
+      icon: <WbCloudyIcon />,
+      label: "Parc. Nublado",
+      color: "#90a4ae",
+    },
     { value: 3, icon: <CloudIcon />, label: "Nublado", color: "#607d8b" },
-    { value: 4, icon: <BeachAccessIcon />, label: "Lluvioso", color: "#2196f3" },
+    {
+      value: 4,
+      icon: <BeachAccessIcon />,
+      label: "Lluvioso",
+      color: "#2196f3",
+    },
     { value: 5, icon: <BlurOnIcon />, label: "Neblina", color: "#bdbdbd" },
     { value: 6, icon: <AirIcon />, label: "Ventoso", color: "#80deea" },
     { value: 7, icon: <AcUnitIcon />, label: "Frío", color: "#29b6f6" },
@@ -181,8 +195,8 @@ const BusquedaSintoma = () => {
   };
 
   const getColorEmocion = (id) => {
-    const grupo = emocionMap.find(grupo =>
-      grupo.emociones.some(emo => emo.id === Number(id))
+    const grupo = emocionMap.find((grupo) =>
+      grupo.emociones.some((emo) => emo.id === Number(id))
     );
     return grupo ? grupo.color : "#666";
   };
@@ -238,7 +252,6 @@ const BusquedaSintoma = () => {
     setOpenSnackbar(false);
   };
 
-
   useEffect(() => {
     const storedIdUsuario = localStorage.getItem("idUsuario");
     if (storedIdUsuario) {
@@ -261,8 +274,7 @@ const BusquedaSintoma = () => {
 
   const obtenersintoma = () => {
     axios
-      .get(`http://localhost:4000/api/sintomas/by-filter/`,
-      )
+      .get(`http://localhost:4000/api/sintomas/by-filter/`)
       .then((res) => {
         setSintoma(res.data);
         setSintomaSeleccionado(null);
@@ -303,14 +315,19 @@ const BusquedaSintoma = () => {
     const queryParams = new URLSearchParams(filtrosAplicados).toString();
 
     try {
-      const res = await axios.get(`http://localhost:4000/api/sintomas/by-filter?${queryParams}`);
+      const res = await axios.get(
+        `http://localhost:4000/api/sintomas/by-filter?${queryParams}`
+      );
 
       if (res.data && res.data.length > 0) {
         setSintoma(res.data);
         setSintomaSeleccionado(null);
         mostrarMensaje("Síntomas encontrados exitosamente.", "success");
       } else {
-        mostrarMensaje("No se encontraron síntomas con ese criterio.", "warning");
+        mostrarMensaje(
+          "No se encontraron síntomas con ese criterio.",
+          "warning"
+        );
         await obtenersintoma();
       }
     } catch (error) {
@@ -326,7 +343,7 @@ const BusquedaSintoma = () => {
       estres: false,
       fecha: false,
       emocion: false,
-      intensidad: false
+      intensidad: false,
     });
 
     setValoresFiltro({
@@ -334,7 +351,7 @@ const BusquedaSintoma = () => {
       estres: "",
       fecha: "",
       emocion: "",
-      intensidad: ""
+      intensidad: "",
     });
 
     obtenersintoma();
@@ -345,22 +362,31 @@ const BusquedaSintoma = () => {
   };
 
   const InfoItem = ({ icon, label, value }) => (
-    <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
-      <Box sx={{
-        mr: 2,
-        color: '#355C7D',
-        display: 'flex',
-        alignItems: 'center',
-        minWidth: '24px',
-        mt: 0.5
-      }}>
+    <Box sx={{ display: "flex", alignItems: "flex-start", mb: 2 }}>
+      <Box
+        sx={{
+          mr: 2,
+          color: "#355C7D",
+          display: "flex",
+          alignItems: "center",
+          minWidth: "24px",
+          mt: 0.5,
+        }}
+      >
         {icon}
       </Box>
       <Box sx={{ flex: 1 }}>
-        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ fontSize: "0.8rem" }}
+        >
           {label}
         </Typography>
-        <Typography variant="body1" sx={{ fontWeight: 'medium', wordBreak: 'break-word' }}>
+        <Typography
+          variant="body1"
+          sx={{ fontWeight: "medium", wordBreak: "break-word" }}
+        >
           {value || "No especificado"}
         </Typography>
       </Box>
@@ -369,7 +395,8 @@ const BusquedaSintoma = () => {
 
   return (
     <Layout>
-      <Container maxWidth="md"
+      <Container
+        maxWidth="md"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -377,41 +404,48 @@ const BusquedaSintoma = () => {
           mt: 4,
           pb: 4,
           minHeight: "100vh",
-        }}>
-        <Paper sx={{
-          p: { xs: 2, md: 4 },
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#F4F6F8",
-          width: "100%",
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}>
-          <Box sx={{
+        }}
+      >
+        <Paper
+          sx={{
+            p: { xs: 2, md: 4 },
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F4F6F8",
+            width: "100%",
+            mx: "auto",
             display: "flex",
-            alignItems: "center",
-            gap: 1.5,
-            flex: 1,
-            justifyContent: { xs: "center", sm: "flex-start" },
-            textAlign: { xs: "center", sm: "left" },
+            flexDirection: "column",
+            gap: 3,
           }}
-
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1.5,
+              flex: 1,
+              justifyContent: { xs: "center", sm: "flex-start" },
+              textAlign: { xs: "center", sm: "left" },
+            }}
           >
-            <PsychologyIcon sx={{
-              color: "#092181",
-              fontSize: 36,
-              filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
-            }} />
-            <Typography variant="h4"
+            <PsychologyIcon
+              sx={{
+                color: "#092181",
+                fontSize: 36,
+                filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+              }}
+            />
+            <Typography
+              variant="h4"
               fontWeight="bold"
               sx={{
                 color: "#092181",
                 textAlign: "center",
                 letterSpacing: 0.5,
                 textTransform: "capitalize",
-              }}>
+              }}
+            >
               Síntomas Registrados
             </Typography>
           </Box>
@@ -492,7 +526,10 @@ const BusquedaSintoma = () => {
                     label="Nombre del paciente"
                     value={valoresFiltro.nombre}
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, nombre: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        nombre: e.target.value,
+                      })
                     }
                     sx={textFieldEstilo}
                   />
@@ -505,7 +542,10 @@ const BusquedaSintoma = () => {
                     type="number"
                     value={valoresFiltro.estres}
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, estres: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        estres: e.target.value,
+                      })
                     }
                     sx={textFieldEstilo}
                   />
@@ -518,7 +558,10 @@ const BusquedaSintoma = () => {
                     type="date"
                     InputLabelProps={{ shrink: true }}
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, fecha: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        fecha: e.target.value,
+                      })
                     }
                     sx={textFieldEstilo}
                   />
@@ -530,10 +573,12 @@ const BusquedaSintoma = () => {
                     <Select
                       value={valoresFiltro.emocion}
                       onChange={(e) =>
-                        setValoresFiltro({ ...valoresFiltro, emocion: e.target.value })
+                        setValoresFiltro({
+                          ...valoresFiltro,
+                          emocion: e.target.value,
+                        })
                       }
                       label="Emoción padecida"
-
                       renderValue={(selectedValue) => {
                         let selectedOption;
 
@@ -541,11 +586,25 @@ const BusquedaSintoma = () => {
 
                         if (selectedOption) {
                           return (
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <Box sx={{ color: selectedOption.color, display: 'flex' }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  color: selectedOption.color,
+                                  display: "flex",
+                                }}
+                              >
                                 {selectedOption.icon}
                               </Box>
-                              <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                              <Typography
+                                variant="body1"
+                                sx={{ fontWeight: 500 }}
+                              >
                                 {selectedOption.label}
                               </Typography>
                             </Box>
@@ -562,7 +621,9 @@ const BusquedaSintoma = () => {
                             </ListItemIcon>
                             <ListItemText
                               primary={emo.nombre}
-                              primaryTypographyProps={{ sx: { fontWeight: 500 } }}
+                              primaryTypographyProps={{
+                                sx: { fontWeight: 500 },
+                              }}
                             />
                           </MenuItem>
                         ))
@@ -578,7 +639,10 @@ const BusquedaSintoma = () => {
                     type="number"
                     value={valoresFiltro.intensidad}
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, intensidad: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        intensidad: e.target.value,
+                      })
                     }
                     sx={textFieldEstilo}
                   />
@@ -590,14 +654,25 @@ const BusquedaSintoma = () => {
                     <Select
                       value={valoresFiltro.clima}
                       onChange={(e) =>
-                        setValoresFiltro({ ...valoresFiltro, clima: e.target.value })
+                        setValoresFiltro({
+                          ...valoresFiltro,
+                          clima: e.target.value,
+                        })
                       }
                       label="Clima"
                     >
                       {climaMap.map((c) => (
                         <MenuItem key={c.value} value={c.value}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                            <Box sx={{ color: c.color, fontSize: 20 }}>{c.icon}</Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1.5,
+                            }}
+                          >
+                            <Box sx={{ color: c.color, fontSize: 20 }}>
+                              {c.icon}
+                            </Box>
                             {c.label}
                           </Box>
                         </MenuItem>
@@ -663,24 +738,28 @@ const BusquedaSintoma = () => {
             >
               <Box sx={{ width: "100%" }}>
                 {/* Header */}
-                <Box sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", sm: "row" },
-                  alignItems: { xs: "flex-start", sm: "center" },
-                  justifyContent: { xs: "center", sm: "space-between" },
-                  flexWrap: "wrap",
-                  gap: 2,
-                  mb: 3,
-                }}>
-                  {/* Título */}
-                  <Box sx={{
+                <Box
+                  sx={{
                     display: "flex",
-                    alignItems: "center",
-                    gap: 1.5,
-                    flex: 1,
-                    justifyContent: { xs: "center", sm: "flex-start" },
-                    textAlign: { xs: "center", sm: "left" },
-                  }}>
+                    flexDirection: { xs: "column", sm: "row" },
+                    alignItems: { xs: "flex-start", sm: "center" },
+                    justifyContent: { xs: "center", sm: "space-between" },
+                    flexWrap: "wrap",
+                    gap: 2,
+                    mb: 3,
+                  }}
+                >
+                  {/* Título */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                      flex: 1,
+                      justifyContent: { xs: "center", sm: "flex-start" },
+                      textAlign: { xs: "center", sm: "left" },
+                    }}
+                  >
                     <PsychologyIcon sx={{ color: "#0D1B2A", fontSize: 34 }} />
                     <Typography
                       variant="h5"
@@ -703,7 +782,6 @@ const BusquedaSintoma = () => {
                       backgroundColor: "#092181",
                       color: "#fff",
                       fontWeight: "bold",
-
                     }}
                   />
                 </Box>
@@ -757,7 +835,9 @@ const BusquedaSintoma = () => {
                             gap: 1,
                           }}
                         >
-                          <HealthAndSafetyIcon sx={{ color: "#092181", fontSize: 30 }} />
+                          <HealthAndSafetyIcon
+                            sx={{ color: "#092181", fontSize: 30 }}
+                          />
                           <Typography
                             variant="h6"
                             sx={{
@@ -778,7 +858,9 @@ const BusquedaSintoma = () => {
                             gap: 1,
                           }}
                         >
-                          <PsychologyIcon sx={{ color: "#F57C00", fontSize: 26 }} />
+                          <PsychologyIcon
+                            sx={{ color: "#F57C00", fontSize: 26 }}
+                          />
                           <Typography
                             variant="subtitle1"
                             sx={{
@@ -800,7 +882,9 @@ const BusquedaSintoma = () => {
                             py: 0.5,
                             px: 1.5,
                             borderRadius: "12px",
-                            backgroundColor: `${getColorEmocion(sintoma.emocion)}15`,
+                            backgroundColor: `${getColorEmocion(
+                              sintoma.emocion
+                            )}15`,
                             color: getColorEmocion(sintoma.emocion),
                             fontWeight: 600,
                           }}
@@ -821,7 +905,9 @@ const BusquedaSintoma = () => {
                             py: 0.5,
                             px: 1.5,
                             borderRadius: "12px",
-                            backgroundColor: `${getColorClima(sintoma.clima)}15`,
+                            backgroundColor: `${getColorClima(
+                              sintoma.clima
+                            )}15`,
                             color: getColorClima(sintoma.clima),
                             fontWeight: 600,
                           }}
@@ -860,7 +946,6 @@ const BusquedaSintoma = () => {
 
               <Divider sx={{ width: "60%", mb: 2 }} />
 
-
               <Box
                 sx={{
                   display: "flex",
@@ -894,7 +979,11 @@ const BusquedaSintoma = () => {
                   <Box>
                     <Box display="flex" alignItems="center" gap={1.5} mb={2}>
                       <PeopleAltIcon sx={{ color: "#092181" }} />
-                      <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
+                      <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        sx={{ color: "#092181" }}
+                      >
                         Información del paciente
                       </Typography>
                     </Box>
@@ -908,7 +997,9 @@ const BusquedaSintoma = () => {
                     <InfoItem
                       icon={<CalendarMonthIcon />}
                       label="Fecha en que padeció"
-                      value={new Date(sintomaSeleccionado.fecha).toLocaleDateString("es-MX", {
+                      value={new Date(
+                        sintomaSeleccionado.fecha
+                      ).toLocaleDateString("es-MX", {
                         year: "numeric",
                         month: "long",
                         day: "numeric",
@@ -940,7 +1031,11 @@ const BusquedaSintoma = () => {
                   <Box>
                     <Box display="flex" alignItems="center" gap={1.5} mb={2}>
                       <PsychologyIcon sx={{ color: "#3949ab" }} />
-                      <Typography variant="h6" fontWeight="bold" sx={{ color: "#3949ab" }}>
+                      <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        sx={{ color: "#3949ab" }}
+                      >
                         Información básica del síntoma
                       </Typography>
                     </Box>
@@ -954,10 +1049,17 @@ const BusquedaSintoma = () => {
                         mb: 2,
                         p: 1.5,
                         borderRadius: 3,
-                        backgroundColor: `${getColorEmocion(sintomaSeleccionado.emocion)}20`,
+                        backgroundColor: `${getColorEmocion(
+                          sintomaSeleccionado.emocion
+                        )}20`,
                       }}
                     >
-                      <Box sx={{ mr: 2, color: getColorEmocion(sintomaSeleccionado.emocion) }}>
+                      <Box
+                        sx={{
+                          mr: 2,
+                          color: getColorEmocion(sintomaSeleccionado.emocion),
+                        }}
+                      >
                         {getIconoEmocion(sintomaSeleccionado.emocion)}
                       </Box>
                       <Box>
@@ -1012,7 +1114,11 @@ const BusquedaSintoma = () => {
                   <Box>
                     <Box display="flex" alignItems="center" gap={1.5} mb={2}>
                       <PublicIcon sx={{ color: "#0277bd" }} />
-                      <Typography variant="h6" fontWeight="bold" sx={{ color: "#0277bd" }}>
+                      <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        sx={{ color: "#0277bd" }}
+                      >
                         Contexto y ambiente
                       </Typography>
                     </Box>
@@ -1032,10 +1138,17 @@ const BusquedaSintoma = () => {
                         mb: 2,
                         p: 1.5,
                         borderRadius: 3,
-                        backgroundColor: `${getColorClima(sintomaSeleccionado.clima)}20`,
+                        backgroundColor: `${getColorClima(
+                          sintomaSeleccionado.clima
+                        )}20`,
                       }}
                     >
-                      <Box sx={{ mr: 2, color: getColorClima(sintomaSeleccionado.clima) }}>
+                      <Box
+                        sx={{
+                          mr: 2,
+                          color: getColorClima(sintomaSeleccionado.clima),
+                        }}
+                      >
                         {getIconoClima(sintomaSeleccionado.clima)}
                       </Box>
                       <Box>
@@ -1087,9 +1200,6 @@ const BusquedaSintoma = () => {
                 </Button>
               </Box>
             </Box>
-
-
-
           )}
         </Paper>
 

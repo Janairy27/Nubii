@@ -1,8 +1,8 @@
 import { db } from "../config/db.js";
 
 // Consulta que servira para obtener información del uso de la aplicación
-export const reporteUsoAdm = async(filtros = {}) => {
-    let query = `
+export const reporteUsoAdm = async (filtros = {}) => {
+  let query = `
         SELECT 
         CONCAT(u.Nombre, ' ', u.aPaterno, ' ', IFNULL(u.aMaterno, ' ')) AS nombreUsuario,
         CASE 
@@ -27,52 +27,62 @@ export const reporteUsoAdm = async(filtros = {}) => {
         WHERE u.tipo_usuario IN (2, 3)
     `;
 
-    const parametros = [];
-    if(filtros.fechaInicio && filtros.fechaFin){
-        query += `AND ((r.fecha_aplicacion BETWEEN ? AND ?)
+  const parametros = [];
+  if (filtros.fechaInicio && filtros.fechaFin) {
+    query += `AND ((r.fecha_aplicacion BETWEEN ? AND ?)
             OR (ev.fecha_realizada BETWEEN ? AND ?)
             OR (a.fechaPublicado BETWEEN ? AND ?))`;
-        parametros.push(filtros.fechaInicio, filtros.fechaFin, filtros.fechaInicio, filtros.fechaFin, filtros.fechaInicio, filtros.fechaFin);
-    }
+    parametros.push(
+      filtros.fechaInicio,
+      filtros.fechaFin,
+      filtros.fechaInicio,
+      filtros.fechaFin,
+      filtros.fechaInicio,
+      filtros.fechaFin
+    );
+  }
 
-    if (filtros.tipoUsuario) {
-        query += " AND u.tipo_usuario = ? ";
-        parametros.push(filtros.tipoUsuario); 
-    }
+  if (filtros.tipoUsuario) {
+    query += " AND u.tipo_usuario = ? ";
+    parametros.push(filtros.tipoUsuario);
+  }
 
-    if (filtros.estado) {
-        query += " AND u.estado LIKE ? ";
-        parametros.push(`%${filtros.estado}%`);
-    }
+  if (filtros.estado) {
+    query += " AND u.estado LIKE ? ";
+    parametros.push(`%${filtros.estado}%`);
+  }
 
-    if (filtros.municipio) {
-        query += " AND u.municipio LIKE ? ";
-        parametros.push(`%${filtros.municipio}%`);
-    }
+  if (filtros.municipio) {
+    query += " AND u.municipio LIKE ? ";
+    parametros.push(`%${filtros.municipio}%`);
+  }
 
-    if (filtros.nombreUsuario) {
-        query += " AND CONCAT(u.Nombre, ' ', u.aPaterno, ' ', u.aMaterno) LIKE ? ";
-        parametros.push(`%${filtros.nombreUsuario}%`);
-    }
+  if (filtros.nombreUsuario) {
+    query += " AND CONCAT(u.Nombre, ' ', u.aPaterno, ' ', u.aMaterno) LIKE ? ";
+    parametros.push(`%${filtros.nombreUsuario}%`);
+  }
 
-    let agruparPor = "";
-    if (filtros.tipoReporte === "semanal") {
-        agruparPor = "YEARWEEK(IFNULL(ev.fecha_realizada, r_prof.fecha_aplicacion), 1)";
-    } else if (filtros.tipoReporte === "mensual") {
-        agruparPor = "DATE_FORMAT(IFNULL(ev.fecha_realizada, r_prof.fecha_aplicacion), '%Y-%m')";
-    } else {
-        agruparPor = "DATE(IFNULL(ev.fecha_realizada, r_prof.fecha_aplicacion))";
-    }
+  let agruparPor = "";
+  if (filtros.tipoReporte === "semanal") {
+    agruparPor =
+      "YEARWEEK(IFNULL(ev.fecha_realizada, r_prof.fecha_aplicacion), 1)";
+  } else if (filtros.tipoReporte === "mensual") {
+    agruparPor =
+      "DATE_FORMAT(IFNULL(ev.fecha_realizada, r_prof.fecha_aplicacion), '%Y-%m')";
+  } else {
+    agruparPor = "DATE(IFNULL(ev.fecha_realizada, r_prof.fecha_aplicacion))";
+  }
 
-    query = query.replace("{{agruparPor}}", agruparPor);
+  query = query.replace("{{agruparPor}}", agruparPor);
 
-    query += "GROUP BY nombreUsuario, tipo_usuario ORDER BY tipo_usuario, nombreUsuario";
+  query +=
+    "GROUP BY nombreUsuario, tipo_usuario ORDER BY tipo_usuario, nombreUsuario";
 
-    try{
-        const [rows] = await db.query(query, parametros);
-        return rows.length ? rows : [];
-    }catch(err){
-        console.log("Error al obtener reporte del uso del sistema:", err);
-        throw err;
-    }
+  try {
+    const [rows] = await db.query(query, parametros);
+    return rows.length ? rows : [];
+  } catch (err) {
+    console.log("Error al obtener reporte del uso del sistema:", err);
+    throw err;
+  }
 };

@@ -8,7 +8,9 @@ export const useNotificaciones = (idUsuario) => {
   const fetchNotificaciones = async () => {
     if (!idUsuario) return;
     try {
-      const res = await axios.get(`http://localhost:4000/api/notificaciones/${idUsuario}`);
+      const res = await axios.get(
+        `http://localhost:4000/api/notificaciones/${idUsuario}`
+      );
       setNotificaciones(res.data);
     } catch (error) {
       console.error("Error al obtener notificaciones:", error);
@@ -18,7 +20,9 @@ export const useNotificaciones = (idUsuario) => {
   // Marcar una notificación como leída
   const marcarLeido = async (idNotificacion) => {
     try {
-      await axios.put(`http://localhost:4000/api/notificaciones/marcar-leido/${idNotificacion}`);
+      await axios.put(
+        `http://localhost:4000/api/notificaciones/marcar-leido/${idNotificacion}`
+      );
       // Actualizar en memoria sin volver a llamar a la BD
       setNotificaciones((prev) =>
         prev.map((n) =>
@@ -33,7 +37,9 @@ export const useNotificaciones = (idUsuario) => {
   //  Marcar todas las notificaciones como leídas
   const marcarTodasLeidas = async () => {
     try {
-      await axios.put(`http://localhost:4000/api/notificaciones/marcar-todas/${idUsuario}`);
+      await axios.put(
+        `http://localhost:4000/api/notificaciones/marcar-todas/${idUsuario}`
+      );
       setNotificaciones((prev) => prev.map((n) => ({ ...n, leido: 1 })));
     } catch (error) {
       console.error("Error al marcar todas como leídas:", error);
@@ -42,7 +48,7 @@ export const useNotificaciones = (idUsuario) => {
 
   useEffect(() => {
     fetchNotificaciones();
-    const interval = setInterval(fetchNotificaciones, 15000); // cada 15 seg
+    const interval = setInterval(fetchNotificaciones, 15000); 
     return () => clearInterval(interval);
   }, [idUsuario]);
 

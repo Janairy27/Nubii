@@ -29,7 +29,6 @@ import {
   MoodBad as MoodBadIcon,
   FilterList,
   RestartAlt,
-
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
@@ -42,7 +41,7 @@ import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfi
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import SentimentNeutralIcon from "@mui/icons-material/SentimentNeutral";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
-import InsightsIcon from '@mui/icons-material/Insights';
+import InsightsIcon from "@mui/icons-material/Insights";
 import MedicalServicesIcon from "@mui/icons-material/MedicalServices";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import HealingIcon from "@mui/icons-material/Healing";
@@ -50,19 +49,18 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import BadgeIcon from "@mui/icons-material/Badge";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import PersonIcon from '@mui/icons-material/Person';
-import PsychologyAltIcon from '@mui/icons-material/PsychologyAlt';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import ScoreboardIcon from '@mui/icons-material/Scoreboard';
-import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import PersonIcon from "@mui/icons-material/Person";
+import PsychologyAltIcon from "@mui/icons-material/PsychologyAlt";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import ScoreboardIcon from "@mui/icons-material/Scoreboard";
+import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { es } from "date-fns/locale";
-
 
 const BusquedaResultadoTest = () => {
   const [idUsuario, setIdUsuario] = useState("");
@@ -76,7 +74,7 @@ const BusquedaResultadoTest = () => {
     tipo: false,
     fecha: false,
     categoria: false,
-    interpretacion: false
+    interpretacion: false,
   });
 
   const [valoresFiltro, setValoresFiltro] = useState({
@@ -84,7 +82,7 @@ const BusquedaResultadoTest = () => {
     tipo: "",
     fecha: "",
     categoria: "",
-    interpretacion: ""
+    interpretacion: "",
   });
 
   const [resultadoSeleccionado, setResultadoSeleccionado] = useState(null);
@@ -95,38 +93,135 @@ const BusquedaResultadoTest = () => {
 
   const navigate = useNavigate();
 
-  {/* Mapeo de tipo de test, categoria del resultado y la especilidad del profesional  */ }
+  {
+    /* Mapeo de tipo de test, categoria del resultado y la especilidad del profesional  */
+  }
 
   const TipoTest = [
     { value: 1, nombre: "GAD-7", icono: <PsychologyIcon />, color: "#42a5f5" },
-    { value: 2, nombre: "BAI", icono: <SentimentDissatisfiedIcon />, color: "#29b6f6", },
-    { value: 3, nombre: "STAI", icono: <SelfImprovementIcon />, color: "#26c6da", },
+    {
+      value: 2,
+      nombre: "BAI",
+      icono: <SentimentDissatisfiedIcon />,
+      color: "#29b6f6",
+    },
+    {
+      value: 3,
+      nombre: "STAI",
+      icono: <SelfImprovementIcon />,
+      color: "#26c6da",
+    },
     { value: 4, nombre: "PHQ-9", icono: <MoodBadIcon />, color: "#ef5350" },
-    { value: 5, nombre: "BDI-II", icono: <SentimentVeryDissatisfiedIcon />, color: "#e53935" },
+    {
+      value: 5,
+      nombre: "BDI-II",
+      icono: <SentimentVeryDissatisfiedIcon />,
+      color: "#e53935",
+    },
     { value: 6, nombre: "CES-D", icono: <PsychologyIcon />, color: "#ab47bc" },
-    { value: 7, nombre: "PSS", icono: <StressManagementIcon />, color: "#66bb6a" },
-    { value: 8, nombre: "DASS-21", icono: <HealthAndSafetyIcon />, color: "#ffa726" },
-    { value: 9, nombre: "Escala de estres", icono: <EmojiObjectsIcon />, color: "#9ccc65" },
+    {
+      value: 7,
+      nombre: "PSS",
+      icono: <StressManagementIcon />,
+      color: "#66bb6a",
+    },
+    {
+      value: 8,
+      nombre: "DASS-21",
+      icono: <HealthAndSafetyIcon />,
+      color: "#ffa726",
+    },
+    {
+      value: 9,
+      nombre: "Escala de estres",
+      icono: <EmojiObjectsIcon />,
+      color: "#9ccc65",
+    },
   ];
 
   const resultadoMap = [
-    { value: 1, nombre: "Normal", icono: <SentimentVerySatisfiedIcon />, color: "#66bb6a", },
-    { value: 2, nombre: "Leve", icono: <SentimentSatisfiedAltIcon />, color: "#9ccc65", },
-    { value: 3, nombre: "Moderado", icono: <SentimentNeutralIcon />, color: "#eddb36ff", },
-    { value: 4, nombre: "Severo", icono: <SentimentDissatisfiedIcon />, color: "#ff7043", },
-    { value: 5, nombre: "Extremo", icono: <SentimentVeryDissatisfiedIcon />, color: "#e53935", },
+    {
+      value: 1,
+      nombre: "Normal",
+      icono: <SentimentVerySatisfiedIcon />,
+      color: "#66bb6a",
+    },
+    {
+      value: 2,
+      nombre: "Leve",
+      icono: <SentimentSatisfiedAltIcon />,
+      color: "#9ccc65",
+    },
+    {
+      value: 3,
+      nombre: "Moderado",
+      icono: <SentimentNeutralIcon />,
+      color: "#eddb36ff",
+    },
+    {
+      value: 4,
+      nombre: "Severo",
+      icono: <SentimentDissatisfiedIcon />,
+      color: "#ff7043",
+    },
+    {
+      value: 5,
+      nombre: "Extremo",
+      icono: <SentimentVeryDissatisfiedIcon />,
+      color: "#e53935",
+    },
   ];
 
   const especialidadMap = [
-    { value: 1, nombre: "Psicólogo", icono: <PsychologyIcon />, color: "#ab47bc" },
-    { value: 2, nombre: "Psiquiatra", icono: <MedicalServicesIcon />, color: "#42a5f5" },
+    {
+      value: 1,
+      nombre: "Psicólogo",
+      icono: <PsychologyIcon />,
+      color: "#ab47bc",
+    },
+    {
+      value: 2,
+      nombre: "Psiquiatra",
+      icono: <MedicalServicesIcon />,
+      color: "#42a5f5",
+    },
     { value: 3, nombre: "Terapeuta", icono: <HealingIcon />, color: "#26a69a" },
-    { value: 4, nombre: "Neurólogo", icono: <LocalHospitalIcon />, color: "#ef5350" },
-    { value: 5, nombre: "Médico General", icono: <FavoriteIcon />, color: "#66bb6a" },
-    { value: 6, nombre: "Psicoterapeuta", icono: <SelfImprovementIcon />, color: "#ffa726" },
-    { value: 7, nombre: "Psicoanalista", icono: <EmojiObjectsIcon />, color: "#8d6e63" },
-    { value: 8, nombre: "Consejero en salud mental", icono: <SupportAgentIcon />, color: "#29b6f6" },
-    { value: 9, nombre: "Trabajador social clínico", icono: <SupervisorAccountIcon />, color: "#ffa726" },
+    {
+      value: 4,
+      nombre: "Neurólogo",
+      icono: <LocalHospitalIcon />,
+      color: "#ef5350",
+    },
+    {
+      value: 5,
+      nombre: "Médico General",
+      icono: <FavoriteIcon />,
+      color: "#66bb6a",
+    },
+    {
+      value: 6,
+      nombre: "Psicoterapeuta",
+      icono: <SelfImprovementIcon />,
+      color: "#ffa726",
+    },
+    {
+      value: 7,
+      nombre: "Psicoanalista",
+      icono: <EmojiObjectsIcon />,
+      color: "#8d6e63",
+    },
+    {
+      value: 8,
+      nombre: "Consejero en salud mental",
+      icono: <SupportAgentIcon />,
+      color: "#29b6f6",
+    },
+    {
+      value: 9,
+      nombre: "Trabajador social clínico",
+      icono: <SupervisorAccountIcon />,
+      color: "#ffa726",
+    },
   ];
 
   const textFieldEstilo = {
@@ -166,8 +261,6 @@ const BusquedaResultadoTest = () => {
     setOpenSnackbar(false);
   };
 
-
-
   useEffect(() => {
     const storedIdUsuario = localStorage.getItem("idUsuario");
     if (storedIdUsuario) {
@@ -192,8 +285,9 @@ const BusquedaResultadoTest = () => {
 
   const obtenerresultado = () => {
     axios
-      .get(`http://localhost:4000/api/resultado/by-filterPac/`, { params: { idPaciente } }
-      )
+      .get(`http://localhost:4000/api/resultado/by-filterPac/`, {
+        params: { idPaciente },
+      })
       .then((res) => {
         setResultado(res.data);
         setResultadoSeleccionado(null);
@@ -231,15 +325,19 @@ const BusquedaResultadoTest = () => {
     const queryParams = new URLSearchParams(filtrosAplicados).toString();
 
     try {
-      const res = await axios
-        .get(`http://localhost:4000/api/resultado/by-filterPac?${queryParams}`, { params: { idPaciente } }
-        );
+      const res = await axios.get(
+        `http://localhost:4000/api/resultado/by-filterPac?${queryParams}`,
+        { params: { idPaciente } }
+      );
       if (res.data && res.data.length > 0) {
         setResultado(res.data);
         setResultadoSeleccionado(null);
         mostrarMensaje("Resultados encontrados exitosamente.", "success");
       } else {
-        mostrarMensaje("No se encontraron resultados con ese criterio.", "warning");
+        mostrarMensaje(
+          "No se encontraron resultados con ese criterio.",
+          "warning"
+        );
         await obtenerresultado();
       }
     } catch (error) {
@@ -255,7 +353,7 @@ const BusquedaResultadoTest = () => {
       tipo: false,
       fecha: false,
       categoria: false,
-      interpretacion: false
+      interpretacion: false,
     });
 
     setValoresFiltro({
@@ -263,7 +361,7 @@ const BusquedaResultadoTest = () => {
       tipo: "",
       fecha: "",
       categoria: "",
-      interpretacion: ""
+      interpretacion: "",
     });
 
     obtenerresultado();
@@ -274,22 +372,31 @@ const BusquedaResultadoTest = () => {
   };
 
   const InfoItem = ({ icon, label, value }) => (
-    <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
-      <Box sx={{
-        mr: 2,
-        color: '#355C7D',
-        display: 'flex',
-        alignItems: 'center',
-        minWidth: '24px',
-        mt: 0.5
-      }}>
+    <Box sx={{ display: "flex", alignItems: "flex-start", mb: 2 }}>
+      <Box
+        sx={{
+          mr: 2,
+          color: "#355C7D",
+          display: "flex",
+          alignItems: "center",
+          minWidth: "24px",
+          mt: 0.5,
+        }}
+      >
         {icon}
       </Box>
       <Box sx={{ flex: 1 }}>
-        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ fontSize: "0.8rem" }}
+        >
           {label}
         </Typography>
-        <Typography variant="body1" sx={{ fontWeight: 'medium', wordBreak: 'break-word' }}>
+        <Typography
+          variant="body1"
+          sx={{ fontWeight: "medium", wordBreak: "break-word" }}
+        >
           {value || "No especificado"}
         </Typography>
       </Box>
@@ -298,7 +405,8 @@ const BusquedaResultadoTest = () => {
 
   return (
     <Layout>
-      <Container maxWidth="md"
+      <Container
+        maxWidth="md"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -306,41 +414,48 @@ const BusquedaResultadoTest = () => {
           mt: 4,
           pb: 4,
           minHeight: "100vh",
-        }}>
-        <Paper sx={{
-          p: { xs: 2, md: 4 },
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#F4F6F8",
-          width: "100%",
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}>
-          <Box sx={{
+        }}
+      >
+        <Paper
+          sx={{
+            p: { xs: 2, md: 4 },
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F4F6F8",
+            width: "100%",
+            mx: "auto",
             display: "flex",
-            alignItems: "center",
-            gap: 1.5,
-            flex: 1,
-            justifyContent: { xs: "center", sm: "flex-start" },
-            textAlign: { xs: "center", sm: "left" },
+            flexDirection: "column",
+            gap: 3,
           }}
-
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1.5,
+              flex: 1,
+              justifyContent: { xs: "center", sm: "flex-start" },
+              textAlign: { xs: "center", sm: "left" },
+            }}
           >
-            <InsightsIcon sx={{
-              color: "#092181",
-              fontSize: 36,
-              filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
-            }} />
-            <Typography variant="h4"
+            <InsightsIcon
+              sx={{
+                color: "#092181",
+                fontSize: 36,
+                filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+              }}
+            />
+            <Typography
+              variant="h4"
               fontWeight="bold"
               sx={{
                 color: "#092181",
                 textAlign: "center",
                 letterSpacing: 0.5,
                 textTransform: "capitalize",
-              }}>
+              }}
+            >
               Listado de resultados
             </Typography>
           </Box>
@@ -388,7 +503,7 @@ const BusquedaResultadoTest = () => {
                         onChange={() =>
                           setFiltrosActivos((prev) => ({
                             ...prev,
-                            [key]: !prev[key]
+                            [key]: !prev[key],
                           }))
                         }
                         sx={{
@@ -404,7 +519,6 @@ const BusquedaResultadoTest = () => {
                       </Typography>
                     }
                   />
-
                 ))}
               </Box>
 
@@ -422,11 +536,13 @@ const BusquedaResultadoTest = () => {
                     fullWidth
                     label="Nombre del profesional"
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, nombre: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        nombre: e.target.value,
+                      })
                     }
                     sx={textFieldEstilo}
                   />
-
                 )}
                 {filtrosActivos.tipo && (
                   <FormControl fullWidth sx={textFieldEstilo}>
@@ -434,7 +550,10 @@ const BusquedaResultadoTest = () => {
                     <Select
                       value={valoresFiltro.tipo}
                       onChange={(e) =>
-                        setValoresFiltro({ ...valoresFiltro, tipo: e.target.value })
+                        setValoresFiltro({
+                          ...valoresFiltro,
+                          tipo: e.target.value,
+                        })
                       }
                       label="Tipo de test realizado"
                       renderValue={(selectedValue) => {
@@ -447,11 +566,25 @@ const BusquedaResultadoTest = () => {
                         // Usamos Box con display: flex para asegurar la alineación horizontal
                         if (selectedTipo) {
                           return (
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <Box sx={{ color: selectedTipo.color, display: 'flex' }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  color: selectedTipo.color,
+                                  display: "flex",
+                                }}
+                              >
                                 {selectedTipo.icono}
                               </Box>
-                              <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                              <Typography
+                                variant="body1"
+                                sx={{ fontWeight: 500 }}
+                              >
                                 {selectedTipo.nombre}
                               </Typography>
                             </Box>
@@ -462,24 +595,37 @@ const BusquedaResultadoTest = () => {
                     >
                       {TipoTest.map((t) => (
                         <MenuItem key={t.value} value={t.value}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                            <Box sx={{ color: t.color, fontSize: 20 }}>{t.icono}</Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1.5,
+                            }}
+                          >
+                            <Box sx={{ color: t.color, fontSize: 20 }}>
+                              {t.icono}
+                            </Box>
                             {t.nombre}
                           </Box>
                         </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
-
                 )}
 
                 {filtrosActivos.fecha && (
-                  <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={es}>
+                  <LocalizationProvider
+                    dateAdapter={AdapterDateFns}
+                    adapterLocale={es}
+                  >
                     <DatePicker
                       label="Fecha de aplicación"
                       value={valoresFiltro.fecha}
                       onChange={(nuevaFecha) =>
-                        setValoresFiltro({ ...valoresFiltro, fecha: nuevaFecha })
+                        setValoresFiltro({
+                          ...valoresFiltro,
+                          fecha: nuevaFecha,
+                        })
                       }
                       format="dd/MM/yyyy"
                       slotProps={{
@@ -493,17 +639,18 @@ const BusquedaResultadoTest = () => {
                   </LocalizationProvider>
                 )}
 
-
                 {filtrosActivos.categoria && (
                   <FormControl fullWidth sx={textFieldEstilo}>
                     <InputLabel>Categoria del resultado</InputLabel>
                     <Select
                       value={valoresFiltro.categoria}
                       onChange={(e) =>
-                        setValoresFiltro({ ...valoresFiltro, categoria: e.target.value })
+                        setValoresFiltro({
+                          ...valoresFiltro,
+                          categoria: e.target.value,
+                        })
                       }
                       label="Categoria de los resultados"
-
                       renderValue={(selectedValue) => {
                         //  Encuentra el objeto 'categoria' correspondiente al valor seleccionado
                         const selectedCategoria = resultadoMap.find(
@@ -514,11 +661,25 @@ const BusquedaResultadoTest = () => {
                         // Usamos Box con display: flex para asegurar la alineación horizontal
                         if (selectedCategoria) {
                           return (
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <Box sx={{ color: selectedCategoria.color, display: 'flex' }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  color: selectedCategoria.color,
+                                  display: "flex",
+                                }}
+                              >
                                 {selectedCategoria.icono}
                               </Box>
-                              <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                              <Typography
+                                variant="body1"
+                                sx={{ fontWeight: 500 }}
+                              >
                                 {selectedCategoria.nombre}
                               </Typography>
                             </Box>
@@ -529,15 +690,22 @@ const BusquedaResultadoTest = () => {
                     >
                       {resultadoMap.map((r) => (
                         <MenuItem key={r.value} value={r.value}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                            <Box sx={{ color: r.color, fontSize: 20 }}>{r.icono}</Box>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1.5,
+                            }}
+                          >
+                            <Box sx={{ color: r.color, fontSize: 20 }}>
+                              {r.icono}
+                            </Box>
                             {r.nombre}
                           </Box>
                         </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
-
                 )}
 
                 {filtrosActivos.interpretacion && (
@@ -546,13 +714,14 @@ const BusquedaResultadoTest = () => {
                     label="Interpretación de los resultados"
                     value={valoresFiltro.interpretacion}
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, interpretacion: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        interpretacion: e.target.value,
+                      })
                     }
                     sx={textFieldEstilo}
                   />
-
                 )}
-
               </Box>
 
               {/* Botones */}
@@ -565,7 +734,6 @@ const BusquedaResultadoTest = () => {
                   mt: 1,
                 }}
               >
-
                 <Button
                   variant="contained"
                   startIcon={<Search />}
@@ -636,7 +804,11 @@ const BusquedaResultadoTest = () => {
                     <InsightsIcon sx={{ color: "#0D1B2A", fontSize: 34 }} />
                     <Typography
                       variant="h5"
-                      sx={{ fontWeight: "bold", color: "#0D1B2A", letterSpacing: "0.5px" }}
+                      sx={{
+                        fontWeight: "bold",
+                        color: "#0D1B2A",
+                        letterSpacing: "0.5px",
+                      }}
                     >
                       {resultado.length > 0
                         ? "Resultados registrados:"
@@ -666,8 +838,12 @@ const BusquedaResultadoTest = () => {
                 >
                   {resultado.map((item) => {
                     // Buscar tipo de test y resultado
-                    const tTest = TipoTest.find((s) => s.value === Number(item.tipo_test));
-                    const res = resultadoMap.find((s) => s.value === Number(item.categ_resultado));
+                    const tTest = TipoTest.find(
+                      (s) => s.value === Number(item.tipo_test)
+                    );
+                    const res = resultadoMap.find(
+                      (s) => s.value === Number(item.categ_resultado)
+                    );
 
                     return (
                       <Card
@@ -702,11 +878,23 @@ const BusquedaResultadoTest = () => {
                           }}
                         >
                           {/* Profesional */}
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                            <PsychologyIcon sx={{ color: "#092181", fontSize: 30 }} />
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <PsychologyIcon
+                              sx={{ color: "#092181", fontSize: 30 }}
+                            />
                             <Typography
                               variant="h6"
-                              sx={{ fontWeight: 700, color: "#12275c", textAlign: "center" }}
+                              sx={{
+                                fontWeight: 700,
+                                color: "#12275c",
+                                textAlign: "center",
+                              }}
                             >
                               {item.nombreProfesional}
                             </Typography>
@@ -723,18 +911,23 @@ const BusquedaResultadoTest = () => {
                                 px: 2,
                                 py: 0.5,
                                 borderRadius: "12px",
-                                backgroundColor: (theme) => theme.palette.mode === "light"
-                                  ? `${tTest.color}33`
-                                  : `${tTest.color}22`,
+                                backgroundColor: (theme) =>
+                                  theme.palette.mode === "light"
+                                    ? `${tTest.color}33`
+                                    : `${tTest.color}22`,
                               }}
                             >
-                              <Box sx={{ color: tTest.color }}>{tTest.icono}</Box>
-                              <Typography variant="body1" sx={{ fontWeight: 600, color: tTest.color }}>
+                              <Box sx={{ color: tTest.color }}>
+                                {tTest.icono}
+                              </Box>
+                              <Typography
+                                variant="body1"
+                                sx={{ fontWeight: 600, color: tTest.color }}
+                              >
                                 {tTest.nombre}
                               </Typography>
                             </Box>
                           )}
-
 
                           {/* Fecha de realización */}
                           <Box
@@ -748,9 +941,16 @@ const BusquedaResultadoTest = () => {
                               py: 0.6,
                             }}
                           >
-                            <CalendarTodayIcon sx={{ fontSize: 18, color: "#5c6bc0" }} />
-                            <Typography variant="body2" sx={{ color: "#374151", fontWeight: 500 }}>
-                              {new Date(item.fecha_aplicacion).toLocaleDateString("es-MX", {
+                            <CalendarTodayIcon
+                              sx={{ fontSize: 18, color: "#5c6bc0" }}
+                            />
+                            <Typography
+                              variant="body2"
+                              sx={{ color: "#374151", fontWeight: 500 }}
+                            >
+                              {new Date(
+                                item.fecha_aplicacion
+                              ).toLocaleDateString("es-MX", {
                                 year: "numeric",
                                 month: "long",
                                 day: "numeric",
@@ -760,9 +960,19 @@ const BusquedaResultadoTest = () => {
 
                           {/* Puntaje */}
                           {res && (
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1.5, mt: 1 }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1.5,
+                                mt: 1,
+                              }}
+                            >
                               <Box sx={{ color: res.color }}>{res.icono}</Box>
-                              <Typography variant="body1" sx={{ fontWeight: 600, color: "#12275c" }}>
+                              <Typography
+                                variant="body1"
+                                sx={{ fontWeight: 600, color: "#12275c" }}
+                              >
                                 {res.nombre}
                               </Typography>
                             </Box>
@@ -774,7 +984,6 @@ const BusquedaResultadoTest = () => {
                 </Box>
               </Box>
             </Tooltip>
-
           ) : (
             <Box
               sx={{
@@ -832,7 +1041,11 @@ const BusquedaResultadoTest = () => {
                   <Box>
                     <Box display="flex" alignItems="center" gap={1.5} mb={2}>
                       <BadgeIcon sx={{ color: "#092181" }} />
-                      <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
+                      <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        sx={{ color: "#092181" }}
+                      >
                         Información básica
                       </Typography>
                     </Box>
@@ -851,13 +1064,28 @@ const BusquedaResultadoTest = () => {
                       );
                       return (
                         <Box sx={{ mt: 2, mb: 2 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1, }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
                             {esp?.icono && (
-                              <Box sx={{ color: esp.color, display: "flex", alignItems: "center" }}>
+                              <Box
+                                sx={{
+                                  color: esp.color,
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
                                 {esp.icono}
                               </Box>
                             )}
-                            <Typography variant="subtitle2" sx={{ color: "#666" }}>
+                            <Typography
+                              variant="subtitle2"
+                              sx={{ color: "#666" }}
+                            >
                               Especialidad del Profesional
                             </Typography>
                           </Box>
@@ -908,7 +1136,11 @@ const BusquedaResultadoTest = () => {
                   <Box>
                     <Box display="flex" alignItems="center" gap={1.5} mb={2}>
                       <PsychologyAltIcon sx={{ color: "#0277bd" }} />
-                      <Typography variant="h6" fontWeight="bold" sx={{ color: "#0277bd" }}>
+                      <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        sx={{ color: "#0277bd" }}
+                      >
                         Información del Test
                       </Typography>
                     </Box>
@@ -916,17 +1148,34 @@ const BusquedaResultadoTest = () => {
                     {/* Tipo de test */}
                     {(() => {
                       const tipo = TipoTest.find(
-                        (t) => Number(t.value) === Number(resultadoSeleccionado.tipo_test)
+                        (t) =>
+                          Number(t.value) ===
+                          Number(resultadoSeleccionado.tipo_test)
                       );
                       return (
                         <Box sx={{ mt: 2, mb: 2 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1, }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
                             {tipo?.icono && (
-                              <Box sx={{ color: tipo.color, display: "flex", alignItems: "center" }}>
+                              <Box
+                                sx={{
+                                  color: tipo.color,
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
                                 {tipo.icono}
                               </Box>
                             )}
-                            <Typography variant="subtitle2" sx={{ color: "#666" }}>
+                            <Typography
+                              variant="subtitle2"
+                              sx={{ color: "#666" }}
+                            >
                               Tipo de test aplicado
                             </Typography>
                           </Box>
@@ -972,13 +1221,28 @@ const BusquedaResultadoTest = () => {
                       );
                       return (
                         <Box sx={{ mt: 2, mb: 2 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1, }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
                             {cat?.icono && (
-                              <Box sx={{ color: cat.color, display: "flex", alignItems: "center" }}>
+                              <Box
+                                sx={{
+                                  color: cat.color,
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
                                 {cat.icono}
                               </Box>
                             )}
-                            <Typography variant="subtitle2" sx={{ color: "#666" }}>
+                            <Typography
+                              variant="subtitle2"
+                              sx={{ color: "#666" }}
+                            >
                               Categoría del resultado
                             </Typography>
                           </Box>
@@ -1038,7 +1302,6 @@ const BusquedaResultadoTest = () => {
                 </Button>
               </Box>
             </Box>
-
           )}
         </Paper>
         {/*  Snackbar para los mensajes */}

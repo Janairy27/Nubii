@@ -10,10 +10,10 @@ import {
   Paper,
   Button,
   Card,
-  CardContent
+  CardContent,
 } from "@mui/material";
-import MarkUnreadChatAltIcon from '@mui/icons-material/MarkUnreadChatAlt';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import MarkUnreadChatAltIcon from "@mui/icons-material/MarkUnreadChatAlt";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 
 import { useNavigate } from "react-router-dom";
 
@@ -22,8 +22,7 @@ export default function MenuPaciente() {
 
   const [idUsuario, setIdUsuario] = useState(null);
   const [idPaciente, setIdPaciente] = useState(null);
-  const [Nombre, setNombre] = useState('');
-
+  const [Nombre, setNombre] = useState("");
 
   useEffect(() => {
     const storedIdUsuario = localStorage.getItem("idUsuario");
@@ -41,8 +40,6 @@ export default function MenuPaciente() {
         });
     }
   }, []);
-
-
 
   return (
     <Layout>
@@ -62,7 +59,7 @@ export default function MenuPaciente() {
             fontWeight: 700,
             color: "#092181",
             textAlign: "center",
-            width: "100%"
+            width: "100%",
           }}
         >
           Bienvenido usuario paciente {Nombre && `- ${Nombre}`}
@@ -74,7 +71,7 @@ export default function MenuPaciente() {
             display: "flex",
             flexDirection: { xs: "column", md: "row" },
             justifyContent: "center",
-            alignItems: "flex-start", 
+            alignItems: "flex-start",
             gap: 9,
             width: "100%",
           }}
@@ -100,7 +97,7 @@ export default function MenuPaciente() {
               flex: { xs: "1 1 100%", md: "1 1 35%" },
               display: "flex",
               flexDirection: "column",
-              alignItems: "stretch", 
+              alignItems: "stretch",
               width: "100%",
               minWidth: { xs: "100%", md: 400 },
               gap: 3,
@@ -112,18 +109,27 @@ export default function MenuPaciente() {
             </Box>
 
             {/* Botones debajo del calendario */}
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%" }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+                width: "100%",
+              }}
+            >
               <Button
                 variant="contained"
                 startIcon={<MarkUnreadChatAltIcon />}
                 onClick={() => navigate("/chat")}
-               sx={{  minHeight: 48, fontWeight: 600,
-                   minWidth: 400,
-                  textTransform:"none",
-                    background: "#092181",
-                    "&:hover": { background: "#1c3cc9" },
-                    borderRadius: 2,
-                 }}
+                sx={{
+                  minHeight: 48,
+                  fontWeight: 600,
+                  minWidth: 400,
+                  textTransform: "none",
+                  background: "#092181",
+                  "&:hover": { background: "#1c3cc9" },
+                  borderRadius: 2,
+                }}
               >
                 Ir al Chat de Emergencia
               </Button>
@@ -132,25 +138,26 @@ export default function MenuPaciente() {
                 variant="outlined"
                 startIcon={<AssignmentIndIcon />}
                 onClick={() => navigate("/listado-recomendaciones")}
-                 sx={{ width: "100%", minHeight: 48, fontWeight: 600,
+                sx={{
+                  width: "100%",
+                  minHeight: 48,
+                  fontWeight: 600,
                   textTransform: "none",
+                  borderColor: "#092181",
+                  color: "#092181",
+                  borderRadius: 2,
+                  "&:hover": {
+                    backgroundColor: "#eef2ff",
                     borderColor: "#092181",
-                    color: "#092181",
-                    borderRadius: 2,
-                    "&:hover": {
-                      backgroundColor: "#eef2ff",
-                      borderColor: "#092181",
-                    },
-                 }}
+                  },
+                }}
               >
                 Ir a Actividades Personalizadas
               </Button>
             </Box>
           </Box>
         </Container>
-
       </Box>
-
     </Layout>
   );
 }

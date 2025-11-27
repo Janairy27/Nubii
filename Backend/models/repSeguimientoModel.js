@@ -1,8 +1,8 @@
 import { db } from "../config/db.js";
 
 // Consulta en donde se muestra información únicamente del paciente
-export const reporteSeguimientoPac = async(filtros = {}, idPaciente) => {
-    let query = `
+export const reporteSeguimientoPac = async (filtros = {}, idPaciente) => {
+  let query = `
         SELECT {{agruparPor}} AS tiempo,
         s.emocion, AVG(s.intensidad) AS promedio_intensidad,
         COUNT(*) AS frecuencia_emocion
@@ -12,37 +12,38 @@ export const reporteSeguimientoPac = async(filtros = {}, idPaciente) => {
         WHERE p.idPaciente = ?         
     `;
 
-    const parametros = [idPaciente];
-    if(filtros.fechaInicio && filtros.fechaFin){
-        query += "AND s.fecha BETWEEN ? AND ? ";
-        parametros.push(filtros.fechaInicio, filtros.fechaFin);
-    }
+  const parametros = [idPaciente];
+  if (filtros.fechaInicio && filtros.fechaFin) {
+    query += "AND s.fecha BETWEEN ? AND ? ";
+    parametros.push(filtros.fechaInicio, filtros.fechaFin);
+  }
 
-    let agruparPor = "";
-    if(filtros.tipoReporte === "semanal"){
-        agruparPor = "DATE_SUB(DATE(s.fecha), INTERVAL (DAYOFWEEK(s.fecha) - 2) DAY) ";
-    }else if(filtros.tipoReporte === "mensual"){
-        agruparPor = "DATE_FORMAT(s.fecha, '%Y-%m') ";
-    }else{
-        agruparPor = "DATE(s.fecha) ";
-    }
+  let agruparPor = "";
+  if (filtros.tipoReporte === "semanal") {
+    agruparPor =
+      "DATE_SUB(DATE(s.fecha), INTERVAL (DAYOFWEEK(s.fecha) - 2) DAY) ";
+  } else if (filtros.tipoReporte === "mensual") {
+    agruparPor = "DATE_FORMAT(s.fecha, '%Y-%m') ";
+  } else {
+    agruparPor = "DATE(s.fecha) ";
+  }
 
-    query = query.replace("{{agruparPor}}", agruparPor);
-    
-    query += "GROUP BY s.fecha, s.emocion ORDER BY s.fecha ASC";
+  query = query.replace("{{agruparPor}}", agruparPor);
 
-    try{
-        const [rows] = await db.query(query, parametros);
-        return rows;
-    }catch(err){
-        console.log("Error al obtener reporte de seguimiento individual:", err);
-        throw err;
-    }
+  query += "GROUP BY s.fecha, s.emocion ORDER BY s.fecha ASC";
+
+  try {
+    const [rows] = await db.query(query, parametros);
+    return rows;
+  } catch (err) {
+    console.log("Error al obtener reporte de seguimiento individual:", err);
+    throw err;
+  }
 };
 
 // Consulta para obtener la información necesario y mostrarla al profesional
-export const reporteSeguimientoProf = async(filtros = {}, idProfesional) => {
-    let query = `
+export const reporteSeguimientoProf = async (filtros = {}, idProfesional) => {
+  let query = `
         SELECT
         CONCAT(pa.nombre, ' ', pa.aPaterno, ' ', IFNULL(pa.aMaterno, '')) AS nombrePaciente,
         {{agruparPor}} AS periodo, COUNT(s.idSintoma) AS total_sintomas,
@@ -67,56 +68,56 @@ export const reporteSeguimientoProf = async(filtros = {}, idProfesional) => {
         WHERE r.idProfesional = ? 
     `;
 
-    const parametros = [idProfesional];
-    if(filtros.idPaciente){
-        query += "AND p.idPaciente = ? ";
-        parametros.push(filtros.idPaciente);
-    }
+  const parametros = [idProfesional];
+  if (filtros.idPaciente) {
+    query += "AND p.idPaciente = ? ";
+    parametros.push(filtros.idPaciente);
+  }
 
-    if(filtros.fechaInicio && filtros.fechaFin){
-        query += "AND r.fecha_aplicacion BETWEEN ? AND ? ";
-        parametros.push(filtros.fechaInicio, filtros.fechaFin);
-    }
+  if (filtros.fechaInicio && filtros.fechaFin) {
+    query += "AND r.fecha_aplicacion BETWEEN ? AND ? ";
+    parametros.push(filtros.fechaInicio, filtros.fechaFin);
+  }
 
-    if (filtros.emocionPredominante) {
-        query += "AND h.emocion_predom = ? ";
-        parametros.push(filtros.emocionPredominante);
-    }
+  if (filtros.emocionPredominante) {
+    query += "AND h.emocion_predom = ? ";
+    parametros.push(filtros.emocionPredominante);
+  }
 
-    if (filtros.intensidadMinima) {
-        query += "AND s.intensidad >= ? ";
-        parametros.push(filtros.intensidadMinima);
-    }
+  if (filtros.intensidadMinima) {
+    query += "AND s.intensidad >= ? ";
+    parametros.push(filtros.intensidadMinima);
+  }
 
-    if (filtros.intensidadMaxima) {
-        query += "AND s.intensidad <= ? ";
-        parametros.push(filtros.intensidadMaxima);
-    }
+  if (filtros.intensidadMaxima) {
+    query += "AND s.intensidad <= ? ";
+    parametros.push(filtros.intensidadMaxima);
+  }
 
-    if (filtros.tipoTest) {
-        query += "AND r.tipo_test = ? ";
-        parametros.push(filtros.tipoTest);
-    }
+  if (filtros.tipoTest) {
+    query += "AND r.tipo_test = ? ";
+    parametros.push(filtros.tipoTest);
+  }
 
-    let agruparPor = "";
-    if(filtros.tipoReporte === "semanal"){
-        agruparPor = "DATE_SUB(DATE(r.fecha_aplicacion), INTERVAL (DAYOFWEEK(r.fecha_aplicacion) - 2) DAY) ";
-    }else if(filtros.tipoReporte === "mensual"){
-        agruparPor = "DATE_FORMAT(r.fecha_aplicaciona, '%Y-%m') ";
-    }else{
-        agruparPor = "DATE(r.fecha_aplicacion)";
-    }
+  let agruparPor = "";
+  if (filtros.tipoReporte === "semanal") {
+    agruparPor =
+      "DATE_SUB(DATE(r.fecha_aplicacion), INTERVAL (DAYOFWEEK(r.fecha_aplicacion) - 2) DAY) ";
+  } else if (filtros.tipoReporte === "mensual") {
+    agruparPor = "DATE_FORMAT(r.fecha_aplicaciona, '%Y-%m') ";
+  } else {
+    agruparPor = "DATE(r.fecha_aplicacion)";
+  }
 
-    query = query.replace("{{agruparPor}}", agruparPor);
+  query = query.replace("{{agruparPor}}", agruparPor);
 
-    query += `GROUP BY nombrePaciente ORDER BY nombrePaciente`;
+  query += `GROUP BY nombrePaciente ORDER BY nombrePaciente`;
 
-    try{
-        const [rows] = await db.query(query, parametros);
-        return rows.length ? rows: [];
-    }catch(err){
-        console.log("Error al obtener reporte de seguimiento emocional:", err);
-        throw err;
-    }
+  try {
+    const [rows] = await db.query(query, parametros);
+    return rows.length ? rows : [];
+  } catch (err) {
+    console.log("Error al obtener reporte de seguimiento emocional:", err);
+    throw err;
+  }
 };
-

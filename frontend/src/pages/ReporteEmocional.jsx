@@ -37,12 +37,10 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventAvailableIcon from "@mui/icons-material/EventAvailable";
 import DateRangeIcon from "@mui/icons-material/DateRange";
 
-
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
-import TimelineIcon from '@mui/icons-material/Timeline';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-
+import AutoGraphIcon from "@mui/icons-material/AutoGraph";
+import TimelineIcon from "@mui/icons-material/Timeline";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 
 import {
   Chart as ChartJS,
@@ -55,8 +53,15 @@ import {
   Legend,
 } from "chart.js";
 
-
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 export default function ReporteEmocional() {
   const theme = useTheme();
@@ -109,7 +114,11 @@ export default function ReporteEmocional() {
       emociones: [
         { id: 13, nombre: "Problemas de Sueño", icono: <LocalHotelIcon /> },
         { id: 14, nombre: "Cambios Apetito", icono: <RestaurantIcon /> },
-        { id: 15, nombre: "Dificultad Concentración", icono: <PsychologyIcon /> },
+        {
+          id: 15,
+          nombre: "Dificultad Concentración",
+          icono: <PsychologyIcon />,
+        },
         { id: 16, nombre: "Síntomas Somáticos", icono: <PsychologyIcon /> },
       ],
     },
@@ -119,7 +128,11 @@ export default function ReporteEmocional() {
     const map = {};
     emocionesSaludMental.forEach((cat) =>
       cat.emociones.forEach((emo) => {
-        map[emo.id] = { nombre: emo.nombre, color: cat.color, icono: emo.icono };
+        map[emo.id] = {
+          nombre: emo.nombre,
+          color: cat.color,
+          icono: emo.icono,
+        };
       })
     );
     return map;
@@ -129,7 +142,7 @@ export default function ReporteEmocional() {
     setMensaje(msg);
     setTipo(severity);
     setOpenSnackbar(true);
-     window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleCloseSnackbar = () => {
@@ -152,15 +165,22 @@ export default function ReporteEmocional() {
   }, []);
 
   const fetchReport = async () => {
-    if (!idPaciente) return mostrarMensaje("No se ha encontrado el paciente.", "warning");
+    if (!idPaciente)
+      return mostrarMensaje("No se ha encontrado el paciente.", "warning");
     //if (!fechaInicio || !fechaFin) return mostrarMensaje("Selecciona un rango de fechas.", "warning");
     setReportData([]);
     try {
-      const res = await axios.get(`http://localhost:4000/api/repEmocional/info-emocionalPac`, {
-        params: { idPaciente, fechaInicio, fechaFin, tipoReporte },
-      });
+      const res = await axios.get(
+        `http://localhost:4000/api/repEmocional/info-emocionalPac`,
+        {
+          params: { idPaciente, fechaInicio, fechaFin, tipoReporte },
+        }
+      );
       if (res.data.length === 0) {
-        mostrarMensaje("No hay información disponible para este paciente en el rango seleccionado.", "warning");
+        mostrarMensaje(
+          "No hay información disponible para este paciente en el rango seleccionado.",
+          "warning"
+        );
       }
       setReportData(res.data);
     } catch (error) {
@@ -171,12 +191,19 @@ export default function ReporteEmocional() {
   // --- EXPORT PDF ---
   const exportPDF = async () => {
     try {
-      if (reportData.length === 0) return mostrarMensaje("Primero genera el reporte.", "error");
+      if (reportData.length === 0)
+        return mostrarMensaje("Primero genera el reporte.", "error");
       const chartCanvas = document.querySelector("canvas");
       const grafico = chartCanvas ? chartCanvas.toDataURL("image/png") : null;
       const res = await axios.post(
         `http://localhost:4000/api/repEmocional/pdf`,
-        { tipoUsuario: 3, datos: reportData, grafico, nombre: Nombre, tipoReporte },
+        {
+          tipoUsuario: 3,
+          datos: reportData,
+          grafico,
+          nombre: Nombre,
+          tipoReporte,
+        },
         { responseType: "blob" }
       );
       const url = window.URL.createObjectURL(new Blob([res.data]));
@@ -200,14 +227,28 @@ export default function ReporteEmocional() {
     reportData.forEach(({ tiempo, emocion, promedio_intensidad }) => {
       const dateObj = new Date(tiempo);
       if (isNaN(dateObj)) return;
-      const fecha = format(dateObj, tipoReporte === "mensual" ? "yyyy-MM" : "yyyy-MM-dd");
+      const fecha = format(
+        dateObj,
+        tipoReporte === "mensual" ? "yyyy-MM" : "yyyy-MM-dd"
+      );
       if (!emociones[emocion]) emociones[emocion] = {};
       emociones[emocion][fecha] = promedio_intensidad;
     });
-    const fechasUnicas = [...new Set(reportData.map((d) => {
-      const dateObj = new Date(d.tiempo);
-      return isNaN(dateObj) ? "" : format(dateObj, tipoReporte === "mensual" ? "yyyy-MM" : "yyyy-MM-dd");
-    }))].filter(Boolean).sort();
+    const fechasUnicas = [
+      ...new Set(
+        reportData.map((d) => {
+          const dateObj = new Date(d.tiempo);
+          return isNaN(dateObj)
+            ? ""
+            : format(
+                dateObj,
+                tipoReporte === "mensual" ? "yyyy-MM" : "yyyy-MM-dd"
+              );
+        })
+      ),
+    ]
+      .filter(Boolean)
+      .sort();
     const datasets = Object.keys(emociones).map((emocion) => ({
       label: emocionesMap[emocion]?.nombre || emocion,
       data: fechasUnicas.map((fecha) => emociones[emocion][fecha] || 0),
@@ -220,7 +261,8 @@ export default function ReporteEmocional() {
 
   return (
     <Layout>
-      <Container maxWidth="md"
+      <Container
+        maxWidth="md"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -230,41 +272,49 @@ export default function ReporteEmocional() {
           minHeight: "100vh",
         }}
       >
-        <Paper sx={{
-          p: { xs: 2, md: 4 },
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#F4F6F8",
-          width: "100%",
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}>
-          <Box sx={{
-            p: { xs: 2, sm: 3 },
+        <Paper
+          sx={{
+            p: { xs: 2, md: 4 },
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F4F6F8",
+            width: "100%",
+            mx: "auto",
             display: "flex",
             flexDirection: "column",
             gap: 3,
-            maxWidth: "1200px",
-            mx: "auto",
-            width: "100%"
-          }}>
-
-            {/* Header */}
-            <Box ox sx={{
+          }}
+        >
+          <Box
+            sx={{
+              p: { xs: 2, sm: 3 },
               display: "flex",
-              alignItems: "center",
-              gap: 1.5,
-              flex: 1,
-              justifyContent: "center",
-              textAlign: "center",
-            }}>
-              <AutoGraphIcon sx={{
-                color: "#092181",
-                fontSize: 36,
-                filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
-              }} />
+              flexDirection: "column",
+              gap: 3,
+              maxWidth: "1200px",
+              mx: "auto",
+              width: "100%",
+            }}
+          >
+            {/* Header */}
+            <Box
+              ox
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1.5,
+                flex: 1,
+                justifyContent: "center",
+                textAlign: "center",
+              }}
+            >
+              <AutoGraphIcon
+                sx={{
+                  color: "#092181",
+                  fontSize: 36,
+                  filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+                }}
+              />
               <Typography
                 variant="h4"
                 sx={{
@@ -337,19 +387,25 @@ export default function ReporteEmocional() {
                     label="Rango"
                   >
                     <MenuItem value="diario">
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <CalendarTodayIcon sx={{ color: "#4CAF50" }} />
                         <Typography>Diario</Typography>
                       </Box>
                     </MenuItem>
                     <MenuItem value="semanal">
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <EventAvailableIcon sx={{ color: "#2196F3" }} />
                         <Typography>Semanal</Typography>
                       </Box>
                     </MenuItem>
                     <MenuItem value="mensual">
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                      <Box
+                        sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                      >
                         <DateRangeIcon sx={{ color: "#FF9800" }} />
                         <Typography>Mensual</Typography>
                       </Box>
@@ -431,7 +487,6 @@ export default function ReporteEmocional() {
                 variant="outlined"
                 color="error"
                 onClick={exportPDF}
-
                 sx={{
                   borderRadius: "12px",
                   textTransform: "none",
@@ -450,100 +505,133 @@ export default function ReporteEmocional() {
                     //filter: "invert(46%) sepia(87%) saturate(368%) hue-rotate(113deg) brightness(97%) contrast(93%)",
                   }}
                 />
-
                 PDF
               </Button>
             </Card>
 
-
             {/* Contenido */}
             {reportData.length > 0 ? (
               <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-
-
                 {/*  Gráfico */}
-                <Card sx={{
-                  p: 3,
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  cursor: "pointer",
-                  borderRadius: "20px",
-                  border: "1px solid #dbe3ff",
-                  backgroundColor: "#f9fbff",
-                  width: "94%",
-                  //minHeight: "260px",
-                  transition: "all 0.3s ease",
-                  boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
-                  "&:hover": {
-                    transform: "translateY(-6px)",
-                    boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
-                    borderColor: "#092181",
-                  },
-                }}>
+                <Card
+                  sx={{
+                    p: 3,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                    borderRadius: "20px",
+                    border: "1px solid #dbe3ff",
+                    backgroundColor: "#f9fbff",
+                    width: "94%",
+                    //minHeight: "260px",
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
+                    "&:hover": {
+                      transform: "translateY(-6px)",
+                      boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
+                      borderColor: "#092181",
+                    },
+                  }}
+                >
                   <Box display="flex" alignItems="center" gap={1.5} mb={2}>
                     <TimelineIcon sx={{ color: "#092181", fontSize: 28 }} />
-                    <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
-                      Evolución de Emociones</Typography>
+                    <Typography
+                      variant="h6"
+                      fontWeight="bold"
+                      sx={{ color: "#092181" }}
+                    >
+                      Evolución de Emociones
+                    </Typography>
                   </Box>
                   <Box sx={{ height: { xs: 300, sm: 400 } }}>
-                    <Line data={chartData} options={{
-                      responsive: true,
-                      maintainAspectRatio: false,
-                      plugins: {
-                        legend: { position: "top" },
-                        title: { display: true, text: 'Evolución de emociones' }
-                      },
-                      scales: { 
-                        y: {
+                    <Line
+                      data={chartData}
+                      options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                          legend: { position: "top" },
+                          title: {
+                            display: true,
+                            text: "Evolución de emociones",
+                          },
+                        },
+                        scales: {
+                          y: {
                             beginAtZero: true,
                             title: {
                               display: true,
-                              text: 'Intensidad'
-                            }
+                              text: "Intensidad",
+                            },
                           },
                           x: {
-                            title: { 
+                            title: {
                               display: true,
-                              text: 'Fecha'
-                            }
-                          }
-                      }
-                    }} />
+                              text: "Fecha",
+                            },
+                          },
+                        },
+                      }}
+                    />
                   </Box>
                 </Card>
 
-
                 {/*  Tabla  */}
-                <Card sx={{
-                  p: 3,
-                  flexDirection: "column",
-                  justifyContent: "space-between",
-                  cursor: "pointer",
-                  borderRadius: "20px",
-                  border: "1px solid #dbe3ff",
-                  backgroundColor: "#f9fbff",
-                  width: "94%",
-                  //minHeight: "260px",
-                  transition: "all 0.3s ease",
-                  boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
-                  "&:hover": {
-                    transform: "translateY(-6px)",
-                    boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
-                    borderColor: "#092181",
-                  },
-                  overflowX: "auto"
-                }}>
+                <Card
+                  sx={{
+                    p: 3,
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    cursor: "pointer",
+                    borderRadius: "20px",
+                    border: "1px solid #dbe3ff",
+                    backgroundColor: "#f9fbff",
+                    width: "94%",
+                    //minHeight: "260px",
+                    transition: "all 0.3s ease",
+                    boxShadow: "0 4px 14px rgba(0,0,0,0.06)",
+                    "&:hover": {
+                      transform: "translateY(-6px)",
+                      boxShadow: "0 10px 24px rgba(9,33,129,0.15)",
+                      borderColor: "#092181",
+                    },
+                    overflowX: "auto",
+                  }}
+                >
                   <Box display="flex" alignItems="center" gap={1.5} mb={2}>
                     <AssignmentIcon sx={{ color: "#092181", fontSize: 28 }} />
-                    <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
-                      Datos del Reporte</Typography>
+                    <Typography
+                      variant="h6"
+                      fontWeight="bold"
+                      sx={{ color: "#092181" }}
+                    >
+                      Datos del Reporte
+                    </Typography>
                   </Box>
-                  <Table sx={{ minWidth: 650, borderCollapse: "separate", borderSpacing: "0 10px" }}>
+                  <Table
+                    sx={{
+                      minWidth: 650,
+                      borderCollapse: "separate",
+                      borderSpacing: "0 10px",
+                    }}
+                  >
                     <TableHead>
                       <TableRow>
-                        {["Paciente", "Fecha", "Emoción", "Intensidad", "Registros"].map((head) => (
-                          <TableCell key={head} sx={{ fontWeight: "bold", color: theme.palette.primary.main }}>
+                        {[
+                          "Paciente",
+                          "Fecha",
+                          "Emoción",
+                          "Intensidad",
+                          "Registros",
+                        ].map((head) => (
+                          <TableCell
+                            key={head}
+                            sx={{
+                              fontWeight: "bold",
+                              color: theme.palette.primary.main,
+                            }}
+                          >
                             {head}
                           </TableCell>
                         ))}
@@ -553,23 +641,44 @@ export default function ReporteEmocional() {
                       {reportData.map((row, i) => {
                         const emo = emocionesMap[row.emocion] || {};
                         return (
-                          <TableRow key={i} sx={{
-                            backgroundColor: i % 2 === 0 ? "#fafafa" : "#ffffff",
-                            borderRadius: "12px",
-                            boxShadow: "0 2px 6px rgba(0,0,0,0.04)"
-                          }}>
+                          <TableRow
+                            key={i}
+                            sx={{
+                              backgroundColor:
+                                i % 2 === 0 ? "#fafafa" : "#ffffff",
+                              borderRadius: "12px",
+                              boxShadow: "0 2px 6px rgba(0,0,0,0.04)",
+                            }}
+                          >
                             <TableCell>{Nombre}</TableCell>
-                            <TableCell>{row.tiempo ? format(new Date(row.tiempo), "yyyy-MM-dd") : "N/A"}</TableCell>
                             <TableCell>
-                              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                              {row.tiempo
+                                ? format(new Date(row.tiempo), "yyyy-MM-dd")
+                                : "N/A"}
+                            </TableCell>
+                            <TableCell>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 1,
+                                }}
+                              >
                                 {emo.icono} {emo.nombre || row.emocion}
                               </Box>
                             </TableCell>
-                            <TableCell sx={{ color: theme.palette.info.main, fontWeight: "bold" }}>
+                            <TableCell
+                              sx={{
+                                color: theme.palette.info.main,
+                                fontWeight: "bold",
+                              }}
+                            >
                               {Number(row.promedio_intensidad).toFixed(2)}
                             </TableCell>
                             <TableCell sx={{ fontWeight: "bold" }}>
-                              {row.cantidad_registros || row.cantidad || row.total_registros}
+                              {row.cantidad_registros ||
+                                row.cantidad ||
+                                row.total_registros}
                             </TableCell>
                           </TableRow>
                         );
@@ -577,12 +686,12 @@ export default function ReporteEmocional() {
                     </TableBody>
                   </Table>
                 </Card>
-
               </Box>
             ) : (
               <Card sx={{ p: 3, textAlign: "center", borderRadius: 3 }}>
                 <Typography color="text.secondary">
-                  No hay datos para mostrar. Selecciona un rango de fechas y genera el reporte.
+                  No hay datos para mostrar. Selecciona un rango de fechas y
+                  genera el reporte.
                 </Typography>
               </Card>
             )}

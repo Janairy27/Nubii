@@ -1,15 +1,20 @@
 import { db } from "../config/db.js";
 
-export const createChatMessage = async ({ idPaciente, idProfesional, mensaje, enviado }) => {
+export const createChatMessage = async ({
+  idPaciente,
+  idProfesional,
+  mensaje,
+  enviado,
+}) => {
   let leidoProfesionalInicial = 0;
   let leidoPacienteInicial = 0;
-  
-  if (enviado === 'profesional') {
-    // Si el PROFESIONAL envía: lo marcó como leído para sí mismo (1), no leído para el paciente (0).
+
+  if (enviado === "profesional") {
+    // Si el Profesional envía: lo marcó como leído para sí mismo (1), no leído para el paciente (0).
     leidoProfesionalInicial = 1;
     leidoPacienteInicial = 0;
-  } else if (enviado === 'paciente') {
-    // Si el PACIENTE envía: lo marcó como leído para sí mismo (1), no leído para el profesional (0).
+  } else if (enviado === "paciente") {
+    // Si el Paciente envía: lo marcó como leído para sí mismo (1), no leído para el profesional (0).
     leidoProfesionalInicial = 0;
     leidoPacienteInicial = 1;
   }
@@ -17,7 +22,14 @@ export const createChatMessage = async ({ idPaciente, idProfesional, mensaje, en
     `INSERT INTO Chat (idPaciente, idProfesional, mensaje, enviado, leido_profesional,  
         leido_paciente)
      VALUES (?, ?, ?, ?, ?, ?)`,
-    [idPaciente, idProfesional, mensaje, enviado, leidoProfesionalInicial, leidoPacienteInicial]
+    [
+      idPaciente,
+      idProfesional,
+      mensaje,
+      enviado,
+      leidoProfesionalInicial,
+      leidoPacienteInicial,
+    ]
   );
   return result.insertId;
 };
@@ -38,8 +50,6 @@ export const getChatMessages = async (idPaciente, idProfesional) => {
   );
   return rows;
 };
-
-
 
 export const getPacienteByChat = async (idChat) => {
   const [rows] = await db.query(
@@ -69,25 +79,30 @@ export const obtenerPacientesPorProfesional = async (idProfesional) => {
   return rows;
 };
 
-// chatModel.js
-export const updateMensajesLeidos = async (idPaciente, idProfesional, lectorRol) => {
-  // 1. Determinar el campo de lectura a actualizar (leido_profesional o leido_paciente)
-    const campoLectura = (lectorRol === 'profesional') ? 'leido_profesional' : 'leido_paciente';
-    
-    // 2. Determinar el remitente que debe ser marcado como leído (el rol opuesto)
-    const remitenteRequerido = (lectorRol === 'profesional') ? 'paciente' : 'profesional';
-    
-    // 3. Ejecutar la consulta
-    const [result] = await db.query(
-        // Usamos el campoLectura dinámicamente
-        `UPDATE Chat SET ${campoLectura} = 1 
+export const updateMensajesLeidos = async (
+  idPaciente,
+  idProfesional,
+  lectorRol
+) => {
+  //  Determinar el campo de lectura a actualizar (leido_profesional o leido_paciente)
+  const campoLectura =
+    lectorRol === "profesional" ? "leido_profesional" : "leido_paciente";
+
+  // Determinar el remitente que debe ser marcado como leído (el rol opuesto)
+  const remitenteRequerido =
+    lectorRol === "profesional" ? "paciente" : "profesional";
+
+  //  Ejecutar la consulta
+  const [result] = await db.query(
+    // Usamos el campoLectura dinámicamente
+    `UPDATE Chat SET ${campoLectura} = 1 
          WHERE idPaciente = ? 
            AND idProfesional = ? 
            AND enviado = ?`, // Filtro por remitente (solo mensajes recibidos)
-        [idPaciente, idProfesional, remitenteRequerido]
-    );
-    
-    return result;
+    [idPaciente, idProfesional, remitenteRequerido]
+  );
+
+  return result;
 };
 
 export const obtenerMensajesNoLeidosModel = async (idProfesional) => {
@@ -101,7 +116,6 @@ export const obtenerMensajesNoLeidosModel = async (idProfesional) => {
     [idProfesional]
   );
 
-  // Convertir a objeto { idPaciente: cantidad }
   const resultado = {};
   rows.forEach((row) => {
     resultado[row.idPaciente] = row.noLeidos;
@@ -109,7 +123,6 @@ export const obtenerMensajesNoLeidosModel = async (idProfesional) => {
 
   return resultado;
 };
-
 
 export const obtenerMensajesNoLeidosPacModel = async (idPaciente) => {
   const [rows] = await db.query(
@@ -122,7 +135,6 @@ export const obtenerMensajesNoLeidosPacModel = async (idPaciente) => {
     [idPaciente]
   );
 
-  // Convertir a objeto { idPaciente: cantidad }
   const resultado = {};
   rows.forEach((row) => {
     resultado[row.idProfesional] = row.noLeidos;
@@ -132,22 +144,21 @@ export const obtenerMensajesNoLeidosPacModel = async (idPaciente) => {
 };
 
 export const obtenerMensajeCorreo = async (idPaciente, idProfesional) => {
-  let rolTable = '';
-    let rolId = null;
-    const UMBRAL_INACTIVIDAD_MINUTOS = 120;
+  let rolTable = "";
+  let rolId = null;
+  const UMBRAL_INACTIVIDAD_MINUTOS = 120;
 
-    // Determina el rol y el ID proporcionado
-    if (idPaciente) {
-        rolTable = 'Paciente';
-        rolId = idPaciente;
-    } else if (idProfesional) {
-        rolTable = 'Profesional';
-        rolId = idProfesional;
-    } else {
-        return null; // Si ambos son null, retorna null
-    }
+  if (idPaciente) {
+    rolTable = "Paciente";
+    rolId = idPaciente;
+  } else if (idProfesional) {
+    rolTable = "Profesional";
+    rolId = idProfesional;
+  } else {
+    return null;
+  }
   const [rows] = await db.query(
-        `SELECT 
+    `SELECT 
             u.idUsuario,
             u.email,
             CONCAT(u.Nombre, ' ', u.aPaterno) AS nombreCompleto,
@@ -158,11 +169,9 @@ export const obtenerMensajeCorreo = async (idPaciente, idProfesional) => {
          FROM Usuario u 
          INNER JOIN ${rolTable} r ON u.idUsuario = r.idUsuario
          WHERE r.id${rolTable} = ?`,
-        [rolId, UMBRAL_INACTIVIDAD_MINUTOS]
-    );
+    [rolId, UMBRAL_INACTIVIDAD_MINUTOS]
+  );
 
-  // Convertir a objeto { idPaciente: cantidad }
-  
 
   return rows[0] || null;
 };

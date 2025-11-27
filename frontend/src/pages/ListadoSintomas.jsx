@@ -30,7 +30,7 @@ import {
   DialogContentText,
   DialogTitle,
   ListItemIcon,
-  ListItemText
+  ListItemText,
 } from "@mui/material";
 import {
   Search,
@@ -67,7 +67,7 @@ import {
 } from "@mui/icons-material";
 import { InfoOutlined } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { motion, AnimatePresence } from "framer-motion";
 
 const GestionSintomas = () => {
@@ -78,14 +78,12 @@ const GestionSintomas = () => {
   const [valorBusqueda, setValorBusqueda] = useState("");
   const [sintomaSeleccionado, setSintomaSeleccionado] = useState(null);
 
-
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [mensaje, setMensaje] = useState("");
   const [tipo, setTipo] = useState("success");
   const [openConfirm, setOpenConfirm] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const navigate = useNavigate();
-
 
   // Abrir diálogo de confirmación
   const handleOpenConfirm = () => setOpenConfirm(true);
@@ -103,7 +101,6 @@ const GestionSintomas = () => {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
-
 
   useEffect(() => {
     const storedIdUsuario = localStorage.getItem("idUsuario");
@@ -164,7 +161,11 @@ const GestionSintomas = () => {
       emociones: [
         { id: 13, nombre: "Problemas de Sueño", icono: <LocalHotelIcon /> },
         { id: 14, nombre: "Cambios Apetito", icono: <RestaurantIcon /> },
-        { id: 15, nombre: "Dificultad Concentración", icono: <PsychologyIcon /> },
+        {
+          id: 15,
+          nombre: "Dificultad Concentración",
+          icono: <PsychologyIcon />,
+        },
         { id: 16, nombre: "Síntomas Somáticos", icono: <PsychologyIcon /> },
       ],
     },
@@ -173,27 +174,37 @@ const GestionSintomas = () => {
   //Función para obtener las emociones dentro de cada grupo
   const findEmocionById = (id) => {
     for (const grupo of emocionesSaludMental) {
-        // Buscamos la emoción dentro del array 'emociones' de ese grupo
-        const emocionEncontrada = grupo.emociones.find(e => e.id === id);
-        
-        // Si encontramos la emoción, devolvemos un objeto con todos los datos necesarios
-        if (emocionEncontrada) {
-            return {
-                value: emocionEncontrada.id, 
-                label: emocionEncontrada.nombre,
-                icon: emocionEncontrada.icono,
-                color: grupo.color 
-            };
-        }
+      // Buscamos la emoción dentro del array 'emociones' de ese grupo
+      const emocionEncontrada = grupo.emociones.find((e) => e.id === id);
+
+      // Si encontramos la emoción, devolvemos un objeto con todos los datos necesarios
+      if (emocionEncontrada) {
+        return {
+          value: emocionEncontrada.id,
+          label: emocionEncontrada.nombre,
+          icon: emocionEncontrada.icono,
+          color: grupo.color,
+        };
+      }
     }
     return undefined;
-};
+  };
 
   const climaOptions = [
     { value: 1, icon: <WbSunnyIcon />, label: "Soleado", color: "#ffb300" },
-    { value: 2, icon: <WbCloudyIcon />, label: "Parc. Nublado", color: "#90a4ae" },
+    {
+      value: 2,
+      icon: <WbCloudyIcon />,
+      label: "Parc. Nublado",
+      color: "#90a4ae",
+    },
     { value: 3, icon: <CloudIcon />, label: "Nublado", color: "#607d8b" },
-    { value: 4, icon: <BeachAccessIcon />, label: "Lluvioso", color: "#2196f3" },
+    {
+      value: 4,
+      icon: <BeachAccessIcon />,
+      label: "Lluvioso",
+      color: "#2196f3",
+    },
     { value: 5, icon: <BlurOnIcon />, label: "Neblina", color: "#bdbdbd" },
     { value: 6, icon: <AirIcon />, label: "Ventoso", color: "#80deea" },
     { value: 7, icon: <AcUnitIcon />, label: "Frío", color: "#29b6f6" },
@@ -219,8 +230,8 @@ const GestionSintomas = () => {
   };
 
   const getColorEmocion = (id) => {
-    const grupo = emocionesSaludMental.find(grupo =>
-      grupo.emociones.some(emo => emo.id === Number(id))
+    const grupo = emocionesSaludMental.find((grupo) =>
+      grupo.emociones.some((emo) => emo.id === Number(id))
     );
     return grupo ? grupo.color : "#666";
   };
@@ -240,7 +251,6 @@ const GestionSintomas = () => {
     return clima ? clima.color : "#666";
   };
 
-
   const obtenerTodosLosSintomas = () => {
     axios
       .get(`http://localhost:4000/api/sintomas/by-idPaciente/${idPaciente}`)
@@ -253,40 +263,42 @@ const GestionSintomas = () => {
       });
   };
 
-const handleBuscar = async () => {
-  const termino = String(valorBusqueda).trim();
+  const handleBuscar = async () => {
+    const termino = String(valorBusqueda).trim();
 
-  if (!termino) {
-    await obtenerTodosLosSintomas();
-    mostrarMensaje("Mostrando todos los síntomas.", "info");
-    return;
-  }
-
-  try {
-    const res = await axios.get(
-      `http://localhost:4000/api/sintomas/by-attribute/${criterioBusqueda}/${encodeURIComponent(
-        termino
-      )}/${idPaciente}`
-    );
-
-    if (res.data && res.data.length > 0) {
-      setSintomas(res.data);
-      mostrarMensaje("Síntomas encontrados exitosamente.", "success");
-    } else {
-      mostrarMensaje("No se encontraron síntomas con ese criterio.", "warning");
+    if (!termino) {
       await obtenerTodosLosSintomas();
+      mostrarMensaje("Mostrando todos los síntomas.", "info");
+      return;
     }
-  } catch (error) {
-    console.error(error);
-    mostrarMensaje("Ocurrió un error al buscar los síntomas.", "error");
-    await obtenerTodosLosSintomas();
-  } finally {
-    // Limpiar los campos siempre al final
-    setValorBusqueda("");
-    setSintomaSeleccionado(null);
-  }
-};
 
+    try {
+      const res = await axios.get(
+        `http://localhost:4000/api/sintomas/by-attribute/${criterioBusqueda}/${encodeURIComponent(
+          termino
+        )}/${idPaciente}`
+      );
+
+      if (res.data && res.data.length > 0) {
+        setSintomas(res.data);
+        mostrarMensaje("Síntomas encontrados exitosamente.", "success");
+      } else {
+        mostrarMensaje(
+          "No se encontraron síntomas con ese criterio.",
+          "warning"
+        );
+        await obtenerTodosLosSintomas();
+      }
+    } catch (error) {
+      console.error(error);
+      mostrarMensaje("Ocurrió un error al buscar los síntomas.", "error");
+      await obtenerTodosLosSintomas();
+    } finally {
+      // Limpiar los campos siempre al final
+      setValorBusqueda("");
+      setSintomaSeleccionado(null);
+    }
+  };
 
   const handleActualizar = () => {
     const payload = {
@@ -311,31 +323,33 @@ const handleBuscar = async () => {
         obtenerTodosLosSintomas();
       })
       .catch((err) => {
-         //Log completo del error para depuración
+        //Log completo del error para depuración
         console.error("Error completo de Axios:", err);
         let mensajeError = "Error al actualizar el síntoma.";
-         // Verificar que la respuesta 400 tenga datos estructurados
-         if (err.response && err.response.data) {
-            const dataError = err.response.data;
-            
-       
-            if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
-                // Unir  los errores de validación en una sola cadena
-                mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-            } 
+        // Verificar que la respuesta 400 tenga datos estructurados
+        if (err.response && err.response.data) {
+          const dataError = err.response.data;
 
-            else if (dataError.message) {
-                 mensajeError = dataError.message;
-            }
+          if (
+            dataError.errores &&
+            Array.isArray(dataError.errores) &&
+            dataError.errores.length > 0
+          ) {
+            // Unir  los errores de validación en una sola cadena
+            mensajeError = `Errores de validación: ${dataError.errores.join(
+              "; "
+            )}`;
+          } else if (dataError.message) {
+            mensajeError = dataError.message;
+          }
         }
-        // Mostrar el mensaje de error específico o el genérico 
-         mostrarMensaje(mensajeError, "error"); 
+        // Mostrar el mensaje de error específico o el genérico
+        mostrarMensaje(mensajeError, "error");
       });
   };
 
   const handleEliminar = async () => {
-    const url =
-      `http://localhost:4000/api/sintomas/eliminar-sintoma/${sintomaSeleccionado.idSintoma}`;
+    const url = `http://localhost:4000/api/sintomas/eliminar-sintoma/${sintomaSeleccionado.idSintoma}`;
     try {
       await axios.delete(url);
       setOpenConfirm(false); // cerrar confirmación
@@ -361,52 +375,57 @@ const handleBuscar = async () => {
   };
 
   //Función para hacer la búsqueda al seleccionar un valor de la lista deplegable
-const handleSelectSearch = async (newValue) => {
-  setValorBusqueda(newValue);
-  
-  const termino = String(newValue).trim();
+  const handleSelectSearch = async (newValue) => {
+    setValorBusqueda(newValue);
 
-  setValorBusqueda(newValue);
+    const termino = String(newValue).trim();
 
-  if (!termino) {
-    await obtenerTodosLosSintomas();
-    mostrarMensaje("Mostrando todos los síntomas.", "info");
-    return;
-  }
+    setValorBusqueda(newValue);
 
-  try {
-    const res = await axios.get(
-      `http://localhost:4000/api/sintomas/by-attribute/${criterioBusqueda}/${encodeURIComponent(
-        termino
-      )}/${idPaciente}`
-    );
-
-    if (res.data && res.data.length > 0) {
-      setSintomas(res.data);
-      mostrarMensaje("Síntomas encontradas exitosamente.", "success");
-    } else {
-      mostrarMensaje("No se encontraron síntomas con ese criterio.", "warning");
+    if (!termino) {
       await obtenerTodosLosSintomas();
+      mostrarMensaje("Mostrando todos los síntomas.", "info");
+      return;
     }
-  } catch (error) {
-    console.error(error);
-    mostrarMensaje("Ocurrió un error al buscar los síntomas.", "error");
-    await obtenerTodosLosSintomas();
-  } finally {
-    setSintomaSeleccionado(null);
-  }
-};
+
+    try {
+      const res = await axios.get(
+        `http://localhost:4000/api/sintomas/by-attribute/${criterioBusqueda}/${encodeURIComponent(
+          termino
+        )}/${idPaciente}`
+      );
+
+      if (res.data && res.data.length > 0) {
+        setSintomas(res.data);
+        mostrarMensaje("Síntomas encontradas exitosamente.", "success");
+      } else {
+        mostrarMensaje(
+          "No se encontraron síntomas con ese criterio.",
+          "warning"
+        );
+        await obtenerTodosLosSintomas();
+      }
+    } catch (error) {
+      console.error(error);
+      mostrarMensaje("Ocurrió un error al buscar los síntomas.", "error");
+      await obtenerTodosLosSintomas();
+    } finally {
+      setSintomaSeleccionado(null);
+    }
+  };
 
   return (
     <Layout>
-      <Container maxWidth="lg" sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 3,
-        mt: 4,
-        pb: 4,
-        minHeight: "100vh",
-      }}
+      <Container
+        maxWidth="lg"
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 3,
+          mt: 4,
+          pb: 4,
+          minHeight: "100vh",
+        }}
       >
         <Paper
           sx={{
@@ -421,7 +440,6 @@ const handleSelectSearch = async (newValue) => {
             gap: 2,
           }}
         >
-
           {/* Header */}
           <Box sx={{ textAlign: "center", mb: 4 }}>
             <Typography
@@ -469,29 +487,39 @@ const handleSelectSearch = async (newValue) => {
                 >
                   <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
                     <FilterList sx={{ color: "#092181", mr: 1 }} />
-                    <Typography variant="h6" sx={{ color: "#092181", fontWeight: "bold" }}>
+                    <Typography
+                      variant="h6"
+                      sx={{ color: "#092181", fontWeight: "bold" }}
+                    >
                       Búsqueda Avanzada
                     </Typography>
                   </Box>
 
-                  <Box sx={{
-                    display: "flex",
-                    flexDirection: { xs: "column", sm: "row" },
-                    gap: 2,
-                    alignItems: { xs: "stretch", sm: "flex-end" }
-                  }}>
-                    <FormControl sx={{
-                      flex: { xs: "1", sm: "0.3" },
-                      minWidth: { xs: "100%", sm: "280px", md: "320px" }, 
-                      maxWidth: { sm: "380px" }, 
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        backgroundColor: "#ffffff",
-                        "& fieldset": { borderColor: "#e0e7ff" },
-                        "&:hover fieldset": { borderColor: "#092181" },
-                        "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: 2 },
-                      },
-                    }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: { xs: "column", sm: "row" },
+                      gap: 2,
+                      alignItems: { xs: "stretch", sm: "flex-end" },
+                    }}
+                  >
+                    <FormControl
+                      sx={{
+                        flex: { xs: "1", sm: "0.3" },
+                        minWidth: { xs: "100%", sm: "280px", md: "320px" },
+                        maxWidth: { sm: "380px" },
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "12px",
+                          backgroundColor: "#ffffff",
+                          "& fieldset": { borderColor: "#e0e7ff" },
+                          "&:hover fieldset": { borderColor: "#092181" },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#092181",
+                            borderWidth: 2,
+                          },
+                        },
+                      }}
+                    >
                       <InputLabel sx={{ color: "#2D5D7B", fontWeight: "bold" }}>
                         Criterio de búsqueda
                       </InputLabel>
@@ -510,7 +538,8 @@ const handleSelectSearch = async (newValue) => {
                       </Select>
                     </FormControl>
                     {/* Campo de búsqueda dinámico */}
-                    {criterioBusqueda === "emocion" || criterioBusqueda === "clima" ? (
+                    {criterioBusqueda === "emocion" ||
+                    criterioBusqueda === "clima" ? (
                       // Si es emoción o clima, mostrar lista desplegable
                       <FormControl
                         sx={{
@@ -521,12 +550,19 @@ const handleSelectSearch = async (newValue) => {
                             backgroundColor: "#ffffff",
                             "& fieldset": { borderColor: "#e0e7ff" },
                             "&:hover fieldset": { borderColor: "#092181" },
-                            "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: 2 },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#092181",
+                              borderWidth: 2,
+                            },
                           },
                         }}
                       >
-                        <InputLabel sx={{ color: "#2D5D7B", fontWeight: "bold" }}>
-                          {criterioBusqueda === "emocion" ? "Selecciona una emoción" : "Selecciona el clima"}
+                        <InputLabel
+                          sx={{ color: "#2D5D7B", fontWeight: "bold" }}
+                        >
+                          {criterioBusqueda === "emocion"
+                            ? "Selecciona una emoción"
+                            : "Selecciona el clima"}
                         </InputLabel>
                         <Select
                           value={valorBusqueda}
@@ -549,11 +585,25 @@ const handleSelectSearch = async (newValue) => {
 
                             if (selectedOption) {
                               return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedOption.color, display: 'flex' }}>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <Box
+                                    sx={{
+                                      color: selectedOption.color,
+                                      display: "flex",
+                                    }}
+                                  >
                                     {selectedOption.icon}
                                   </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                  <Typography
+                                    variant="body1"
+                                    sx={{ fontWeight: 500 }}
+                                  >
                                     {selectedOption.label}
                                   </Typography>
                                 </Box>
@@ -565,37 +615,42 @@ const handleSelectSearch = async (newValue) => {
                           {/* Si el criterio de búqueda es emoción  */}
                           {criterioBusqueda === "emocion"
                             ? // Aplanamos todas las emociones en una sola lista
-                            emocionesSaludMental.flatMap((grupo) =>
-                              grupo.emociones.map((emocion) => (
-                                <MenuItem key={emocion.id} value={emocion.id}>
+                              emocionesSaludMental.flatMap((grupo) =>
+                                grupo.emociones.map((emocion) => (
+                                  <MenuItem key={emocion.id} value={emocion.id}>
+                                    <ListItemIcon>
+                                      <Box sx={{ color: grupo.color }}>
+                                        {emocion.icono}
+                                      </Box>
+                                    </ListItemIcon>
+                                    <ListItemText
+                                      primary={emocion.nombre}
+                                      primaryTypographyProps={{
+                                        sx: { fontWeight: 500 },
+                                      }}
+                                    />
+                                  </MenuItem>
+                                ))
+                              )
+                            : /* Si el criterio de búsqueda es clima  */
+                              climaOptions.map((clima) => (
+                                <MenuItem key={clima.value} value={clima.value}>
                                   <ListItemIcon>
-                                    <Box sx={{ color: grupo.color }}>{emocion.icono}</Box>
+                                    <Box sx={{ color: clima.color }}>
+                                      {clima.icon}
+                                    </Box>
                                   </ListItemIcon>
                                   <ListItemText
-                                    primary={emocion.nombre}
+                                    primary={clima.label}
                                     primaryTypographyProps={{
                                       sx: { fontWeight: 500 },
                                     }}
                                   />
                                 </MenuItem>
-                              ))
-                            )
-                            : /* Si el criterio de búsqueda es clima  */
-                            climaOptions.map((clima) => (
-                              <MenuItem key={clima.value} value={clima.value}>
-                                <ListItemIcon>
-                                  <Box sx={{ color: clima.color }}>{clima.icon}</Box>
-                                </ListItemIcon>
-                                <ListItemText
-                                  primary={clima.label}
-                                  primaryTypographyProps={{ sx: { fontWeight: 500 } }}
-                                />
-                              </MenuItem>
-                            ))}
+                              ))}
                         </Select>
                       </FormControl>
                     ) : (
-
                       <TextField
                         sx={{
                           flex: { xs: "1", sm: "0.5" },
@@ -604,11 +659,16 @@ const handleSelectSearch = async (newValue) => {
                             backgroundColor: "#ffffff",
                             "& fieldset": { borderColor: "#e0e7ff" },
                             "&:hover fieldset": { borderColor: "#092181" },
-                            "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: 2 },
+                            "&.Mui-focused fieldset": {
+                              borderColor: "#092181",
+                              borderWidth: 2,
+                            },
                           },
                         }}
                         label={`Buscar por ${criterioBusqueda}`}
-                        placeholder={criterioBusqueda === "fecha" ? "Ej: 2025-10-29" : ""}
+                        placeholder={
+                          criterioBusqueda === "fecha" ? "Ej: 2025-10-29" : ""
+                        }
                         value={valorBusqueda}
                         onChange={(e) => setValorBusqueda(e.target.value)}
                         onKeyPress={(e) => e.key === "Enter" && handleBuscar()}
@@ -637,8 +697,6 @@ const handleSelectSearch = async (newValue) => {
             </Slide>
           )}
 
-
-
           {/* Contenido Principal */}
           {!sintomaSeleccionado ? (
             <Tooltip
@@ -647,12 +705,11 @@ const handleSelectSearch = async (newValue) => {
               arrow
             >
               <Box sx={{ width: "100%" }}>
-
                 {/* Header de Síntomas */}
                 <Box
                   sx={{
                     display: "flex",
-                    flexDirection: { xs: "column", sm: "row" }, 
+                    flexDirection: { xs: "column", sm: "row" },
                     alignItems: { xs: "flex-start", sm: "center" },
                     justifyContent: { xs: "center", sm: "space-between" },
                     flexWrap: "wrap",
@@ -660,18 +717,21 @@ const handleSelectSearch = async (newValue) => {
                     mb: 3,
                   }}
                 >
-                  <Box sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 1.5,
-                    flex: 1,
-                    justifyContent: { xs: "center", sm: "flex-start" },
-                    textAlign: { xs: "center", sm: "left" },
-                  }}
-
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                      flex: 1,
+                      justifyContent: { xs: "center", sm: "flex-start" },
+                      textAlign: { xs: "center", sm: "left" },
+                    }}
                   >
                     <PsychologyIcon sx={{ color: "#092181", fontSize: 32 }} />
-                    <Typography variant="h5" sx={{ color: "#092181", fontWeight: "bold" }}>
+                    <Typography
+                      variant="h5"
+                      sx={{ color: "#092181", fontWeight: "bold" }}
+                    >
                       Síntomas Registrados
                     </Typography>
                   </Box>
@@ -706,57 +766,97 @@ const handleSelectSearch = async (newValue) => {
                       minHeight: 300,
                     }}
                   >
-                    <PsychologyIcon sx={{ fontSize: 64, color: "#666", mb: 2 }} />
-                    <Typography variant="h6" sx={{ color: "#666", mb: 1, fontWeight: "bold" }}>
+                    <PsychologyIcon
+                      sx={{ fontSize: 64, color: "#666", mb: 2 }}
+                    />
+                    <Typography
+                      variant="h6"
+                      sx={{ color: "#666", mb: 1, fontWeight: "bold" }}
+                    >
                       No se han registrado síntomas aún
                     </Typography>
                     <Typography variant="body2" sx={{ color: "#666" }}>
-                      Comienza registrando tu primer síntoma para llevar un seguimiento de tu bienestar emocional.
+                      Comienza registrando tu primer síntoma para llevar un
+                      seguimiento de tu bienestar emocional.
                     </Typography>
                   </Card>
                 ) : (
-                  <Box sx={{
-                    display: "flex",
-                    flexWrap: "wrap", 
-                    justifyContent: "center",
-                    alignItems: "stretch",
-                    gap: 2,
-                  }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: "center",
+                      alignItems: "stretch",
+                      gap: 2,
+                    }}
+                  >
                     {sintomas.map((sintoma, index) => (
-                      <Slide key={sintoma.idSintoma} in timeout={800 + index * 100} direction="up">
+                      <Slide
+                        key={sintoma.idSintoma}
+                        in
+                        timeout={800 + index * 100}
+                        direction="up"
+                      >
                         <Card
                           onClick={() => setSintomaSeleccionado(sintoma)}
                           sx={{
-                            flex: "1 1 320px", 
+                            flex: "1 1 320px",
                             maxWidth: 400,
                             borderRadius: 3,
                             cursor: "pointer",
                             transition: "all 0.3s ease",
-                            backgroundColor: sintomaSeleccionado?.idSintoma === sintoma.idSintoma ? "#f0f4ff" : "#ffffff",
-                            border: sintomaSeleccionado?.idSintoma === sintoma.idSintoma
-                              ? `2px solid ${getColorEmocion(sintoma.emocion)}`
-                              : "1px solid #e0e7ff",
-                            transform: sintomaSeleccionado?.idSintoma === sintoma.idSintoma
-                              ? "translateY(-8px) scale(1.02)"
-                              : "translateY(0)",
-                            boxShadow: sintomaSeleccionado?.idSintoma === sintoma.idSintoma
-                              ? "0 12px 32px rgba(9, 33, 129, 0.25)"
-                              : "0 2px 8px rgba(9, 33, 129, 0.1)",
-                            position: "relative",
-                            zIndex: sintomaSeleccionado?.idSintoma === sintoma.idSintoma ? 1 : 0,
-                            "&:hover": {
-                              transform: sintomaSeleccionado?.idSintoma === sintoma.idSintoma
+                            backgroundColor:
+                              sintomaSeleccionado?.idSintoma ===
+                              sintoma.idSintoma
+                                ? "#f0f4ff"
+                                : "#ffffff",
+                            border:
+                              sintomaSeleccionado?.idSintoma ===
+                              sintoma.idSintoma
+                                ? `2px solid ${getColorEmocion(
+                                    sintoma.emocion
+                                  )}`
+                                : "1px solid #e0e7ff",
+                            transform:
+                              sintomaSeleccionado?.idSintoma ===
+                              sintoma.idSintoma
                                 ? "translateY(-8px) scale(1.02)"
-                                : "translateY(-4px)",
-                              boxShadow: sintomaSeleccionado?.idSintoma === sintoma.idSintoma
-                                ? "0 12px 32px rgba(34, 38, 55, 0.25)"
-                                : "0 8px 24px rgba(45, 47, 57, 0.15)",
-                              border: `2px solid ${getColorEmocion(sintoma.emocion)}`,
+                                : "translateY(0)",
+                            boxShadow:
+                              sintomaSeleccionado?.idSintoma ===
+                              sintoma.idSintoma
+                                ? "0 12px 32px rgba(9, 33, 129, 0.25)"
+                                : "0 2px 8px rgba(9, 33, 129, 0.1)",
+                            position: "relative",
+                            zIndex:
+                              sintomaSeleccionado?.idSintoma ===
+                              sintoma.idSintoma
+                                ? 1
+                                : 0,
+                            "&:hover": {
+                              transform:
+                                sintomaSeleccionado?.idSintoma ===
+                                sintoma.idSintoma
+                                  ? "translateY(-8px) scale(1.02)"
+                                  : "translateY(-4px)",
+                              boxShadow:
+                                sintomaSeleccionado?.idSintoma ===
+                                sintoma.idSintoma
+                                  ? "0 12px 32px rgba(34, 38, 55, 0.25)"
+                                  : "0 8px 24px rgba(45, 47, 57, 0.15)",
+                              border: `2px solid ${getColorEmocion(
+                                sintoma.emocion
+                              )}`,
                             },
                           }}
                         >
                           <CardContent
-                            sx={{ p: 3, display: "flex", flexDirection: "column", gap: 2 }}
+                            sx={{
+                              p: 3,
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 2,
+                            }}
                           >
                             {/* Header del Card */}
                             <Box
@@ -778,16 +878,42 @@ const handleSelectSearch = async (newValue) => {
                                   minWidth: 220,
                                 }}
                               >
-                                <Avatar sx={{ backgroundColor: getColorEmocion(sintoma.emocion), width: 50, height: 50 }}>
+                                <Avatar
+                                  sx={{
+                                    backgroundColor: getColorEmocion(
+                                      sintoma.emocion
+                                    ),
+                                    width: 50,
+                                    height: 50,
+                                  }}
+                                >
                                   {getIconoEmocion(sintoma.emocion)}
                                 </Avatar>
                                 <Box sx={{ flex: 1 }}>
-                                  <Typography variant="h6" sx={{ color: "#092181", fontWeight: "bold", mb: 0.5 }}>
+                                  <Typography
+                                    variant="h6"
+                                    sx={{
+                                      color: "#092181",
+                                      fontWeight: "bold",
+                                      mb: 0.5,
+                                    }}
+                                  >
                                     {getNombreEmocion(sintoma.emocion)}
                                   </Typography>
-                                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                    <CalendarToday sx={{ fontSize: 16, color: "#666" }} />
-                                    <Typography variant="body2" sx={{ color: "#666" }}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 1,
+                                    }}
+                                  >
+                                    <CalendarToday
+                                      sx={{ fontSize: 16, color: "#666" }}
+                                    />
+                                    <Typography
+                                      variant="body2"
+                                      sx={{ color: "#666" }}
+                                    >
                                       {formatFecha(sintoma.fecha)}
                                     </Typography>
                                   </Box>
@@ -796,7 +922,9 @@ const handleSelectSearch = async (newValue) => {
                               <Chip
                                 label={`Intensidad: ${sintoma.intensidad}`}
                                 sx={{
-                                  backgroundColor: getIntensidadColor(sintoma.intensidad),
+                                  backgroundColor: getIntensidadColor(
+                                    sintoma.intensidad
+                                  ),
                                   color: "white",
                                   fontWeight: "bold",
                                   minWidth: 100,
@@ -808,19 +936,49 @@ const handleSelectSearch = async (newValue) => {
                             <Divider sx={{ my: 2 }} />
 
                             {/* Información Adicional */}
-                            <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
-                              <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 1 }}>
-                                <Box sx={{ color: getColorClima(sintoma.clima) }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: 1.5,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  flexWrap: "wrap",
+                                  gap: 1,
+                                }}
+                              >
+                                <Box
+                                  sx={{ color: getColorClima(sintoma.clima) }}
+                                >
                                   {getIconoClima(sintoma.clima)}
                                 </Box>
-                                <Typography variant="body2" sx={{ color: "#666" }}>
+                                <Typography
+                                  variant="body2"
+                                  sx={{ color: "#666" }}
+                                >
                                   {getNombreClima(sintoma.clima)}
                                 </Typography>
                                 {sintoma.ubicacion && (
                                   <>
-                                    <Box sx={{ width: 4, height: 4, backgroundColor: "#ccc", borderRadius: "50%" }} />
-                                    <LocationOn sx={{ fontSize: 16, color: "#666" }} />
-                                    <Typography variant="body2" sx={{ color: "#666" }}>
+                                    <Box
+                                      sx={{
+                                        width: 4,
+                                        height: 4,
+                                        backgroundColor: "#ccc",
+                                        borderRadius: "50%",
+                                      }}
+                                    />
+                                    <LocationOn
+                                      sx={{ fontSize: 16, color: "#666" }}
+                                    />
+                                    <Typography
+                                      variant="body2"
+                                      sx={{ color: "#666" }}
+                                    >
                                       {sintoma.ubicacion}
                                     </Typography>
                                   </>
@@ -828,19 +986,51 @@ const handleSelectSearch = async (newValue) => {
                               </Box>
 
                               {sintoma.detonante && (
-                                <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
-                                  <Lightbulb sx={{ fontSize: 16, color: "#092181", mt: 0.25 }} />
-                                  <Typography variant="body2" sx={{ color: "#666" }}>
-                                    <strong>Detonante:</strong> {sintoma.detonante}
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "flex-start",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <Lightbulb
+                                    sx={{
+                                      fontSize: 16,
+                                      color: "#092181",
+                                      mt: 0.25,
+                                    }}
+                                  />
+                                  <Typography
+                                    variant="body2"
+                                    sx={{ color: "#666" }}
+                                  >
+                                    <strong>Detonante:</strong>{" "}
+                                    {sintoma.detonante}
                                   </Typography>
                                 </Box>
                               )}
 
                               {sintoma.actividadReciente && (
-                                <Box sx={{ display: "flex", alignItems: "flex-start", gap: 1 }}>
-                                  <Lightbulb sx={{ fontSize: 16, color: "#092181", mt: 0.25 }} />
-                                  <Typography variant="body2" sx={{ color: "#666" }}>
-                                    <strong>Actividad:</strong> {sintoma.actividadReciente}
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "flex-start",
+                                    gap: 1,
+                                  }}
+                                >
+                                  <Lightbulb
+                                    sx={{
+                                      fontSize: 16,
+                                      color: "#092181",
+                                      mt: 0.25,
+                                    }}
+                                  />
+                                  <Typography
+                                    variant="body2"
+                                    sx={{ color: "#666" }}
+                                  >
+                                    <strong>Actividad:</strong>{" "}
+                                    {sintoma.actividadReciente}
                                   </Typography>
                                 </Box>
                               )}
@@ -857,26 +1047,31 @@ const handleSelectSearch = async (newValue) => {
             <Slide in timeout={500} direction="left">
               <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                 {/* Header Edición */}
-                <Card sx={{
-                  borderRadius: 3,
-                  backgroundColor: "#f8f9ff",
-                  border: "2px solid #092181",
-                  boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)"
-                }}>
-                  <CardContent sx={{
-                    p: 2.5,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
+                <Card
+                  sx={{
+                    borderRadius: 3,
+                    backgroundColor: "#f8f9ff",
+                    border: "2px solid #092181",
+                    boxShadow: "0 4px 12px rgba(9, 33, 129, 0.15)",
                   }}
-                  >
-                    <Box sx={{
+                >
+                  <CardContent
+                    sx={{
+                      p: 2.5,
                       display: "flex",
-                      flexWrap: "wrap",
-                      alignItems: "center",
-                      justifyContent: "space-between",
+                      flexDirection: "column",
                       gap: 2,
-                    }}>
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        gap: 2,
+                      }}
+                    >
                       <IconButton
                         onClick={() => setSintomaSeleccionado(null)}
                         sx={{
@@ -884,7 +1079,7 @@ const handleSelectSearch = async (newValue) => {
                           color: "white",
                           "&:hover": {
                             backgroundColor: "#1a3a9d",
-                            transform: "scale(1.05)"
+                            transform: "scale(1.05)",
                           },
                           transition: "all 0.2s ease",
                           flexShrink: 0,
@@ -892,11 +1087,16 @@ const handleSelectSearch = async (newValue) => {
                       >
                         <ArrowBack />
                       </IconButton>
-                      <Box sx={{
-                        flex: 1,
-                        minWidth: 200,
-                      }}>
-                        <Typography variant="h5" sx={{ color: "#092181", fontWeight: "bold", mb: 0.5 }}>
+                      <Box
+                        sx={{
+                          flex: 1,
+                          minWidth: 200,
+                        }}
+                      >
+                        <Typography
+                          variant="h5"
+                          sx={{ color: "#092181", fontWeight: "bold", mb: 0.5 }}
+                        >
                           Editando Síntoma
                         </Typography>
                         <Typography variant="body2" sx={{ color: "#666" }}>
@@ -921,36 +1121,55 @@ const handleSelectSearch = async (newValue) => {
                 </Card>
 
                 {/* Grid Principal */}
-                <Box sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", md: "row" },
-                  gap: 2,
-                  alignItems: "flex-start"
-                }}>
-
-                  {/* Columna Izquierda */}
-                  <Box sx={{
+                <Box
+                  sx={{
                     display: "flex",
-                    flexDirection: "column",
+                    flexDirection: { xs: "column", md: "row" },
                     gap: 2,
-                    flex: 1,
-                    minWidth: { md: 0 }
-                  }}>
+                    alignItems: "flex-start",
+                  }}
+                >
+                  {/* Columna Izquierda */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 2,
+                      flex: 1,
+                      minWidth: { md: 0 },
+                    }}
+                  >
                     {/* Información Básica */}
-                    <Card sx={{
-                      borderRadius: 3,
-                      border: "1px solid #e0e7ff",
-                      transition: "all 0.2s ease",
-                      "&:hover": { borderColor: "#092181" }
-                    }}>
+                    <Card
+                      sx={{
+                        borderRadius: 3,
+                        border: "1px solid #e0e7ff",
+                        transition: "all 0.2s ease",
+                        "&:hover": { borderColor: "#092181" },
+                      }}
+                    >
                       <CardContent sx={{ p: 2.5 }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-                          <CalendarToday sx={{ color: "#092181", fontSize: 20 }} />
-                          <Typography variant="h6" sx={{ color: "#092181", fontWeight: "bold" }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            mb: 2,
+                          }}
+                        >
+                          <CalendarToday
+                            sx={{ color: "#092181", fontSize: 20 }}
+                          />
+                          <Typography
+                            variant="h6"
+                            sx={{ color: "#092181", fontWeight: "bold" }}
+                          >
                             Información Básica
                           </Typography>
                         </Box>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <Box
+                          sx={{ display: "flex", alignItems: "center", gap: 1 }}
+                        >
                           <TextField
                             sx={{
                               flex: 1,
@@ -977,38 +1196,70 @@ const handleSelectSearch = async (newValue) => {
                               readOnly: true,
                               sx: {
                                 backgroundColor: "#f5f5f5",
-
-                              }
+                              },
                             }}
                             helperText="⚠️ La fecha no puede ser modificada"
                             FormHelperTextProps={{
-                              sx: { color: "#d32f2f", fontStyle: "italic", mt: 0.5, fontSize: 12 },
+                              sx: {
+                                color: "#d32f2f",
+                                fontStyle: "italic",
+                                mt: 0.5,
+                                fontSize: 12,
+                              },
                             }}
                           />
                           <Tooltip title="Campo bloqueado — la fecha no puede ser editada">
-                            <InfoOutlined sx={{ color: "#d32f2f", fontSize: 20, cursor: "help" }} />
+                            <InfoOutlined
+                              sx={{
+                                color: "#d32f2f",
+                                fontSize: 20,
+                                cursor: "help",
+                              }}
+                            />
                           </Tooltip>
                         </Box>
                       </CardContent>
                     </Card>
 
                     {/* Intensidad con Slider */}
-                    <Card sx={{
-                      borderRadius: 3,
-                      border: "1px solid #e0e7ff",
-                      transition: "all 0.2s ease",
-                      "&:hover": { borderColor: "#092181" }
-                    }}>
+                    <Card
+                      sx={{
+                        borderRadius: 3,
+                        border: "1px solid #e0e7ff",
+                        transition: "all 0.2s ease",
+                        "&:hover": { borderColor: "#092181" },
+                      }}
+                    >
                       <CardContent sx={{ p: 2.5 }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            mb: 2,
+                          }}
+                        >
                           <TrendingUp sx={{ color: "#092181", fontSize: 20 }} />
-                          <Typography variant="h6" sx={{ color: "#092181", fontWeight: "bold" }}>
+                          <Typography
+                            variant="h6"
+                            sx={{ color: "#092181", fontWeight: "bold" }}
+                          >
                             Nivel de Intensidad
                           </Typography>
                         </Box>
                         <Box sx={{ px: 1 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 1 }}>
-                            <Typography variant="body2" sx={{ color: "#666", minWidth: 30 }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 2,
+                              mb: 1,
+                            }}
+                          >
+                            <Typography
+                              variant="body2"
+                              sx={{ color: "#666", minWidth: 30 }}
+                            >
                               1
                             </Typography>
                             <Slider
@@ -1023,27 +1274,38 @@ const handleSelectSearch = async (newValue) => {
                               max={10}
                               step={1}
                               sx={{
-                                color: getIntensidadColor(sintomaSeleccionado.intensidad || 5),
-                                '& .MuiSlider-thumb': {
-                                  backgroundColor: getIntensidadColor(sintomaSeleccionado.intensidad || 5),
+                                color: getIntensidadColor(
+                                  sintomaSeleccionado.intensidad || 5
+                                ),
+                                "& .MuiSlider-thumb": {
+                                  backgroundColor: getIntensidadColor(
+                                    sintomaSeleccionado.intensidad || 5
+                                  ),
                                   width: 20,
                                   height: 20,
-                                  '&:hover': {
-                                    boxShadow: `0 0 0 8px ${getIntensidadColor(sintomaSeleccionado.intensidad || 5)}22`,
+                                  "&:hover": {
+                                    boxShadow: `0 0 0 8px ${getIntensidadColor(
+                                      sintomaSeleccionado.intensidad || 5
+                                    )}22`,
                                   },
                                 },
                               }}
                             />
-                            <Typography variant="body2" sx={{ color: "#666", minWidth: 30 }}>
+                            <Typography
+                              variant="body2"
+                              sx={{ color: "#666", minWidth: 30 }}
+                            >
                               10
                             </Typography>
                           </Box>
-                          <Box sx={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
-                            mt: 1
-                          }}>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                              alignItems: "center",
+                              mt: 1,
+                            }}
+                          >
                             <Typography variant="body2" sx={{ color: "#666" }}>
                               Valor actual:
                             </Typography>
@@ -1051,10 +1313,12 @@ const handleSelectSearch = async (newValue) => {
                               label={sintomaSeleccionado.intensidad || 5}
                               size="small"
                               sx={{
-                                backgroundColor: getIntensidadColor(sintomaSeleccionado.intensidad || 5),
+                                backgroundColor: getIntensidadColor(
+                                  sintomaSeleccionado.intensidad || 5
+                                ),
                                 color: "white",
                                 fontWeight: "bold",
-                                minWidth: 40
+                                minWidth: 40,
                               }}
                             />
                           </Box>
@@ -1063,20 +1327,35 @@ const handleSelectSearch = async (newValue) => {
                     </Card>
 
                     {/* Estado Emocional */}
-                    <Card sx={{
-                      borderRadius: 3,
-                      border: "1px solid #e0e7ff",
-                      transition: "all 0.2s ease",
-                      "&:hover": { borderColor: "#092181" }
-                    }}>
+                    <Card
+                      sx={{
+                        borderRadius: 3,
+                        border: "1px solid #e0e7ff",
+                        transition: "all 0.2s ease",
+                        "&:hover": { borderColor: "#092181" },
+                      }}
+                    >
                       <CardContent sx={{ p: 2.5 }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-                          <EmojiEmotions sx={{ color: "#092181", fontSize: 20 }} />
-                          <Typography variant="h6" sx={{ color: "#092181", fontWeight: "bold" }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            mb: 2,
+                          }}
+                        >
+                          <EmojiEmotions
+                            sx={{ color: "#092181", fontSize: 20 }}
+                          />
+                          <Typography
+                            variant="h6"
+                            sx={{ color: "#092181", fontWeight: "bold" }}
+                          >
                             Estado Emocional
                           </Typography>
                         </Box>
-                        <FormControl fullWidth
+                        <FormControl
+                          fullWidth
                           sx={{
                             "& .MuiOutlinedInput-root": {
                               borderRadius: "12px",
@@ -1113,11 +1392,26 @@ const handleSelectSearch = async (newValue) => {
                             {emocionesSaludMental.flatMap((grupo) =>
                               grupo.emociones.map((emo) => (
                                 <MenuItem key={emo.id} value={emo.id}>
-                                  <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                                    <Box sx={{ color: grupo.color, fontSize: 20 }}>{emo.icono}</Box>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 1.5,
+                                    }}
+                                  >
+                                    <Box
+                                      sx={{ color: grupo.color, fontSize: 20 }}
+                                    >
+                                      {emo.icono}
+                                    </Box>
                                     <Box>
-                                      <Typography variant="body1">{emo.nombre}</Typography>
-                                      <Typography variant="caption" sx={{ color: "#666" }}>
+                                      <Typography variant="body1">
+                                        {emo.nombre}
+                                      </Typography>
+                                      <Typography
+                                        variant="caption"
+                                        sx={{ color: "#666" }}
+                                      >
                                         {grupo.grupo}
                                       </Typography>
                                     </Box>
@@ -1132,28 +1426,48 @@ const handleSelectSearch = async (newValue) => {
                   </Box>
 
                   {/* Columna Derecha */}
-                  <Box sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
-                    flex: 1,
-                    minWidth: { md: 0 }
-                  }}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 2,
+                      flex: 1,
+                      minWidth: { md: 0 },
+                    }}
+                  >
                     {/* Contexto y Ambiente */}
-                    <Card sx={{
-                      borderRadius: 3,
-                      border: "1px solid #e0e7ff",
-                      transition: "all 0.2s ease",
-                      "&:hover": { borderColor: "#092181" }
-                    }}>
+                    <Card
+                      sx={{
+                        borderRadius: 3,
+                        border: "1px solid #e0e7ff",
+                        transition: "all 0.2s ease",
+                        "&:hover": { borderColor: "#092181" },
+                      }}
+                    >
                       <CardContent sx={{ p: 2.5 }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            mb: 2,
+                          }}
+                        >
                           <Place sx={{ color: "#092181", fontSize: 20 }} />
-                          <Typography variant="h6" sx={{ color: "#092181", fontWeight: "bold" }}>
+                          <Typography
+                            variant="h6"
+                            sx={{ color: "#092181", fontWeight: "bold" }}
+                          >
                             Contexto y Ambiente
                           </Typography>
                         </Box>
-                        <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 2,
+                          }}
+                        >
                           <TextField
                             label="Detonante"
                             value={sintomaSeleccionado.detonante || ""}
@@ -1169,43 +1483,7 @@ const handleSelectSearch = async (newValue) => {
                               borderRadius: 2,
                               "& .MuiOutlinedInput-root": {
                                 borderRadius: "12px",
-                                backgroundColor: "#fff", 
-                                "& fieldset": {
-                                  borderColor: "#CBD4D8", 
-                                },
-                                "&:hover fieldset": {
-                                  borderColor: "#355C7D", 
-                                },
-                                "&.Mui-focused fieldset": {
-                                  borderColor: "#092181", 
-                                  borderWidth: "2px",
-                                },
-                              },
-                              "& .MuiInputLabel-root": {
-                                color: "#2D5D7B", 
-                                fontWeight: "bold",
-                              },
-                              "& .MuiInputBase-input::placeholder": {
-                                color: "#777777", 
-                                opacity: 1,
-                              },
-                            }}
-                          />
-                          <TextField
-                            label="Ubicación"
-                            value={sintomaSeleccionado.ubicacion || ""}
-                            onChange={(e) =>
-                              setSintomaSeleccionado({
-                                ...sintomaSeleccionado,
-                                ubicacion: e.target.value,
-                              })
-                            }
-                            placeholder="¿Dónde te encontrabas?"
-                            size="small"
-                            sx={{
-                              "& .MuiOutlinedInput-root": {
-                                borderRadius: "12px", 
-                                backgroundColor: "#fff", 
+                                backgroundColor: "#fff",
                                 "& fieldset": {
                                   borderColor: "#CBD4D8",
                                 },
@@ -1226,7 +1504,42 @@ const handleSelectSearch = async (newValue) => {
                                 opacity: 1,
                               },
                             }}
-
+                          />
+                          <TextField
+                            label="Ubicación"
+                            value={sintomaSeleccionado.ubicacion || ""}
+                            onChange={(e) =>
+                              setSintomaSeleccionado({
+                                ...sintomaSeleccionado,
+                                ubicacion: e.target.value,
+                              })
+                            }
+                            placeholder="¿Dónde te encontrabas?"
+                            size="small"
+                            sx={{
+                              "& .MuiOutlinedInput-root": {
+                                borderRadius: "12px",
+                                backgroundColor: "#fff",
+                                "& fieldset": {
+                                  borderColor: "#CBD4D8",
+                                },
+                                "&:hover fieldset": {
+                                  borderColor: "#355C7D",
+                                },
+                                "&.Mui-focused fieldset": {
+                                  borderColor: "#092181",
+                                  borderWidth: "2px",
+                                },
+                              },
+                              "& .MuiInputLabel-root": {
+                                color: "#2D5D7B",
+                                fontWeight: "bold",
+                              },
+                              "& .MuiInputBase-input::placeholder": {
+                                color: "#777777",
+                                opacity: 1,
+                              },
+                            }}
                           />
                           <TextField
                             label="Actividad Reciente"
@@ -1247,7 +1560,7 @@ const handleSelectSearch = async (newValue) => {
                                   borderColor: "#CBD4D8",
                                 },
                                 "&:hover fieldset": {
-                                  borderColor: "#355C7D", 
+                                  borderColor: "#355C7D",
                                 },
                                 "&.Mui-focused fieldset": {
                                   borderColor: "#092181",
@@ -1255,7 +1568,7 @@ const handleSelectSearch = async (newValue) => {
                                 },
                               },
                               "& .MuiInputLabel-root": {
-                                color: "#2D5D7B", 
+                                color: "#2D5D7B",
                                 fontWeight: "bold",
                               },
                               "& .MuiInputBase-input::placeholder": {
@@ -1269,20 +1582,34 @@ const handleSelectSearch = async (newValue) => {
                     </Card>
 
                     {/* Condiciones Climáticas */}
-                    <Card sx={{
-                      borderRadius: 3,
-                      border: "1px solid #e0e7ff",
-                      transition: "all 0.2s ease",
-                      "&:hover": { borderColor: "#092181" }
-                    }}>
+                    <Card
+                      sx={{
+                        borderRadius: 3,
+                        border: "1px solid #e0e7ff",
+                        transition: "all 0.2s ease",
+                        "&:hover": { borderColor: "#092181" },
+                      }}
+                    >
                       <CardContent sx={{ p: 2.5 }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            mb: 2,
+                          }}
+                        >
                           <WbSunny sx={{ color: "#092181", fontSize: 20 }} />
-                          <Typography variant="h6" sx={{ color: "#092181", fontWeight: "bold" }}>
+                          <Typography
+                            variant="h6"
+                            sx={{ color: "#092181", fontWeight: "bold" }}
+                          >
                             Condiciones Climáticas
                           </Typography>
                         </Box>
-                        <FormControl fullWidth size="small"
+                        <FormControl
+                          fullWidth
+                          size="small"
                           sx={{
                             "& .MuiOutlinedInput-root": {
                               borderRadius: "12px",
@@ -1317,8 +1644,16 @@ const handleSelectSearch = async (newValue) => {
                           >
                             {climaOptions.map((c) => (
                               <MenuItem key={c.value} value={c.value}>
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-                                  <Box sx={{ color: c.color, fontSize: 20 }}>{c.icon}</Box>
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 1.5,
+                                  }}
+                                >
+                                  <Box sx={{ color: c.color, fontSize: 20 }}>
+                                    {c.icon}
+                                  </Box>
                                   {c.label}
                                 </Box>
                               </MenuItem>
@@ -1329,16 +1664,28 @@ const handleSelectSearch = async (newValue) => {
                     </Card>
 
                     {/* Notas Adicionales */}
-                    <Card sx={{
-                      borderRadius: 3,
-                      border: "1px solid #e0e7ff",
-                      transition: "all 0.2s ease",
-                      "&:hover": { borderColor: "#092181" }
-                    }}>
+                    <Card
+                      sx={{
+                        borderRadius: 3,
+                        border: "1px solid #e0e7ff",
+                        transition: "all 0.2s ease",
+                        "&:hover": { borderColor: "#092181" },
+                      }}
+                    >
                       <CardContent sx={{ p: 2.5 }}>
-                        <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1,
+                            mb: 2,
+                          }}
+                        >
                           <Notes sx={{ color: "#092181", fontSize: 20 }} />
-                          <Typography variant="h6" sx={{ color: "#092181", fontWeight: "bold" }}>
+                          <Typography
+                            variant="h6"
+                            sx={{ color: "#092181", fontWeight: "bold" }}
+                          >
                             Notas Adicionales
                           </Typography>
                         </Box>
@@ -1372,7 +1719,7 @@ const handleSelectSearch = async (newValue) => {
                               },
                             },
                             "& .MuiInputLabel-root": {
-                              color: "#2D5D7B", 
+                              color: "#2D5D7B",
                               fontWeight: "bold",
                             },
                             "& .MuiInputBase-input::placeholder": {
@@ -1386,24 +1733,25 @@ const handleSelectSearch = async (newValue) => {
                   </Box>
                 </Box>
 
-                <Box sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", sm: "row" },
-                  alignItems: { xs: "stretch", sm: "center" },
-                  justifyContent: { xs: "center", sm: "space-between" },
-                  flexWrap: "wrap",
-                  gap: 2,
-                  width: "100%",
-                }}
-                >
-                  <Box sx={{
+                <Box
+                  sx={{
                     display: "flex",
+                    flexDirection: { xs: "column", sm: "row" },
+                    alignItems: { xs: "stretch", sm: "center" },
+                    justifyContent: { xs: "center", sm: "space-between" },
                     flexWrap: "wrap",
-                    justifyContent: { xs: "center", sm: "flex-start" },
-                    gap: 1.5,
-                    flex: "1 1 auto",
+                    gap: 2,
+                    width: "100%",
                   }}
-
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      justifyContent: { xs: "center", sm: "flex-start" },
+                      gap: 1.5,
+                      flex: "1 1 auto",
+                    }}
                   >
                     <Button
                       variant="contained"
@@ -1424,7 +1772,6 @@ const handleSelectSearch = async (newValue) => {
                         transition: "all 0.2s ease",
                         flex: { xs: "1 1 100%", sm: "0 0 auto" },
                       }}
-
                     >
                       Actualizar Síntoma
                     </Button>
@@ -1445,7 +1792,6 @@ const handleSelectSearch = async (newValue) => {
                         transition: "all 0.2s ease",
                         flex: { xs: "1 1 100%", sm: "0 0 auto" },
                       }}
-
                     >
                       Eliminar
                     </Button>
@@ -1480,8 +1826,8 @@ const handleSelectSearch = async (newValue) => {
                   </Box>
                 </Box>
               </Box>
-            </Slide>)}
-
+            </Slide>
+          )}
         </Paper>
 
         {/* Animate para el mensaje o el dialogo de eliminación */}
@@ -1548,7 +1894,10 @@ const handleSelectSearch = async (newValue) => {
                   >
                     Cancelar
                   </Button>
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Button
                       onClick={handleEliminar}
                       variant="contained"
@@ -1589,10 +1938,11 @@ const handleSelectSearch = async (newValue) => {
                   },
                 }}
               >
-                <CheckCircle
-                  sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }}
-                />
-                <Typography variant="h6" sx={{ color: "#092181", fontWeight: 600 }}>
+                <CheckCircle sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }} />
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#092181", fontWeight: 600 }}
+                >
                   Síntoma eliminado correctamente
                 </Typography>
                 <Typography variant="body2" sx={{ color: "#555", mt: 1 }}>

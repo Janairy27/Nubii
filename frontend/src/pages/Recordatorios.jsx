@@ -38,8 +38,6 @@ import {
   Backdrop,
   List,
   ListItem,
-
-
 } from "@mui/material";
 import {
   Edit,
@@ -63,11 +61,10 @@ import {
   Delete,
   CheckCircle,
   CalendarToday,
-
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms';
+import AccessAlarmsIcon from "@mui/icons-material/AccessAlarms";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import EventIcon from "@mui/icons-material/Event";
@@ -84,19 +81,17 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import SelfImprovementIcon from "@mui/icons-material/SelfImprovement";
 import EmailIcon from "@mui/icons-material/Email";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
-import AddAlertIcon from '@mui/icons-material/AddAlert';
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
+import AddAlertIcon from "@mui/icons-material/AddAlert";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 
-import InfoOutlineIcon from '@mui/icons-material/InfoOutline';
-import SyncIcon from '@mui/icons-material/Sync';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
-import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import InfoOutlineIcon from "@mui/icons-material/InfoOutline";
+import SyncIcon from "@mui/icons-material/Sync";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import PendingActionsIcon from "@mui/icons-material/PendingActions";
 import PushPinIcon from "@mui/icons-material/PushPin";
-import CategoryIcon from '@mui/icons-material/Category';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Cancel';
-
-
+import CategoryIcon from "@mui/icons-material/Category";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 export default function Recordatorios() {
   const [idUsuario, setIdUsuario] = useState(null);
@@ -120,22 +115,22 @@ export default function Recordatorios() {
     mensaje: false,
     hora: false,
     frecuencia: false,
-    tipo: false
+    tipo: false,
   });
 
   const [valoresFiltro, setValoresFiltro] = useState({
     mensaje: "",
     hora: "",
     frecuencia: "",
-    tipo: ""
+    tipo: "",
   });
 
-  const [recordatorioSeleccionado, setRecordatorioSeleccionado] = useState(null);
+  const [recordatorioSeleccionado, setRecordatorioSeleccionado] =
+    useState(null);
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
   const navigate = useNavigate();
   const [openConfirm, setOpenConfirm] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
-
 
   const [editandoId, setEditandoId] = useState(null);
   const [search, setSearch] = useState("");
@@ -143,8 +138,7 @@ export default function Recordatorios() {
   const [mensajeSnackbar, setMensajeSnackbar] = useState("");
   const [tipoSnackbar, setTipoSnackbar] = useState("success");
 
-
-  const [vista, setVista] = useState("pendientes"); 
+  const [vista, setVista] = useState("pendientes");
 
   const mostrarMensaje = (msg, severity = "info") => {
     setMensajeSnackbar(msg);
@@ -153,44 +147,107 @@ export default function Recordatorios() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-
   const frecuenciaMap = [
-    { value: 1, nombre: "Una vez", color: "#6c757d", icono: <AccessTimeIcon /> },
+    {
+      value: 1,
+      nombre: "Una vez",
+      color: "#6c757d",
+      icono: <AccessTimeIcon />,
+    },
     { value: 2, nombre: "Diario", color: "#007bff", icono: <TodayIcon /> },
-    { value: 3, nombre: "Días laborales", color: "#28a745", icono: <WorkIcon /> },
-    { value: 4, nombre: "Fin de semana", color: "#ff9800", icono: <WeekendIcon /> },
-    { value: 5, nombre: "Semanal", color: "#17a2b8", icono: <CalendarTodayIcon /> },
+    {
+      value: 3,
+      nombre: "Días laborales",
+      color: "#28a745",
+      icono: <WorkIcon />,
+    },
+    {
+      value: 4,
+      nombre: "Fin de semana",
+      color: "#ff9800",
+      icono: <WeekendIcon />,
+    },
+    {
+      value: 5,
+      nombre: "Semanal",
+      color: "#17a2b8",
+      icono: <CalendarTodayIcon />,
+    },
     { value: 6, nombre: "Quincenal", color: "#9c27b0", icono: <EventIcon /> },
     { value: 7, nombre: "Mensual", color: "#e91e63", icono: <ScheduleIcon /> },
   ];
 
   const tiposRecordatorios = [
-    { value: 1, nombre: "Actividad asignada", color: "#1976d2", icono: <AssignmentTurnedInIcon /> },
-    { value: 2, nombre: "Registro emocional", color: "#9c27b0", icono: <PsychologyIcon /> },
-    { value: 3, nombre: "Cita programada", color: "#2e7d32", icono: <EventIcon /> },
-    { value: 4, nombre: "Solicitar cita", color: "#ff9800", icono: <MarkunreadMailboxIcon /> },
-    { value: 5, nombre: "Autocuidado", color: "#e91e63", icono: <FavoriteIcon /> },
+    {
+      value: 1,
+      nombre: "Actividad asignada",
+      color: "#1976d2",
+      icono: <AssignmentTurnedInIcon />,
+    },
+    {
+      value: 2,
+      nombre: "Registro emocional",
+      color: "#9c27b0",
+      icono: <PsychologyIcon />,
+    },
+    {
+      value: 3,
+      nombre: "Cita programada",
+      color: "#2e7d32",
+      icono: <EventIcon />,
+    },
+    {
+      value: 4,
+      nombre: "Solicitar cita",
+      color: "#ff9800",
+      icono: <MarkunreadMailboxIcon />,
+    },
+    {
+      value: 5,
+      nombre: "Autocuidado",
+      color: "#e91e63",
+      icono: <FavoriteIcon />,
+    },
     { value: 6, nombre: "Respiracion", color: "#00bcd4", icono: <AirIcon /> },
-    { value: 7, nombre: "Checkin diario", color: "#9e9d24", icono: <CheckCircleIcon /> },
-    { value: 8, nombre: "Meditacion", color: "#8d6e63", icono: <SelfImprovementIcon /> },
+    {
+      value: 7,
+      nombre: "Checkin diario",
+      color: "#9e9d24",
+      icono: <CheckCircleIcon />,
+    },
+    {
+      value: 8,
+      nombre: "Meditacion",
+      color: "#8d6e63",
+      icono: <SelfImprovementIcon />,
+    },
   ];
 
-
-
   const notificacionMap = [
-    { value: 1, nombre: "Correo electrónico", color: "#1976d2", icono: <EmailIcon /> },
-    { value: 2, nombre: "Por el sistema", color: "#ff9800", icono: <NotificationsActiveIcon /> },
+    {
+      value: 1,
+      nombre: "Correo electrónico",
+      color: "#1976d2",
+      icono: <EmailIcon />,
+    },
+    {
+      value: 2,
+      nombre: "Por el sistema",
+      color: "#ff9800",
+      icono: <NotificationsActiveIcon />,
+    },
   ];
 
   // Abrir diálogo de confirmación
   const handleOpenConfirm = (id) => {
-    setRecordatorioSeleccionado(recordatorios.find(r => r.idRecordatorio === id));
+    setRecordatorioSeleccionado(
+      recordatorios.find((r) => r.idRecordatorio === id)
+    );
     setOpenConfirm(true);
-  }
+  };
 
   // Cancelar
   const handleCloseConfirm = () => setOpenConfirm(false);
-  
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
@@ -211,14 +268,14 @@ export default function Recordatorios() {
 
   const obtenerRecordatorios = () => {
     axios
-      .get(`http://localhost:4000/api/recordatorio/by-filter/`,
-        { params: { idUsuario } }
-      )
+      .get(`http://localhost:4000/api/recordatorio/by-filter/`, {
+        params: { idUsuario },
+      })
       .then((res) => {
         setRecordatorios(res.data);
         setRecordatorioSeleccionado(null);
-        setPendientes(res.data.filter(r => r.culminado !== 2));
-        setCompletados(res.data.filter(r => r.culminado === 2));
+        setPendientes(res.data.filter((r) => r.culminado !== 2));
+        setCompletados(res.data.filter((r) => r.culminado === 2));
       })
       .catch((err) => {
         console.error("Error al cargar recordatorios:", err);
@@ -247,7 +304,6 @@ export default function Recordatorios() {
       });
   };
 
-
   const handleBuscar = async () => {
     const filtrosAplicados = {};
 
@@ -269,7 +325,7 @@ export default function Recordatorios() {
     }
 
     //const queryParams = new URLSearchParams(filtrosAplicados).toString();
- try {
+    try {
       const queryParams = new URLSearchParams(filtrosAplicados).toString();
       const res = await axios.get(
         `http://localhost:4000/api/recordatorio/by-filter?${queryParams}`,
@@ -277,9 +333,11 @@ export default function Recordatorios() {
       );
 
       if (res.data.length === 0) {
-        mostrarMensaje("No se encontraron recordatorios con esos filtros.", "warning");
+        mostrarMensaje(
+          "No se encontraron recordatorios con esos filtros.",
+          "warning"
+        );
         obtenerRecordatorios();
-        
       } else {
         setRecordatorios(res.data);
         setPendientes(res.data.filter((r) => r.culminado !== 2));
@@ -290,7 +348,6 @@ export default function Recordatorios() {
       console.error("Error en búsqueda:", error);
       mostrarMensaje("Error al realizar la búsqueda.", "error");
     }
-  
   };
 
   const handleLimpiarFiltros = () => {
@@ -305,7 +362,7 @@ export default function Recordatorios() {
       mensaje: "",
       hora: "",
       frecuencia: "",
-      tipo: ""
+      tipo: "",
     });
 
     obtenerRecordatorios();
@@ -325,42 +382,50 @@ export default function Recordatorios() {
       tipo_recordatorio: tipo,
       idUsuario,
       culminado,
-      notificacion
+      notificacion,
     };
 
     console.log("Enviando data:", data);
 
-    axios.post("http://localhost:4000/api/recordatorio/registro-recordatorio", data)
+    axios
+      .post(
+        "http://localhost:4000/api/recordatorio/registro-recordatorio",
+        data
+      )
       .then(() => {
         navigate("/dashboard");
         mostrarMensaje("Recordatorio registrado exitosamente.", "success");
       })
       .catch((err) => {
         //Log completo del error para depuración
-        console.error("Error completo de Axios:", err); 
+        console.error("Error completo de Axios:", err);
 
         let mensajeError = "Error al registrar el recordatorio.";
-        
+
         // Verificar que la respuesta 400 tenga datos estructurados
         if (err.response && err.response.data) {
-            const dataError = err.response.data;
-            
-            if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
-                // Unir  los errores de validación en una sola cadena
-                mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-            } 
-            else if (dataError.message) {
-                 mensajeError = dataError.message;
-            }
+          const dataError = err.response.data;
+
+          if (
+            dataError.errores &&
+            Array.isArray(dataError.errores) &&
+            dataError.errores.length > 0
+          ) {
+            // Unir  los errores de validación en una sola cadena
+            mensajeError = `Errores de validación: ${dataError.errores.join(
+              "; "
+            )}`;
+          } else if (dataError.message) {
+            mensajeError = dataError.message;
+          }
         }
 
-        // Mostrar el mensaje de error específico o el genérico 
+        // Mostrar el mensaje de error específico o el genérico
         mostrarMensaje(mensajeError, "error");
       });
   };
 
   const handleActualizar = () => {
-
     axios
       .put(
         `http://localhost:4000/api/recordatorio/actualizar-recordatorio/${recordatorioSeleccionado.idRecordatorio}`,
@@ -371,26 +436,30 @@ export default function Recordatorios() {
         obtenerRecordatorios();
         setRecordatorioSeleccionado(null);
       })
-        .catch((err) =>{
-          //Log completo del error para depuración
+      .catch((err) => {
+        //Log completo del error para depuración
         console.error("Error completo de Axios:", err);
         let mensajeError = "Error al actualizar la recordatorio.";
 
         // Verificar que la respuesta 400 tenga datos estructurados
-         if (err.response && err.response.data) {
+        if (err.response && err.response.data) {
+          const dataError = err.response.data;
 
-            const dataError = err.response.data;
-            
-            if (dataError.errores && Array.isArray(dataError.errores) && dataError.errores.length > 0) {
-                // Unir los errores de validación en una sola cadena
-                mensajeError = `Errores de validación: ${dataError.errores.join('; ')}`;
-            } 
-            else if (dataError.message) {
-                 mensajeError = dataError.message;
-            }
+          if (
+            dataError.errores &&
+            Array.isArray(dataError.errores) &&
+            dataError.errores.length > 0
+          ) {
+            // Unir los errores de validación en una sola cadena
+            mensajeError = `Errores de validación: ${dataError.errores.join(
+              "; "
+            )}`;
+          } else if (dataError.message) {
+            mensajeError = dataError.message;
+          }
         }
-        // Mostrar el mensaje de error específico o el genérico 
-         mostrarMensaje(mensajeError, "error"); 
+        // Mostrar el mensaje de error específico o el genérico
+        mostrarMensaje(mensajeError, "error");
       });
   };
 
@@ -410,7 +479,8 @@ export default function Recordatorios() {
 
   return (
     <Layout>
-      <Container maxWidth="md"
+      <Container
+        maxWidth="md"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -420,17 +490,18 @@ export default function Recordatorios() {
           minHeight: "100vh",
         }}
       >
-        <Paper sx={{
-          p: { xs: 2, md: 4 },
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#F4F6F8",
-          width: "100%",
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}
+        <Paper
+          sx={{
+            p: { xs: 2, md: 4 },
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F4F6F8",
+            width: "100%",
+            mx: "auto",
+            display: "flex",
+            flexDirection: "column",
+            gap: 3,
+          }}
         >
           {/* Título */}
           <Box
@@ -461,9 +532,7 @@ export default function Recordatorios() {
             >
               Recordatorios
             </Typography>
-
           </Box>
-
 
           <Card
             sx={{
@@ -475,12 +544,14 @@ export default function Recordatorios() {
               borderRadius: 3,
             }}
           >
-            <Box sx={{ mb: 3, display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ mb: 3, display: "flex", alignItems: "center" }}>
               <FilterList sx={{ mr: 1, color: "#092181" }} />
-              <Typography variant="h6"
+              <Typography
+                variant="h6"
                 fontWeight="bold"
                 color="#092181"
-                sx={{ flex: 1 }}>
+                sx={{ flex: 1 }}
+              >
                 Selecciona filtros de búsqueda:
               </Typography>
             </Box>
@@ -501,19 +572,18 @@ export default function Recordatorios() {
                       onChange={() =>
                         setFiltrosActivos((prev) => ({
                           ...prev,
-                          [key]: !prev[key]
+                          [key]: !prev[key],
                         }))
                       }
                       sx={{
-                          color: "#5A6ACF",
-                          "&.Mui-checked": { color: "#092181" },
-                          "& .MuiSvgIcon-root": { fontSize: 26 },
-                        }}
+                        color: "#5A6ACF",
+                        "&.Mui-checked": { color: "#092181" },
+                        "& .MuiSvgIcon-root": { fontSize: 26 },
+                      }}
                     />
                   }
                   label={key.charAt(0).toUpperCase() + key.slice(1)}
                 />
-
               ))}
             </Box>
 
@@ -531,47 +601,12 @@ export default function Recordatorios() {
                     maxWidth: "400px",
                     "& .MuiOutlinedInput-root": {
                       borderRadius: "12px",
-                      backgroundColor: "#fff", 
+                      backgroundColor: "#fff",
                       "& fieldset": {
-                        borderColor: "#CBD4D8", 
+                        borderColor: "#CBD4D8",
                       },
                       "&:hover fieldset": {
-                        borderColor: "#355C7D", 
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#092181",
-                        borderWidth: "2px",
-                      },
-                    },
-                    "& .MuiInputLabel-root": {
-                      color: "#2D5D7B", 
-                      fontWeight: "bold",
-                    },
-                    "& .MuiInputBase-input::placeholder": {
-                      color: "#777777", 
-                      opacity: 1,
-                    },
-
-                  }}
-                  label="Titulo del recordatorio"
-                  onChange={(e) =>
-                    setValoresFiltro({ ...valoresFiltro, mensaje: e.target.value })
-                  }
-                />
-              )}
-              {filtrosActivos.hora && (
-                <TextField
-                  sx={{
-                    width: "100%",
-                    maxWidth: "400px",
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "12px", 
-                      backgroundColor: "#fff", 
-                      "& fieldset": {
-                        borderColor: "#CBD4D8", 
-                      },
-                      "&:hover fieldset": {
-                        borderColor: "#355C7D", 
+                        borderColor: "#355C7D",
                       },
                       "&.Mui-focused fieldset": {
                         borderColor: "#092181",
@@ -586,27 +621,26 @@ export default function Recordatorios() {
                       color: "#777777",
                       opacity: 1,
                     },
-
                   }}
-                  label="Hora de notificación"
-                  type="time"
-                  value={valoresFiltro.hora}
+                  label="Titulo del recordatorio"
                   onChange={(e) =>
-                    setValoresFiltro({ ...valoresFiltro, hora: e.target.value })
+                    setValoresFiltro({
+                      ...valoresFiltro,
+                      mensaje: e.target.value,
+                    })
                   }
                 />
-
               )}
-
-              {filtrosActivos.frecuencia && (
-                <FormControl
+              {filtrosActivos.hora && (
+                <TextField
                   sx={{
-                    width: "100%", maxWidth: "400px",
+                    width: "100%",
+                    maxWidth: "400px",
                     "& .MuiOutlinedInput-root": {
                       borderRadius: "12px",
-                      backgroundColor: "#fff", 
+                      backgroundColor: "#fff",
                       "& fieldset": {
-                        borderColor: "#CBD4D8", 
+                        borderColor: "#CBD4D8",
                       },
                       "&:hover fieldset": {
                         borderColor: "#355C7D",
@@ -617,46 +651,95 @@ export default function Recordatorios() {
                       },
                     },
                     "& .MuiInputLabel-root": {
-                      color: "#2D5D7B", 
+                      color: "#2D5D7B",
                       fontWeight: "bold",
                     },
                     "& .MuiInputBase-input::placeholder": {
-                      color: "#777777", 
+                      color: "#777777",
                       opacity: 1,
                     },
+                  }}
+                  label="Hora de notificación"
+                  type="time"
+                  value={valoresFiltro.hora}
+                  onChange={(e) =>
+                    setValoresFiltro({ ...valoresFiltro, hora: e.target.value })
+                  }
+                />
+              )}
 
+              {filtrosActivos.frecuencia && (
+                <FormControl
+                  sx={{
+                    width: "100%",
+                    maxWidth: "400px",
+                    "& .MuiOutlinedInput-root": {
+                      borderRadius: "12px",
+                      backgroundColor: "#fff",
+                      "& fieldset": {
+                        borderColor: "#CBD4D8",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#355C7D",
+                      },
+                      "&.Mui-focused fieldset": {
+                        borderColor: "#092181",
+                        borderWidth: "2px",
+                      },
+                    },
+                    "& .MuiInputLabel-root": {
+                      color: "#2D5D7B",
+                      fontWeight: "bold",
+                    },
+                    "& .MuiInputBase-input::placeholder": {
+                      color: "#777777",
+                      opacity: 1,
+                    },
                   }}
                 >
                   <InputLabel>Frecuencia de notificación</InputLabel>
                   <Select
                     value={valoresFiltro.frecuencia}
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, frecuencia: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        frecuencia: e.target.value,
+                      })
                     }
                     label="Frecuencia de notificación"
+                    renderValue={(selectedValue) => {
+                      // Encuentra el objeto 'frecuencia' correspondiente al valor seleccionado
+                      const selectedFre = frecuenciaMap.find(
+                        (frecuencia) => frecuencia.value === selectedValue
+                      );
 
-                          renderValue={(selectedValue) => {
-                            // Encuentra el objeto 'frecuencia' correspondiente al valor seleccionado
-                            const selectedFre = frecuenciaMap.find(
-                              (frecuencia) => frecuencia.value === selectedValue
-                            );
-
-                            // Si se encuentra, renderiza el icono y el texto en la misma línea
-                            // Usamos Box con display: flex para asegurar la alineación horizontal
-                            if (selectedFre) {
-                              return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedFre.color, display: 'flex' }}>
-                                    {selectedFre.icono}
-                                  </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                    {selectedFre.nombre}
-                                  </Typography>
-                                </Box>
-                              );
-                            }
-                            return "";
-                          }}
+                      // Si se encuentra, renderiza el icono y el texto en la misma línea
+                      // Usamos Box con display: flex para asegurar la alineación horizontal
+                      if (selectedFre) {
+                        return (
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <Box
+                              sx={{ color: selectedFre.color, display: "flex" }}
+                            >
+                              {selectedFre.icono}
+                            </Box>
+                            <Typography
+                              variant="body1"
+                              sx={{ fontWeight: 500 }}
+                            >
+                              {selectedFre.nombre}
+                            </Typography>
+                          </Box>
+                        );
+                      }
+                      return "";
+                    }}
                   >
                     {frecuenciaMap.map((frecuencia) => (
                       <MenuItem key={frecuencia.value} value={frecuencia.value}>
@@ -668,7 +751,7 @@ export default function Recordatorios() {
                         <ListItemText
                           primary={frecuencia.nombre}
                           primaryTypographyProps={{
-                            sx: { fontWeight: 500 }
+                            sx: { fontWeight: 500 },
                           }}
                         />
                       </MenuItem>
@@ -680,15 +763,16 @@ export default function Recordatorios() {
               {filtrosActivos.tipo && (
                 <FormControl
                   sx={{
-                    width: "100%", maxWidth: "400px",
+                    width: "100%",
+                    maxWidth: "400px",
                     "& .MuiOutlinedInput-root": {
-                      borderRadius: "12px", 
+                      borderRadius: "12px",
                       backgroundColor: "#fff",
                       "& fieldset": {
-                        borderColor: "#CBD4D8", 
+                        borderColor: "#CBD4D8",
                       },
                       "&:hover fieldset": {
-                        borderColor: "#355C7D", 
+                        borderColor: "#355C7D",
                       },
                       "&.Mui-focused fieldset": {
                         borderColor: "#092181",
@@ -703,60 +787,71 @@ export default function Recordatorios() {
                       color: "#777777",
                       opacity: 1,
                     },
-
                   }}
                 >
                   <InputLabel>Tipo de recordatorio</InputLabel>
                   <Select
                     value={valoresFiltro.tipo}
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, tipo: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        tipo: e.target.value,
+                      })
                     }
                     label="Tipo de recordatorio"
+                    renderValue={(selectedValue) => {
+                      //  Encuentra el objeto 'tipo' correspondiente al valor seleccionado
+                      const selectedTipo = tiposRecordatorios.find(
+                        (tipo) => tipo.value === selectedValue
+                      );
 
-                          renderValue={(selectedValue) => {
-                            //  Encuentra el objeto 'tipo' correspondiente al valor seleccionado
-                            const selectedTipo = tiposRecordatorios.find(
-                              (tipo) => tipo.value === selectedValue
-                            );
-
-                            // Si se encuentra, renderiza el icono y el texto en la misma línea
-                            // Usamos Box con display: flex para asegurar la alineación horizontal
-                            if (selectedTipo) {
-                              return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedTipo.color, display: 'flex' }}>
-                                    {selectedTipo.icono}
-                                  </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                    {selectedTipo.nombre}
-                                  </Typography>
-                                </Box>
-                              );
-                            }
-                            return "";
-                          }}
+                      // Si se encuentra, renderiza el icono y el texto en la misma línea
+                      // Usamos Box con display: flex para asegurar la alineación horizontal
+                      if (selectedTipo) {
+                        return (
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                color: selectedTipo.color,
+                                display: "flex",
+                              }}
+                            >
+                              {selectedTipo.icono}
+                            </Box>
+                            <Typography
+                              variant="body1"
+                              sx={{ fontWeight: 500 }}
+                            >
+                              {selectedTipo.nombre}
+                            </Typography>
+                          </Box>
+                        );
+                      }
+                      return "";
+                    }}
                   >
                     {tiposRecordatorios.map((tipo) => (
                       <MenuItem key={tipo.value} value={tipo.value}>
                         <ListItemIcon>
-                          <Box sx={{ color: tipo.color }}>
-                            {tipo.icono}
-                          </Box>
+                          <Box sx={{ color: tipo.color }}>{tipo.icono}</Box>
                         </ListItemIcon>
                         <ListItemText
                           primary={tipo.nombre}
                           primaryTypographyProps={{
-                            sx: { fontWeight: 500 }
+                            sx: { fontWeight: 500 },
                           }}
                         />
                       </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
-
               )}
-
 
               {/* Botones de acción */}
               <Box
@@ -771,14 +866,14 @@ export default function Recordatorios() {
                   variant="contained"
                   startIcon={<Search />}
                   onClick={handleBuscar}
-                 sx={{
-                          minWidth: 150,
-                          textTransform: "none",
-                          background: "#092181",
-                          "&:hover": { background: "#1c3cc9" },
-                          borderRadius: 2,
-                          fontWeight: "bold",
-                        }}
+                  sx={{
+                    minWidth: 150,
+                    textTransform: "none",
+                    background: "#092181",
+                    "&:hover": { background: "#1c3cc9" },
+                    borderRadius: 2,
+                    fontWeight: "bold",
+                  }}
                 >
                   Buscar
                 </Button>
@@ -786,18 +881,18 @@ export default function Recordatorios() {
                   variant="outlined"
                   startIcon={<RestartAlt />}
                   onClick={handleLimpiarFiltros}
-                    sx={{
-                          minWidth: 150,
-                          textTransform: "none",
-                          borderColor: "#092181",
-                          color: "#092181",
-                          borderRadius: 2,
-                          fontWeight: "bold",
-                          "&:hover": {
-                            backgroundColor: "#eef2ff",
-                            borderColor: "#092181",
-                          },
-                        }}
+                  sx={{
+                    minWidth: 150,
+                    textTransform: "none",
+                    borderColor: "#092181",
+                    color: "#092181",
+                    borderRadius: 2,
+                    fontWeight: "bold",
+                    "&:hover": {
+                      backgroundColor: "#eef2ff",
+                      borderColor: "#092181",
+                    },
+                  }}
                 >
                   Limpiar filtros
                 </Button>
@@ -805,7 +900,7 @@ export default function Recordatorios() {
                   variant="contained"
                   startIcon={mostrarFormulario ? <Close /> : <AddAlertIcon />}
                   onClick={() => setMostrarFormulario(!mostrarFormulario)}
-                    sx={{
+                  sx={{
                     minWidth: 150,
                     textTransform: "none",
                     background: "#092181",
@@ -813,12 +908,13 @@ export default function Recordatorios() {
                     borderRadius: 2,
                   }}
                 >
-                  {mostrarFormulario ? "Ocultar formulario" : " Agregar recordatorio"}
+                  {mostrarFormulario
+                    ? "Ocultar formulario"
+                    : " Agregar recordatorio"}
                 </Button>
               </Box>
             </Box>
           </Card>
-
 
           {/* Formulario */}
           {mostrarFormulario && (
@@ -845,7 +941,6 @@ export default function Recordatorios() {
                 {/*  Información general */}
                 <Card
                   sx={{
-
                     flex: 2,
                     p: { xs: 2, md: 3 },
                     borderRadius: 3,
@@ -855,18 +950,15 @@ export default function Recordatorios() {
                     minWidth: { xs: "100%", md: "350px" },
                     display: "flex",
                     flexDirection: "column",
-
                   }}
                 >
                   <CardContent
                     sx={{
-
                       display: "flex",
                       flexDirection: "column",
                       gap: 2,
                     }}
                   >
-
                     <Box
                       sx={{
                         display: "flex",
@@ -874,7 +966,9 @@ export default function Recordatorios() {
                         mb: 1,
                       }}
                     >
-                      <InfoOutlineIcon sx={{ color: "#092181", fontSize: 28 }} />
+                      <InfoOutlineIcon
+                        sx={{ color: "#092181", fontSize: 28 }}
+                      />
                       <Typography
                         variant="h6"
                         fontWeight="bold"
@@ -895,7 +989,6 @@ export default function Recordatorios() {
                       value={mensaje}
                       onChange={(e) => setMensaje(e.target.value)}
                       required
-
                       sx={{
                         width: "100%",
                         maxWidth: "400px",
@@ -946,7 +1039,6 @@ export default function Recordatorios() {
                   </CardContent>
                 </Card>
 
-
                 {/* Tipo y frecuencia */}
                 <Card
                   sx={{
@@ -959,7 +1051,6 @@ export default function Recordatorios() {
                     minWidth: { xs: "100%", md: "350px" },
                     display: "flex",
                     flexDirection: "column",
-
                   }}
                 >
                   <CardContent
@@ -1020,28 +1111,45 @@ export default function Recordatorios() {
                         value={frecuencia}
                         onChange={(e) => setFrecuencia(e.target.value)}
                         label="Frecuencia de envío"
-                         renderValue={(selectedValue) =>{
-                            const selectedFre = frecuenciaMap.find(
-                              (frecuencia) => frecuencia.value === selectedValue
-                            );
-                            if (selectedFre) {
-                              return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedFre.color, display: 'flex' }}>
-                                    {selectedFre.icono}
-                                  </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                    {selectedFre.nombre}
-                                  </Typography>
+                        renderValue={(selectedValue) => {
+                          const selectedFre = frecuenciaMap.find(
+                            (frecuencia) => frecuencia.value === selectedValue
+                          );
+                          if (selectedFre) {
+                            return (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 1,
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    color: selectedFre.color,
+                                    display: "flex",
+                                  }}
+                                >
+                                  {selectedFre.icono}
                                 </Box>
-                              );
-                            }
-                            return "";
-                          }}
+                                <Typography
+                                  variant="body1"
+                                  sx={{ fontWeight: 500 }}
+                                >
+                                  {selectedFre.nombre}
+                                </Typography>
+                              </Box>
+                            );
+                          }
+                          return "";
+                        }}
                         sx={{ backgroundColor: "#fff", borderRadius: 2 }}
                       >
                         {frecuenciaMap.map((frecuencia) => (
-                          <MenuItem key={frecuencia.value} value={frecuencia.value}>
+                          <MenuItem
+                            key={frecuencia.value}
+                            value={frecuencia.value}
+                          >
                             <ListItemIcon>
                               <Box sx={{ color: frecuencia.color }}>
                                 {frecuencia.icono}
@@ -1050,7 +1158,7 @@ export default function Recordatorios() {
                             <ListItemText
                               primary={frecuencia.nombre}
                               primaryTypographyProps={{
-                                sx: { fontWeight: 500 }
+                                sx: { fontWeight: 500 },
                               }}
                             />
                           </MenuItem>
@@ -1088,42 +1196,53 @@ export default function Recordatorios() {
                         value={tipo}
                         onChange={(e) => setTipo(e.target.value)}
                         label="Tipo de recordatorio"
-
                         renderValue={(selectedValue) => {
-                            //  Encuentra el objeto 'tipo' correspondiente al valor seleccionado
-                            const selectedTipo = tiposRecordatorios.find(
-                              (tipo) => tipo.value === selectedValue
-                            );
+                          //  Encuentra el objeto 'tipo' correspondiente al valor seleccionado
+                          const selectedTipo = tiposRecordatorios.find(
+                            (tipo) => tipo.value === selectedValue
+                          );
 
-                            // Si se encuentra, renderiza el icono y el texto en la misma línea
-                            // Usamos Box con display: flex para asegurar la alineación horizontal
-                            if (selectedTipo) {
-                              return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedTipo.color, display: 'flex' }}>
-                                    {selectedTipo.icono}
-                                  </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                    {selectedTipo.nombre}
-                                  </Typography>
+                          // Si se encuentra, renderiza el icono y el texto en la misma línea
+                          // Usamos Box con display: flex para asegurar la alineación horizontal
+                          if (selectedTipo) {
+                            return (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 1,
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    color: selectedTipo.color,
+                                    display: "flex",
+                                  }}
+                                >
+                                  {selectedTipo.icono}
                                 </Box>
-                              );
-                            }
-                            return "";
-                          }}
+                                <Typography
+                                  variant="body1"
+                                  sx={{ fontWeight: 500 }}
+                                >
+                                  {selectedTipo.nombre}
+                                </Typography>
+                              </Box>
+                            );
+                          }
+                          return "";
+                        }}
                         sx={{ backgroundColor: "#fff", borderRadius: 2 }}
                       >
                         {tiposRecordatorios.map((tipo) => (
                           <MenuItem key={tipo.value} value={tipo.value}>
                             <ListItemIcon>
-                              <Box sx={{ color: tipo.color }}>
-                                {tipo.icono}
-                              </Box>
+                              <Box sx={{ color: tipo.color }}>{tipo.icono}</Box>
                             </ListItemIcon>
                             <ListItemText
                               primary={tipo.nombre}
                               primaryTypographyProps={{
-                                sx: { fontWeight: 500 }
+                                sx: { fontWeight: 500 },
                               }}
                             />
                           </MenuItem>
@@ -1139,11 +1258,8 @@ export default function Recordatorios() {
                   justifyContent: "center",
                   width: "100%",
                   maxWidth: "400px",
-
-
                 }}
               >
-
                 {/*  Notificación */}
                 <Card
                   sx={{
@@ -1156,7 +1272,6 @@ export default function Recordatorios() {
                     minWidth: { xs: "100%", md: "350px" },
                     display: "flex",
                     flexDirection: "column",
-
                   }}
                 >
                   <CardContent
@@ -1173,7 +1288,9 @@ export default function Recordatorios() {
                         mb: 1,
                       }}
                     >
-                      <NotificationsActiveIcon sx={{ color: "#F57C00", fontSize: 28 }} />
+                      <NotificationsActiveIcon
+                        sx={{ color: "#F57C00", fontSize: 28 }}
+                      />
                       <Typography
                         variant="h6"
                         fontWeight="bold"
@@ -1187,61 +1304,80 @@ export default function Recordatorios() {
                       </Typography>
                     </Box>
 
-                    <FormControl sx={{
-                      width: "100%",
-                      maxWidth: "400px",
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        backgroundColor: "#FFFFFF",
-                        "& fieldset": {
-                          borderColor: "#CBD4D8",
+                    <FormControl
+                      sx={{
+                        width: "100%",
+                        maxWidth: "400px",
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "12px",
+                          backgroundColor: "#FFFFFF",
+                          "& fieldset": {
+                            borderColor: "#CBD4D8",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "#355C7D",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#092181",
+                            borderWidth: "2px",
+                          },
                         },
-                        "&:hover fieldset": {
-                          borderColor: "#355C7D",
+                        "& .MuiInputLabel-root": {
+                          color: "#2D5D7B",
+                          fontWeight: "bold",
                         },
-                        "&.Mui-focused fieldset": {
-                          borderColor: "#092181",
-                          borderWidth: "2px",
-                        },
-                      },
-                      "& .MuiInputLabel-root": {
-                        color: "#2D5D7B",
-                        fontWeight: "bold",
-                      },
-                    }}>
+                      }}
+                    >
                       <InputLabel>Notificar por</InputLabel>
                       <Select
                         name="notificacion"
                         value={notificacion}
                         onChange={(e) => setNotificacion(e.target.value)}
                         label="Notificar por"
-
                         renderValue={(selectedValue) => {
-                            // Encuentra el objeto 'notificacion' correspondiente al valor seleccionado
-                            const selectedNot = notificacionMap.find(
-                              (notificacion) => notificacion.value === selectedValue
-                            );
+                          // Encuentra el objeto 'notificacion' correspondiente al valor seleccionado
+                          const selectedNot = notificacionMap.find(
+                            (notificacion) =>
+                              notificacion.value === selectedValue
+                          );
 
-                            //  Si se encuentra, renderiza el icono y el texto en la misma línea
-                            // Usamos Box con display: flex para asegurar la alineación horizontal
-                            if (selectedNot) {
-                              return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedNot.color, display: 'flex' }}>
-                                    {selectedNot.icono}
-                                  </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                    {selectedNot.nombre}
-                                  </Typography>
+                          //  Si se encuentra, renderiza el icono y el texto en la misma línea
+                          // Usamos Box con display: flex para asegurar la alineación horizontal
+                          if (selectedNot) {
+                            return (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 1,
+                                }}
+                              >
+                                <Box
+                                  sx={{
+                                    color: selectedNot.color,
+                                    display: "flex",
+                                  }}
+                                >
+                                  {selectedNot.icono}
                                 </Box>
-                              );
-                            }
-                            return "";
-                          }}
+                                <Typography
+                                  variant="body1"
+                                  sx={{ fontWeight: 500 }}
+                                >
+                                  {selectedNot.nombre}
+                                </Typography>
+                              </Box>
+                            );
+                          }
+                          return "";
+                        }}
                         sx={{ backgroundColor: "#fff", borderRadius: 2 }}
                       >
                         {notificacionMap.map((notificacion) => (
-                          <MenuItem key={notificacion.value} value={notificacion.value}>
+                          <MenuItem
+                            key={notificacion.value}
+                            value={notificacion.value}
+                          >
                             <ListItemIcon>
                               <Box sx={{ color: notificacion.color }}>
                                 {notificacion.icono}
@@ -1250,7 +1386,7 @@ export default function Recordatorios() {
                             <ListItemText
                               primary={notificacion.nombre}
                               primaryTypographyProps={{
-                                sx: { fontWeight: 500 }
+                                sx: { fontWeight: 500 },
                               }}
                             />
                           </MenuItem>
@@ -1274,19 +1410,18 @@ export default function Recordatorios() {
                   variant="contained"
                   startIcon={<AddAlertIcon />}
                   sx={{
-                          minWidth: 150,
-                          textTransform: "none",
-                          background: "#092181",
-                          "&:hover": { background: "#1c3cc9" },
-                          borderRadius: 2,
-                          fontWeight: "bold",
-                        }}
+                    minWidth: 150,
+                    textTransform: "none",
+                    background: "#092181",
+                    "&:hover": { background: "#1c3cc9" },
+                    borderRadius: 2,
+                    fontWeight: "bold",
+                  }}
                 >
                   Guardar recordatorio
                 </Button>
               </Box>
             </Box>
-
           )}
           <Box>
             <Box
@@ -1299,8 +1434,16 @@ export default function Recordatorios() {
               }}
             >
               {[
-                { key: "pendientes", label: "Pendientes", count: pendientes?.length || 0 },
-                { key: "completados", label: "Completados", count: completados?.length || 0 },
+                {
+                  key: "pendientes",
+                  label: "Pendientes",
+                  count: pendientes?.length || 0,
+                },
+                {
+                  key: "completados",
+                  label: "Completados",
+                  count: completados?.length || 0,
+                },
               ].map((item) => (
                 <Button
                   key={item.key}
@@ -1320,9 +1463,15 @@ export default function Recordatorios() {
                     alignItems: "center",
                     gap: 1.2,
                     transition: "all 0.3s ease",
-                    boxShadow: vista === item.key ? "0 4px 10px rgba(9, 33, 129, 0.2)" : "none",
+                    boxShadow:
+                      vista === item.key
+                        ? "0 4px 10px rgba(9, 33, 129, 0.2)"
+                        : "none",
                     "&:hover": {
-                      backgroundColor: vista === item.key ? "#06175f" : "rgba(9, 33, 129, 0.08)",
+                      backgroundColor:
+                        vista === item.key
+                          ? "#06175f"
+                          : "rgba(9, 33, 129, 0.08)",
                       transform: "translateY(-2px)",
                       boxShadow: "0 6px 12px rgba(9, 33, 129, 0.15)",
                     },
@@ -1354,7 +1503,6 @@ export default function Recordatorios() {
 
           {vista === "pendientes" ? (
             <>
-
               <Box sx={{ mt: 5 }}>
                 {/* Título */}
                 <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
@@ -1388,7 +1536,6 @@ export default function Recordatorios() {
                       <Paper
                         key={r.idRecordatorio}
                         elevation={2}
-                        
                         sx={{
                           p: 2,
                           borderRadius: 3,
@@ -1397,9 +1544,11 @@ export default function Recordatorios() {
                           justifyContent: "space-between",
                           flexWrap: "wrap",
                           gap: 1,
-                          backgroundColor: r.culminado === 2 ? "#E8F5E9" : "#F8F9FF",
-                          borderLeft: `6px solid ${r.culminado === 2 ? "#2E7D32" : "#092181"
-                            }`,
+                          backgroundColor:
+                            r.culminado === 2 ? "#E8F5E9" : "#F8F9FF",
+                          borderLeft: `6px solid ${
+                            r.culminado === 2 ? "#2E7D32" : "#092181"
+                          }`,
                           transition: "all 0.3s ease",
                           "&:hover": {
                             transform: "translateY(-2px)",
@@ -1408,7 +1557,14 @@ export default function Recordatorios() {
                         }}
                       >
                         {/* Parte izquierda */}
-                        <Box sx={{ display: "flex", alignItems: "center", flex: 1, minWidth: 250 }}>
+                        <Box
+                          sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            flex: 1,
+                            minWidth: 250,
+                          }}
+                        >
                           <Checkbox
                             checked={r.culminado === 2}
                             onChange={() => handleToggleCulminado(r)}
@@ -1421,7 +1577,8 @@ export default function Recordatorios() {
                             <Typography
                               variant="subtitle1"
                               sx={{
-                                textDecoration: r.culminado === 2 ? "line-through" : "none",
+                                textDecoration:
+                                  r.culminado === 2 ? "line-through" : "none",
                                 color: r.culminado === 2 ? "#555" : "#092181",
                                 fontWeight: "bold",
                               }}
@@ -1441,16 +1598,33 @@ export default function Recordatorios() {
                               }}
                             >
                               {/* Hora */}
-                              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-                                <AccessTimeIcon sx={{ fontSize: 18, color: "#092181" }} />
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 0.5,
+                                }}
+                              >
+                                <AccessTimeIcon
+                                  sx={{ fontSize: 18, color: "#092181" }}
+                                />
                                 <span>{r.hora}</span>
                               </Box>
 
                               {/* Frecuencia */}
                               {(() => {
-                                const freq = frecuenciaMap.find(f => f.value === r.frecuencia);
+                                const freq = frecuenciaMap.find(
+                                  (f) => f.value === r.frecuencia
+                                );
                                 return freq ? (
-                                  <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, color: freq.color }}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 0.5,
+                                      color: freq.color,
+                                    }}
+                                  >
                                     {freq.icono}
                                     <span>{freq.nombre}</span>
                                   </Box>
@@ -1459,9 +1633,18 @@ export default function Recordatorios() {
 
                               {/* Tipo */}
                               {(() => {
-                                const tipo = tiposRecordatorios.find(t => t.value === r.tipo_recordatorio);
+                                const tipo = tiposRecordatorios.find(
+                                  (t) => t.value === r.tipo_recordatorio
+                                );
                                 return tipo ? (
-                                  <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, color: tipo.color }}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 0.5,
+                                      color: tipo.color,
+                                    }}
+                                  >
                                     {tipo.icono}
                                     <span>{tipo.nombre}</span>
                                   </Box>
@@ -1470,16 +1653,24 @@ export default function Recordatorios() {
 
                               {/* Notificación */}
                               {(() => {
-                                const notif = notificacionMap.find(n => n.value === r.notificacion);
+                                const notif = notificacionMap.find(
+                                  (n) => n.value === r.notificacion
+                                );
                                 return notif ? (
-                                  <Box sx={{ display: "flex", alignItems: "center", gap: 0.5, color: notif.color }}>
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 0.5,
+                                      color: notif.color,
+                                    }}
+                                  >
                                     {notif.icono}
                                     <span>{notif.nombre}</span>
                                   </Box>
                                 ) : null;
                               })()}
                             </Typography>
-
                           </Box>
                         </Box>
 
@@ -1492,22 +1683,23 @@ export default function Recordatorios() {
                           }}
                         >
                           <IconButton
-                            
                             onClick={() => setRecordatorioSeleccionado(r)}
-
                             sx={{
                               color: "#2D5D7B",
-                              "&:hover": { backgroundColor: "rgba(45,93,123,0.1)" },
+                              "&:hover": {
+                                backgroundColor: "rgba(45,93,123,0.1)",
+                              },
                             }}
                           >
                             <Edit />
                           </IconButton>
                           <IconButton
-                            
                             onClick={() => handleOpenConfirm(r.idRecordatorio)}
                             sx={{
                               color: "#B71C1C",
-                              "&:hover": { backgroundColor: "rgba(183,28,28,0.1)" },
+                              "&:hover": {
+                                backgroundColor: "rgba(183,28,28,0.1)",
+                              },
                             }}
                           >
                             <Delete />
@@ -1530,7 +1722,6 @@ export default function Recordatorios() {
                   )}
                 </List>
               </Box>
-
             </>
           ) : (
             <>
@@ -1568,9 +1759,15 @@ export default function Recordatorios() {
                     }}
                   >
                     {completados.map((r) => {
-                      const freq = frecuenciaMap.find((f) => f.value === r.frecuencia);
-                      const tipo = tiposRecordatorios.find((t) => t.value === r.tipo_recordatorio);
-                      const notif = notificacionMap.find((n) => n.value === r.notificacion);
+                      const freq = frecuenciaMap.find(
+                        (f) => f.value === r.frecuencia
+                      );
+                      const tipo = tiposRecordatorios.find(
+                        (t) => t.value === r.tipo_recordatorio
+                      );
+                      const notif = notificacionMap.find(
+                        (n) => n.value === r.notificacion
+                      );
 
                       return (
                         <Paper
@@ -1584,14 +1781,19 @@ export default function Recordatorios() {
                             borderRadius: 3,
                             backgroundColor: "#f5f9f6",
                             border: "1px solid #c8e6c9",
-                            transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                            transition:
+                              "transform 0.2s ease, box-shadow 0.2s ease",
                             "&:hover": {
                               transform: "scale(1.01)",
                               boxShadow: "0 4px 12px rgba(46, 125, 50, 0.25)",
                             },
                           }}
                         >
-                          <Checkbox checked disabled sx={{ color: "#2e7d32" }} />
+                          <Checkbox
+                            checked
+                            disabled
+                            sx={{ color: "#2e7d32" }}
+                          />
 
                           <Box sx={{ flex: 1 }}>
                             {/* Título tachado */}
@@ -1619,19 +1821,28 @@ export default function Recordatorios() {
                                 icon={freq?.icono}
                                 label={freq?.nombre}
                                 size="small"
-                                sx={{ bgcolor: `${freq?.color}22`, color: freq?.color }}
+                                sx={{
+                                  bgcolor: `${freq?.color}22`,
+                                  color: freq?.color,
+                                }}
                               />
                               <Chip
                                 icon={tipo?.icono}
                                 label={tipo?.nombre}
                                 size="small"
-                                sx={{ bgcolor: `${tipo?.color}22`, color: tipo?.color }}
+                                sx={{
+                                  bgcolor: `${tipo?.color}22`,
+                                  color: tipo?.color,
+                                }}
                               />
                               <Chip
                                 icon={notif?.icono}
                                 label={notif?.nombre}
                                 size="small"
-                                sx={{ bgcolor: `${notif?.color}22`, color: notif?.color }}
+                                sx={{
+                                  bgcolor: `${notif?.color}22`,
+                                  color: notif?.color,
+                                }}
                               />
                               <Chip
                                 icon={<AccessTimeIcon />}
@@ -1658,11 +1869,8 @@ export default function Recordatorios() {
                   </Typography>
                 )}
               </Box>
-
             </>
-
           )}
-
 
           {/* Formulario de edición */}
           <AnimatePresence>
@@ -1697,7 +1905,6 @@ export default function Recordatorios() {
                     },
                   }}
                 >
-        
                   <Box
                     component="form"
                     onSubmit={(e) => {
@@ -1733,29 +1940,27 @@ export default function Recordatorios() {
                         flexDirection: "column",
                         gap: 3,
                         maxHeight: "70vh",
-                        overflowY: "auto", 
-                        pr: 1, 
+                        overflowY: "auto",
+                        pr: 1,
                       }}
                     >
-
-
                       {/* Contenedor flexible de secciones */}
                       <Box
                         sx={{
                           display: "flex",
                           flexWrap: "wrap",
                           justifyContent: "center",
-                          alignItems: "stretch", 
+                          alignItems: "stretch",
                           gap: 3,
                           width: "100%",
-                          flexGrow: 1, 
+                          flexGrow: 1,
                         }}
                       >
                         {/* Información general */}
                         <Card
                           sx={{
-                            flex: "1 1 340px", 
-                            minWidth: "280px", 
+                            flex: "1 1 340px",
+                            minWidth: "280px",
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "space-between",
@@ -1775,9 +1980,18 @@ export default function Recordatorios() {
                               flexGrow: 1,
                             }}
                           >
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
                               <InfoOutlineIcon sx={{ color: "#092181" }} />
-                              <Typography variant="h6" sx={{ color: "#092181" }}>
+                              <Typography
+                                variant="h6"
+                                sx={{ color: "#092181" }}
+                              >
                                 Información general
                               </Typography>
                             </Box>
@@ -1838,10 +2052,26 @@ export default function Recordatorios() {
                             flexShrink: 0,
                           }}
                         >
-                          <CardContent sx={{ display: "flex", flexDirection: "column", gap: 2, flexGrow: 1 }}>
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                          <CardContent
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 2,
+                              flexGrow: 1,
+                            }}
+                          >
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
                               <SyncIcon sx={{ color: "#2D5D7B" }} />
-                              <Typography variant="h6" sx={{ color: "#092181" }}>
+                              <Typography
+                                variant="h6"
+                                sx={{ color: "#092181" }}
+                              >
                                 Frecuencia
                               </Typography>
                             </Box>
@@ -1857,31 +2087,43 @@ export default function Recordatorios() {
                                   })
                                 }
                                 label="Frecuencia"
+                                renderValue={(selectedValue) => {
+                                  // Encuentra el objeto 'frecuencia' correspondiente al valor seleccionado
+                                  const selectedFre = frecuenciaMap.find(
+                                    (frecuencia) =>
+                                      frecuencia.value === selectedValue
+                                  );
 
-                                   renderValue={(selectedValue) => {
-                            // Encuentra el objeto 'frecuencia' correspondiente al valor seleccionado
-                            const selectedFre = frecuenciaMap.find(
-                              (frecuencia) => frecuencia.value === selectedValue
-                            );
-
-                            //  Si se encuentra, renderiza el icono y el texto en la misma línea
-                            // Usamos Box con display: flex para asegurar la alineación horizontal
-                            if (selectedFre) {
-                              return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedFre.color, display: 'flex' }}>
-                                    {selectedFre.icono}
-                                  </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                    {selectedFre.nombre}
-                                  </Typography>
-                                </Box>
-                              );
-                            }
-                            return "";
-                          }}
-
-
+                                  //  Si se encuentra, renderiza el icono y el texto en la misma línea
+                                  // Usamos Box con display: flex para asegurar la alineación horizontal
+                                  if (selectedFre) {
+                                    return (
+                                      <Box
+                                        sx={{
+                                          display: "flex",
+                                          alignItems: "center",
+                                          gap: 1,
+                                        }}
+                                      >
+                                        <Box
+                                          sx={{
+                                            color: selectedFre.color,
+                                            display: "flex",
+                                          }}
+                                        >
+                                          {selectedFre.icono}
+                                        </Box>
+                                        <Typography
+                                          variant="body1"
+                                          sx={{ fontWeight: 500 }}
+                                        >
+                                          {selectedFre.nombre}
+                                        </Typography>
+                                      </Box>
+                                    );
+                                  }
+                                  return "";
+                                }}
                               >
                                 {frecuenciaMap.map((f) => (
                                   <MenuItem key={f.value} value={f.value}>
@@ -1897,7 +2139,9 @@ export default function Recordatorios() {
                             <FormControl fullWidth>
                               <InputLabel>Tipo de recordatorio</InputLabel>
                               <Select
-                                value={recordatorioSeleccionado.tipo_recordatorio}
+                                value={
+                                  recordatorioSeleccionado.tipo_recordatorio
+                                }
                                 onChange={(e) =>
                                   setRecordatorioSeleccionado({
                                     ...recordatorioSeleccionado,
@@ -1908,7 +2152,9 @@ export default function Recordatorios() {
                               >
                                 {tiposRecordatorios.map((t) => (
                                   <MenuItem key={t.value} value={t.value}>
-                                    <ListItemIcon sx={{ color: t.color }}>{t.icono}</ListItemIcon>
+                                    <ListItemIcon sx={{ color: t.color }}>
+                                      {t.icono}
+                                    </ListItemIcon>
                                     <ListItemText primary={t.nombre} />
                                   </MenuItem>
                                 ))}
@@ -1932,9 +2178,23 @@ export default function Recordatorios() {
                           flexShrink: 0,
                         }}
                       >
-                        <CardContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                            <NotificationsActiveIcon sx={{ color: "#F57C00" }} />
+                        <CardContent
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 2,
+                          }}
+                        >
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                            }}
+                          >
+                            <NotificationsActiveIcon
+                              sx={{ color: "#F57C00" }}
+                            />
                             <Typography variant="h6" sx={{ color: "#092181" }}>
                               Notificación
                             </Typography>
@@ -1951,33 +2211,49 @@ export default function Recordatorios() {
                                 })
                               }
                               label="Notificar por"
+                              renderValue={(selectedValue) => {
+                                //  Encuentra el objeto 'notificacion' correspondiente al valor seleccionado
+                                const selectedNot = notificacionMap.find(
+                                  (notificacion) =>
+                                    notificacion.value === selectedValue
+                                );
 
-                                 renderValue={(selectedValue) => {
-                            //  Encuentra el objeto 'notificacion' correspondiente al valor seleccionado
-                            const selectedNot= notificacionMap.find(
-                              (notificacion) => notificacion.value === selectedValue
-                            );
-
-                            // Si se encuentra, renderiza el icono y el texto en la misma línea
-                            // Usamos Box con display: flex para asegurar la alineación horizontal
-                            if (selectedNot) {
-                              return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedNot.color, display: 'flex' }}>
-                                    {selectedNot.icono}
-                                  </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                    {selectedNot.nombre}
-                                  </Typography>
-                                </Box>
-                              );
-                            }
-                            return "";
-                          }}
+                                // Si se encuentra, renderiza el icono y el texto en la misma línea
+                                // Usamos Box con display: flex para asegurar la alineación horizontal
+                                if (selectedNot) {
+                                  return (
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 1,
+                                      }}
+                                    >
+                                      <Box
+                                        sx={{
+                                          color: selectedNot.color,
+                                          display: "flex",
+                                        }}
+                                      >
+                                        {selectedNot.icono}
+                                      </Box>
+                                      <Typography
+                                        variant="body1"
+                                        sx={{ fontWeight: 500 }}
+                                      >
+                                        {selectedNot.nombre}
+                                      </Typography>
+                                    </Box>
+                                  );
+                                }
+                                return "";
+                              }}
                             >
                               {notificacionMap.map((n) => (
                                 <MenuItem key={n.value} value={n.value}>
-                                  <ListItemIcon sx={{ color: n.color }}>{n.icono}</ListItemIcon>
+                                  <ListItemIcon sx={{ color: n.color }}>
+                                    {n.icono}
+                                  </ListItemIcon>
                                   <ListItemText primary={n.nombre} />
                                 </MenuItem>
                               ))}
@@ -2038,25 +2314,23 @@ export default function Recordatorios() {
               </motion.div>
             )}
           </AnimatePresence>
-
-
         </Paper>
-         {/*  Snackbar para mensajes */}
-            <Snackbar
-              open={openSnackbar}
-              autoHideDuration={4000}
-              onClose={handleCloseSnackbar}
-              anchorOrigin={{ vertical: "top", horizontal: "center" }}
-            >
-              <Alert
-                onClose={handleCloseSnackbar}
-                severity={typeof tipoSnackbar === "string" ? tipoSnackbar : "info"}
-                variant="filled"
-                sx={{ width: "100%" }}
-              >
-                {mensajeSnackbar}
-              </Alert>
-            </Snackbar>
+        {/*  Snackbar para mensajes */}
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={4000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Alert
+            onClose={handleCloseSnackbar}
+            severity={typeof tipoSnackbar === "string" ? tipoSnackbar : "info"}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {mensajeSnackbar}
+          </Alert>
+        </Snackbar>
         {/* Animate para el mensaje de eliminación  */}
         <AnimatePresence>
           {openConfirm && (
@@ -2121,7 +2395,10 @@ export default function Recordatorios() {
                   >
                     Cancelar
                   </Button>
-                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
                     <Button
                       onClick={handleEliminar}
                       variant="contained"
@@ -2162,10 +2439,11 @@ export default function Recordatorios() {
                   },
                 }}
               >
-                <CheckCircle
-                  sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }}
-                />
-                <Typography variant="h6" sx={{ color: "#092181", fontWeight: 600 }}>
+                <CheckCircle sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }} />
+                <Typography
+                  variant="h6"
+                  sx={{ color: "#092181", fontWeight: 600 }}
+                >
                   Recordatorio eliminado correctamente
                 </Typography>
                 <Typography variant="body2" sx={{ color: "#555", mt: 1 }}>
@@ -2175,8 +2453,6 @@ export default function Recordatorios() {
             </motion.div>
           )}
         </AnimatePresence>
-
-        
       </Container>
     </Layout>
   );

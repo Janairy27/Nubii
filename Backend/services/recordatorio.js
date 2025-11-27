@@ -1,8 +1,15 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 import { io } from "../app.js";
+import fs from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 
-export const RecordatorioEmail = async (email, nombreUsuario, mensaje, tipo_recordatorio) => {
+export const RecordatorioEmail = async (
+  email,
+  nombreUsuario,
+  mensaje,
+  tipo_recordatorio
+) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -11,9 +18,23 @@ export const RecordatorioEmail = async (email, nombreUsuario, mensaje, tipo_reco
     },
   });
 
-  // Ruta absoluta hacia el logo
-  const logoPath = path.resolve("F:\\Estadia\\Nubii\\frontend\\public\\logo.png");
+  //Obtenemos la ruta del directorio actual: .../Nubii/Backend/utils
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
 
+  // Construimos la ruta al logo.
+  // Usamos '../..' para salir de 'utils' -> 'Backend' -> Raíz del proyecto.
+  // Desde la raíz, entramos a 'frontend/public/logo.png'.
+  const logoPath = path.join(
+    __dirname,
+    "../..",
+    "frontend",
+    "public",
+    "logo.png"
+  );
+  if (!fs.existsSync(logoPath)) {
+    console.error("¡ALERTA! El sistema no encuentra la imagen en:", logoPath);
+  }
   const htmlContent = `
     <div style="background-color:#F4F6F8;padding:40px 0;display:flex;justify-content:center;">
       <div style="max-width:640px;width:100%;background:#ffffff;border-radius:16px;
@@ -93,6 +114,6 @@ export const notificacionInterna = async (idUsuario, mensaje) => {
   io.emit("nuevaNotificacion", {
     idUsuario,
     mensaje,
-    fecha: new Date()
+    fecha: new Date(),
   });
 };

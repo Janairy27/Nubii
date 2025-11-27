@@ -26,8 +26,7 @@ import {
   Fade,
   CircularProgress,
   Alert,
-  Snackbar
-  
+  Snackbar,
 } from "@mui/material";
 import {
   Search,
@@ -40,7 +39,7 @@ import {
   Group,
   LocationOn,
   Favorite,
-  MedicalServices
+  MedicalServices,
 } from "@mui/icons-material";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import FmdGoodIcon from "@mui/icons-material/FmdGood";
@@ -126,8 +125,8 @@ const ListadoUsuarios = () => {
         .then((res) => setIdUsuario(res.data.idUsuario))
         .catch((err) => {
           console.error("Error al obtener idUsuario:", err);
-         // mostrarMensaje("Error al obtener idUsuario:", "error");
-    });
+          // mostrarMensaje("Error al obtener idUsuario:", "error");
+        });
     }
   }, []);
 
@@ -149,41 +148,43 @@ const ListadoUsuarios = () => {
   };
 
   const handleBuscar = async () => {
-  const filtrosAplicados = {};
-  if (filtrosActivos.nombre && valoresFiltro.nombre.trim())
-    filtrosAplicados.nombreUsuario = valoresFiltro.nombre;
-  if (filtrosActivos.correo && valoresFiltro.correo.trim())
-    filtrosAplicados.email = valoresFiltro.correo;
-  if (filtrosActivos.estado && valoresFiltro.estado)
-    filtrosAplicados.estado = valoresFiltro.estado;
-  if (filtrosActivos.tipo && valoresFiltro.tipo)
-    filtrosAplicados.tipo_usuario = valoresFiltro.tipo;
-  if (filtrosActivos.especialidad && valoresFiltro.especialidad)
-    filtrosAplicados.especialidad = valoresFiltro.especialidad;
+    const filtrosAplicados = {};
+    if (filtrosActivos.nombre && valoresFiltro.nombre.trim())
+      filtrosAplicados.nombreUsuario = valoresFiltro.nombre;
+    if (filtrosActivos.correo && valoresFiltro.correo.trim())
+      filtrosAplicados.email = valoresFiltro.correo;
+    if (filtrosActivos.estado && valoresFiltro.estado)
+      filtrosAplicados.estado = valoresFiltro.estado;
+    if (filtrosActivos.tipo && valoresFiltro.tipo)
+      filtrosAplicados.tipo_usuario = valoresFiltro.tipo;
+    if (filtrosActivos.especialidad && valoresFiltro.especialidad)
+      filtrosAplicados.especialidad = valoresFiltro.especialidad;
 
-  if (Object.keys(filtrosAplicados).length === 0) return obtenerUsuarios();
+    if (Object.keys(filtrosAplicados).length === 0) return obtenerUsuarios();
 
-  try {
-    setLoading(true);
-    const queryParams = new URLSearchParams(filtrosAplicados).toString();
-    const res = await axios.get(
-      `http://localhost:4000/api/auth/by-filter?${queryParams}`
-    );
-    if (res.data.length === 0) {
-      mostrarMensaje("No se encontraron usuarios con esos filtros.", "warning");
-      obtenerUsuarios(); 
-    } else {
-      setUsuarios(res.data);
-      mostrarMensaje("Búsqueda realizada correctamente.", "success");
+    try {
+      setLoading(true);
+      const queryParams = new URLSearchParams(filtrosAplicados).toString();
+      const res = await axios.get(
+        `http://localhost:4000/api/auth/by-filter?${queryParams}`
+      );
+      if (res.data.length === 0) {
+        mostrarMensaje(
+          "No se encontraron usuarios con esos filtros.",
+          "warning"
+        );
+        obtenerUsuarios();
+      } else {
+        setUsuarios(res.data);
+        mostrarMensaje("Búsqueda realizada correctamente.", "success");
+      }
+    } catch (error) {
+      console.error("Error en búsqueda:", error);
+      mostrarMensaje("Error al realizar la búsqueda.", "error");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Error en búsqueda:", error);
-    mostrarMensaje("Error al realizar la búsqueda.", "error");
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   const handleLimpiarFiltros = () => {
     setFiltrosActivos({
@@ -213,31 +214,34 @@ const ListadoUsuarios = () => {
       .toUpperCase()
       .slice(0, 2);
   };
-   // Componente para mostrar información con icono
+  // Componente para mostrar información con icono
   const InfoItem = ({ icon, label, value }) => (
-    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-      <Box sx={{ 
-        mr: 2, 
-        color: '#355C7D',
-        display: 'flex',
-        alignItems: 'center',
-        minWidth: '24px'
-      }}>
+    <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+      <Box
+        sx={{
+          mr: 2,
+          color: "#355C7D",
+          display: "flex",
+          alignItems: "center",
+          minWidth: "24px",
+        }}
+      >
         {icon}
       </Box>
       <Box>
-        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ fontSize: "0.8rem" }}
+        >
           {label}
         </Typography>
-        <Typography variant="body1" sx={{ fontWeight: 'medium' }}>
+        <Typography variant="body1" sx={{ fontWeight: "medium" }}>
           {value || "No especificado"}
         </Typography>
       </Box>
     </Box>
   );
-
-  
-
 
   return (
     <Layout>
@@ -279,7 +283,7 @@ const ListadoUsuarios = () => {
               Listado de Usuarios
             </Typography>
             <Typography variant="h6" sx={{ opacity: 0.9 }}>
-             Visualiza todos los usuarios del sistema
+              Visualiza todos los usuarios del sistema
             </Typography>
           </Box>
 
@@ -330,10 +334,10 @@ const ListadoUsuarios = () => {
                             }))
                           }
                           sx={{
-                          color: "#5A6ACF",
-                          "&.Mui-checked": { color: "#092181" },
-                          "& .MuiSvgIcon-root": { fontSize: 26 },
-                        }}
+                            color: "#5A6ACF",
+                            "&.Mui-checked": { color: "#092181" },
+                            "& .MuiSvgIcon-root": { fontSize: 26 },
+                          }}
                         />
                       }
                       label={
@@ -357,18 +361,21 @@ const ListadoUsuarios = () => {
                 >
                   {filtrosActivos.nombre && (
                     <TextField
-                      
-                       sx={{flex: { xs: "1", sm: "0.5" },
-                       minWidth: { xs: "100%", sm: "280px", md: "320px" }, 
-                    maxWidth: { sm: "380px" }, 
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        backgroundColor: "#ffffff",
-                        "& fieldset": { borderColor: "#e0e7ff" },
-                        "&:hover fieldset": { borderColor: "#092181" },
-                        "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: 2 },
-                      },
-                    }}
+                      sx={{
+                        flex: { xs: "1", sm: "0.5" },
+                        minWidth: { xs: "100%", sm: "280px", md: "320px" },
+                        maxWidth: { sm: "380px" },
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "12px",
+                          backgroundColor: "#ffffff",
+                          "& fieldset": { borderColor: "#e0e7ff" },
+                          "&:hover fieldset": { borderColor: "#092181" },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#092181",
+                            borderWidth: 2,
+                          },
+                        },
+                      }}
                       label="Nombre del usuario"
                       value={valoresFiltro.nombre}
                       onChange={(e) =>
@@ -388,17 +395,21 @@ const ListadoUsuarios = () => {
                   )}
                   {filtrosActivos.correo && (
                     <TextField
-                       sx={{flex: { xs: "1", sm: "0.5" },
-                       minWidth: { xs: "100%", sm: "280px", md: "320px" },
-                    maxWidth: { sm: "380px" }, 
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        backgroundColor: "#ffffff",
-                        "& fieldset": { borderColor: "#e0e7ff" },
-                        "&:hover fieldset": { borderColor: "#092181" },
-                        "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: 2 },
-                      },
-                    }}
+                      sx={{
+                        flex: { xs: "1", sm: "0.5" },
+                        minWidth: { xs: "100%", sm: "280px", md: "320px" },
+                        maxWidth: { sm: "380px" },
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "12px",
+                          backgroundColor: "#ffffff",
+                          "& fieldset": { borderColor: "#e0e7ff" },
+                          "&:hover fieldset": { borderColor: "#092181" },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#092181",
+                            borderWidth: 2,
+                          },
+                        },
+                      }}
                       label="Correo electrónico"
                       value={valoresFiltro.correo}
                       onChange={(e) =>
@@ -418,18 +429,21 @@ const ListadoUsuarios = () => {
                   )}
                   {filtrosActivos.estado && (
                     <TextField
-                      
-                      sx={{flex: { xs: "1", sm: "0.5" },
-                      minWidth: { xs: "100%", sm: "280px", md: "320px" },
-                    maxWidth: { sm: "380px" }, 
-                      "& .MuiOutlinedInput-root": {
-                        borderRadius: "12px",
-                        backgroundColor: "#ffffff",
-                        "& fieldset": { borderColor: "#e0e7ff" },
-                        "&:hover fieldset": { borderColor: "#092181" },
-                        "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: 2 },
-                      },
-                    }}
+                      sx={{
+                        flex: { xs: "1", sm: "0.5" },
+                        minWidth: { xs: "100%", sm: "280px", md: "320px" },
+                        maxWidth: { sm: "380px" },
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "12px",
+                          backgroundColor: "#ffffff",
+                          "& fieldset": { borderColor: "#e0e7ff" },
+                          "&:hover fieldset": { borderColor: "#092181" },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#092181",
+                            borderWidth: 2,
+                          },
+                        },
+                      }}
                       label="Estado"
                       value={valoresFiltro.estado}
                       onChange={(e) =>
@@ -448,23 +462,26 @@ const ListadoUsuarios = () => {
                     />
                   )}
                   {filtrosActivos.tipo && (
-                    <FormControl 
-                    sx={{
-                    flex: { xs: "1", sm: "0.5" },
-                    minWidth: { xs: "100%", sm: "280px", md: "320px" }, 
-                    maxWidth: { sm: "380px" }, 
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "12px",
-                      backgroundColor: "#ffffff",
-                      "& fieldset": { borderColor: "#e0e7ff" },
-                      "&:hover fieldset": { borderColor: "#092181" },
-                      "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: 2 },
-                    },
-                  }}
+                    <FormControl
+                      sx={{
+                        flex: { xs: "1", sm: "0.5" },
+                        minWidth: { xs: "100%", sm: "280px", md: "320px" },
+                        maxWidth: { sm: "380px" },
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "12px",
+                          backgroundColor: "#ffffff",
+                          "& fieldset": { borderColor: "#e0e7ff" },
+                          "&:hover fieldset": { borderColor: "#092181" },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#092181",
+                            borderWidth: 2,
+                          },
+                        },
+                      }}
                     >
-                      <InputLabel
-                      sx={{ color: "#2D5D7B", fontWeight: "bold" }}
-                      >Tipo de usuario</InputLabel>
+                      <InputLabel sx={{ color: "#2D5D7B", fontWeight: "bold" }}>
+                        Tipo de usuario
+                      </InputLabel>
                       <Select
                         value={valoresFiltro.tipo}
                         onChange={(e) =>
@@ -484,22 +501,26 @@ const ListadoUsuarios = () => {
                     </FormControl>
                   )}
                   {filtrosActivos.especialidad && (
-                    <FormControl 
-                    sx={{
-                    flex: { xs: "1", sm: "0.3" },
-                    minWidth: { xs: "100%", sm: "280px", md: "320px" },
-                    maxWidth: { sm: "380px" }, 
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: "12px",
-                      backgroundColor: "#ffffff",
-                      "& fieldset": { borderColor: "#e0e7ff" },
-                      "&:hover fieldset": { borderColor: "#092181" },
-                      "&.Mui-focused fieldset": { borderColor: "#092181", borderWidth: 2 },
-                    },
-                  }}
+                    <FormControl
+                      sx={{
+                        flex: { xs: "1", sm: "0.3" },
+                        minWidth: { xs: "100%", sm: "280px", md: "320px" },
+                        maxWidth: { sm: "380px" },
+                        "& .MuiOutlinedInput-root": {
+                          borderRadius: "12px",
+                          backgroundColor: "#ffffff",
+                          "& fieldset": { borderColor: "#e0e7ff" },
+                          "&:hover fieldset": { borderColor: "#092181" },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#092181",
+                            borderWidth: 2,
+                          },
+                        },
+                      }}
                     >
-                      <InputLabel sx={{ color: "#2D5D7B", fontWeight: "bold" }}
-                      >Especialidad</InputLabel>
+                      <InputLabel sx={{ color: "#2D5D7B", fontWeight: "bold" }}>
+                        Especialidad
+                      </InputLabel>
                       <Select
                         value={valoresFiltro.especialidad}
                         onChange={(e) =>
@@ -559,22 +580,22 @@ const ListadoUsuarios = () => {
                     Limpiar
                   </Button>
                 </Box>
-                  {/* Snackbar para mensajes  */}
-          <Snackbar
-            open={openSnackbar}
-            autoHideDuration={4000}
-            onClose={handleCloseSnackbar}
-            anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          >
-            <Alert
-              onClose={handleCloseSnackbar}
-              severity={tipo}
-              variant="filled"
-              sx={{ width: "100%" }}
-            >
-              {mensaje}
-            </Alert>
-          </Snackbar>
+                {/* Snackbar para mensajes  */}
+                <Snackbar
+                  open={openSnackbar}
+                  autoHideDuration={4000}
+                  onClose={handleCloseSnackbar}
+                  anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                >
+                  <Alert
+                    onClose={handleCloseSnackbar}
+                    severity={tipo}
+                    variant="filled"
+                    sx={{ width: "100%" }}
+                  >
+                    {mensaje}
+                  </Alert>
+                </Snackbar>
               </Card>
             </Slide>
           )}
@@ -635,128 +656,140 @@ const ListadoUsuarios = () => {
                       />
                     </Box>
 
-                      {Usuarios.length === 0 ? (
-                  <Card
-                    sx={{
-                      p: 6,
-                      textAlign: "center",
-                      borderRadius: 3,
-                      backgroundColor: "#f8f9ff",
-                      border: "1px solid #e0e7ff",
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 2,
-                      flex: 1,
-                      minHeight: 300,
-                    }}
-                  >
-                    <Group sx={{ fontSize: 64, color: "#666", mb: 2 }} />
-                    <Typography variant="h6" sx={{ color: "#666", mb: 1, fontWeight: "bold" }}>
-                      No se han registrado usuarios aún
-                    </Typography>
-                  </Card>
-                ) : (
-
-                    <Box
-                      sx={{
-                        display: "flex",
-                        flexWrap: "wrap",
-                        justifyContent: "center",
-                        gap: 2,
-                      }}
-                    >
-                      {Usuarios.map((usuario) => (
-                        <Card
-                          key={usuario.idusuario}
-                          onClick={() => handleSeleccionar(usuario)}
-                          sx={{
-                            cursor: "pointer",
-                            borderRadius: 3,
-                            border: "1px solid #e0e7ff",
-                            backgroundColor: "#f9fafc",
-                            width: "350px",
-                            transition: "all 0.3s ease",
-                            "&:hover": {
-                              boxShadow:
-                                "0 8px 20px rgba(9, 33, 129, 0.15)",
-                              transform: "translateY(-4px)",
-                              borderColor: "#092181",
-                            },
-                          }}
+                    {Usuarios.length === 0 ? (
+                      <Card
+                        sx={{
+                          p: 6,
+                          textAlign: "center",
+                          borderRadius: 3,
+                          backgroundColor: "#f8f9ff",
+                          border: "1px solid #e0e7ff",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          gap: 2,
+                          flex: 1,
+                          minHeight: 300,
+                        }}
+                      >
+                        <Group sx={{ fontSize: 64, color: "#666", mb: 2 }} />
+                        <Typography
+                          variant="h6"
+                          sx={{ color: "#666", mb: 1, fontWeight: "bold" }}
                         >
-                          <CardContent
+                          No se han registrado usuarios aún
+                        </Typography>
+                      </Card>
+                    ) : (
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          justifyContent: "center",
+                          gap: 2,
+                        }}
+                      >
+                        {Usuarios.map((usuario) => (
+                          <Card
+                            key={usuario.idusuario}
+                            onClick={() => handleSeleccionar(usuario)}
                             sx={{
-                              display: "flex",
-                              flexDirection: "column",
-                              gap: 2,
+                              cursor: "pointer",
+                              borderRadius: 3,
+                              border: "1px solid #e0e7ff",
+                              backgroundColor: "#f9fafc",
+                              width: "350px",
+                              transition: "all 0.3s ease",
+                              "&:hover": {
+                                boxShadow: "0 8px 20px rgba(9, 33, 129, 0.15)",
+                                transform: "translateY(-4px)",
+                                borderColor: "#092181",
+                              },
                             }}
                           >
-                            <Box
+                            <CardContent
                               sx={{
                                 display: "flex",
                                 flexDirection: "column",
-                                alignItems: "center",
-                                textAlign: "center",
-                                gap: 1,
+                                gap: 2,
                               }}
                             >
-                              <Avatar
+                              <Box
                                 sx={{
-                                  bgcolor: getAvatarColor(
-                                    usuario.tipo_usuario
-                                  ),
-                                  width: 64,
-                                  height: 64,
-                                  fontSize: "1.2rem",
-                                  fontWeight: "bold",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  alignItems: "center",
+                                  textAlign: "center",
+                                  gap: 1,
                                 }}
                               >
-                                {getIniciales(usuario.nombreUsuario)}
-                              </Avatar>
+                                <Avatar
+                                  sx={{
+                                    bgcolor: getAvatarColor(
+                                      usuario.tipo_usuario
+                                    ),
+                                    width: 64,
+                                    height: 64,
+                                    fontSize: "1.2rem",
+                                    fontWeight: "bold",
+                                  }}
+                                >
+                                  {getIniciales(usuario.nombreUsuario)}
+                                </Avatar>
 
-                              <Typography
-                                variant="h6"
-                                fontWeight="bold"
-                                noWrap
-                              >
-                                {usuario.nombreUsuario}
-                              </Typography>
-                              <Chip
-                                label={tipoUsuario[usuario.tipo_usuario]}
-                                size="small"
-                                sx={{bgcolor: getChipColor(
-                                    usuario.tipo_usuario
-                                  ),}}
-                              />
-                            
-                              <Typography variant="body2" color="text.secondary"
-                              sx={{ display: "flex", alignItems: "center" }}>
-                                <Email sx={{ fontSize: 16, mr: 0.5 }} />
-                                {usuario.email}
-                              </Typography>
-                              <Typography variant="body2" color="text.secondary"
-                              sx={{ display: "flex", alignItems: "center" }}>
-                                 <FmdGoodIcon sx={{ fontSize: 16, mr: 0.5 }} />
-                                {usuario.estado}
-                              </Typography>
-                              {usuario.tipo_usuario === 2 && (
+                                <Typography
+                                  variant="h6"
+                                  fontWeight="bold"
+                                  noWrap
+                                >
+                                  {usuario.nombreUsuario}
+                                </Typography>
+                                <Chip
+                                  label={tipoUsuario[usuario.tipo_usuario]}
+                                  size="small"
+                                  sx={{
+                                    bgcolor: getChipColor(usuario.tipo_usuario),
+                                  }}
+                                />
+
                                 <Typography
                                   variant="body2"
                                   color="text.secondary"
                                   sx={{ display: "flex", alignItems: "center" }}
                                 >
-                                   <LocalHospital sx={{ fontSize: 16, mr: 0.5 }} />
-                                  {especialidadMap[usuario.especialidad]}
+                                  <Email sx={{ fontSize: 16, mr: 0.5 }} />
+                                  {usuario.email}
                                 </Typography>
-                              )}
-                            </Box>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </Box>
-                )}
+                                <Typography
+                                  variant="body2"
+                                  color="text.secondary"
+                                  sx={{ display: "flex", alignItems: "center" }}
+                                >
+                                  <FmdGoodIcon sx={{ fontSize: 16, mr: 0.5 }} />
+                                  {usuario.estado}
+                                </Typography>
+                                {usuario.tipo_usuario === 2 && (
+                                  <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                    }}
+                                  >
+                                    <LocalHospital
+                                      sx={{ fontSize: 16, mr: 0.5 }}
+                                    />
+                                    {especialidadMap[usuario.especialidad]}
+                                  </Typography>
+                                )}
+                              </Box>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </Box>
+                    )}
                   </Box>
                 </Tooltip>
               ) : (
@@ -789,9 +822,11 @@ const ListadoUsuarios = () => {
                       </Typography>
                       <Chip
                         label={tipoUsuario[UsuarioSeleccionado.tipo_usuario]}
-                        sx={{ bgcolor: getChipColor(
+                        sx={{
+                          bgcolor: getChipColor(
                             UsuarioSeleccionado.tipo_usuario
-                          ),}}
+                          ),
+                        }}
                       />
                     </Box>
 
@@ -803,41 +838,61 @@ const ListadoUsuarios = () => {
                         mt: 3,
                       }}
                     >
-                      
                       <Card variant="outlined" sx={{ p: 2 }}>
-                         <Box display="flex" alignItems="center" mb={3}>
-                        <Email sx={{ color: "#2D5D7B", fontSize: 32, mr: 2 }} />
-                        <Typography variant="h6" fontWeight="bold" color="#092181"
-                        >
-                          Información de Contacto
-                        </Typography>
-                      </Box>
-                       <Divider sx={{ mb: 3 }} />
-                        <InfoItem 
-                        icon={<Email />}
-                        label="Correo electrónico"
-                        value={UsuarioSeleccionado.email}
-                      />
-                         <InfoItem 
-                        icon={<LocationOn />}
-                        label="Dirección"
-                        value={`${UsuarioSeleccionado.calle || ''}, ${UsuarioSeleccionado.municipio || ''}, ${UsuarioSeleccionado.estado || ''}`.trim().replace(/^,\s*|,\s*$/g, '')}
-                      />
+                        <Box display="flex" alignItems="center" mb={3}>
+                          <Email
+                            sx={{ color: "#2D5D7B", fontSize: 32, mr: 2 }}
+                          />
+                          <Typography
+                            variant="h6"
+                            fontWeight="bold"
+                            color="#092181"
+                          >
+                            Información de Contacto
+                          </Typography>
+                        </Box>
+                        <Divider sx={{ mb: 3 }} />
+                        <InfoItem
+                          icon={<Email />}
+                          label="Correo electrónico"
+                          value={UsuarioSeleccionado.email}
+                        />
+                        <InfoItem
+                          icon={<LocationOn />}
+                          label="Dirección"
+                          value={`${UsuarioSeleccionado.calle || ""}, ${
+                            UsuarioSeleccionado.municipio || ""
+                          }, ${UsuarioSeleccionado.estado || ""}`
+                            .trim()
+                            .replace(/^,\s*|,\s*$/g, "")}
+                        />
                       </Card>
 
                       {UsuarioSeleccionado.tipo_usuario === 2 && (
                         <Card variant="outlined" sx={{ p: 2 }}>
-                           <Box display="flex" alignItems="center" mb={3}>
-                        <Favorite sx={{ color: "#2D5D7B", fontSize: 32, mr: 2 }} />
-                        <Typography variant="h6" fontWeight="bold" color="#092181">
-                          {UsuarioSeleccionado.tipo_usuario === 2 ? "Información Profesional" : "Información de Salud"}
-                        </Typography>
-                      </Box>
+                          <Box display="flex" alignItems="center" mb={3}>
+                            <Favorite
+                              sx={{ color: "#2D5D7B", fontSize: 32, mr: 2 }}
+                            />
+                            <Typography
+                              variant="h6"
+                              fontWeight="bold"
+                              color="#092181"
+                            >
+                              {UsuarioSeleccionado.tipo_usuario === 2
+                                ? "Información Profesional"
+                                : "Información de Salud"}
+                            </Typography>
+                          </Box>
                           <Divider sx={{ mb: 3 }} />
-                         <InfoItem 
+                          <InfoItem
                             icon={<MedicalServices />}
                             label="Especialidad"
-                            value={especialidadMap[UsuarioSeleccionado.especialidad] || UsuarioSeleccionado.especialidad}
+                            value={
+                              especialidadMap[
+                                UsuarioSeleccionado.especialidad
+                              ] || UsuarioSeleccionado.especialidad
+                            }
                           />
                         </Card>
                       )}
@@ -850,13 +905,14 @@ const ListadoUsuarios = () => {
                       onClick={() => setUsuarioSeleccionado(null)}
                       sx={{
                         textTransform: "capitalize",
-                        borderColor: "#092181", 
-                        color: "#092181", 
-                        px: 4, 
-                        "&:hover": { backgroundColor: "#f0f4ff", 
+                        borderColor: "#092181",
+                        color: "#092181",
+                        px: 4,
+                        "&:hover": {
+                          backgroundColor: "#f0f4ff",
                           borderColor: "#092181",
-                         },
-                         }}
+                        },
+                      }}
                     >
                       Regresar
                     </Button>
@@ -866,7 +922,6 @@ const ListadoUsuarios = () => {
             </Box>
           </Fade>
         </Paper>
-      
       </Container>
     </Layout>
   );

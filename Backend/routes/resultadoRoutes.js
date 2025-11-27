@@ -1,7 +1,11 @@
 import express from "express";
 import {
-    registrarResultado, ActualizarResultadoT, EliminarResultadoT,
-    getResultadoByFilterProf, getResultadoByFilterPac, getAllResultadosTestByFilterAdmin
+  registrarResultado,
+  ActualizarResultadoT,
+  EliminarResultadoT,
+  getResultadoByFilterProf,
+  getResultadoByFilterPac,
+  getAllResultadosTestByFilterAdmin,
 } from "../controllers/resultadoController.js";
 
 const router = express.Router();

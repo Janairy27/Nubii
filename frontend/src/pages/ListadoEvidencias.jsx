@@ -23,7 +23,7 @@ import {
   ListItemText,
   Checkbox,
   FormControlLabel,
-  Grid
+  Grid,
 } from "@mui/material";
 import {
   Search,
@@ -48,23 +48,22 @@ import {
   AssignmentOutlined,
   RestartAlt,
   SentimentSatisfied,
-    SentimentDissatisfied,
-    SentimentVerySatisfied,
-    SentimentNeutral,
+  SentimentDissatisfied,
+  SentimentVerySatisfied,
+  SentimentNeutral,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import PersonIcon from '@mui/icons-material/Person';
-import CommentIcon from '@mui/icons-material/Comment';
+import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety";
+import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
+import PersonIcon from "@mui/icons-material/Person";
+import CommentIcon from "@mui/icons-material/Comment";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { es } from "date-fns/locale";
-
 
 const ListadoEvidencias = () => {
   const [idUsuario, setIdUsuario] = useState("");
@@ -72,21 +71,21 @@ const ListadoEvidencias = () => {
   const [nombrePaciente, setNombrePaciente] = useState("");
   const [idPaciente, setIdPaciente] = useState(null);
   const [evidencia, setEvidencia] = useState([]);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const [mensajeSnackbar, setMensajeSnackbar] = useState("");
   const [tipoSnackbar, setTipoSnackbar] = useState("success");
   const [filtrosActivos, setFiltrosActivos] = useState({
     nombre: false,
     actividad: false,
     fecha: false,
-    satisfaccion: false
+    satisfaccion: false,
   });
 
   const [valoresFiltro, setValoresFiltro] = useState({
     nombre: "",
     actividad: "",
     fecha: "",
-    satisfaccion: ""
+    satisfaccion: "",
   });
 
   const [evidenciaSeleccionada, setEvidenciaSeleccionada] = useState(null);
@@ -96,13 +95,37 @@ const ListadoEvidencias = () => {
   const navigate = useNavigate();
 
   const satisfaccionMap = [
-    { value: 1, icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />, label: "Muy insatisfecho", color: "#f44336" },
-    { value: 2, icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />, label: "Insatisfecho", color: "#ff9800" },
-    { value: 3, icon: <SentimentNeutral sx={{ fontSize: 32 }} />, label: "Neutral", color: "#ffeb3b" },
-    { value: 4, icon: <SentimentSatisfied sx={{ fontSize: 32 }} />, label: "Satisfecho", color: "#4caf50" },
-    { value: 5, icon: <SentimentVerySatisfied sx={{ fontSize: 32 }} />, label: "Muy satisfecho", color: "#2196f3" },
+    {
+      value: 1,
+      icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />,
+      label: "Muy insatisfecho",
+      color: "#f44336",
+    },
+    {
+      value: 2,
+      icon: <SentimentDissatisfied sx={{ fontSize: 32 }} />,
+      label: "Insatisfecho",
+      color: "#ff9800",
+    },
+    {
+      value: 3,
+      icon: <SentimentNeutral sx={{ fontSize: 32 }} />,
+      label: "Neutral",
+      color: "#ffeb3b",
+    },
+    {
+      value: 4,
+      icon: <SentimentSatisfied sx={{ fontSize: 32 }} />,
+      label: "Satisfecho",
+      color: "#4caf50",
+    },
+    {
+      value: 5,
+      icon: <SentimentVerySatisfied sx={{ fontSize: 32 }} />,
+      label: "Muy satisfecho",
+      color: "#2196f3",
+    },
   ];
-
 
   const textFieldEstilo = {
     width: "100%",
@@ -130,7 +153,7 @@ const ListadoEvidencias = () => {
       opacity: 1,
     },
   };
-   const mostrarMensaje = (msg, severity = "info") => {
+  const mostrarMensaje = (msg, severity = "info") => {
     setMensajeSnackbar(msg);
     setTipoSnackbar(severity);
     setOpenSnackbar(true);
@@ -140,7 +163,6 @@ const ListadoEvidencias = () => {
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
-
 
   useEffect(() => {
     const storedIdUsuario = localStorage.getItem("idUsuario");
@@ -163,16 +185,15 @@ const ListadoEvidencias = () => {
       obtenerevidencia();
     }
   }, [idProfesional]);
-  
 
   const obtenerevidencia = () => {
     axios
-      .get(`http://localhost:4000/api/evidencia/by-filterProf/`, { params: { idProfesional } }
-      )
+      .get(`http://localhost:4000/api/evidencia/by-filterProf/`, {
+        params: { idProfesional },
+      })
       .then((res) => {
         setEvidencia(res.data);
         setEvidenciaSeleccionada(null);
-       
       })
       .catch((err) => {
         console.error("Error al cargar evidencias:", err);
@@ -204,16 +225,19 @@ const ListadoEvidencias = () => {
     const queryParams = new URLSearchParams(filtrosAplicados).toString();
 
     axios
-      .get(`http://localhost:4000/api/evidencia/by-filterProf?${queryParams}`, { params: { idProfesional } }
-      )
+      .get(`http://localhost:4000/api/evidencia/by-filterProf?${queryParams}`, {
+        params: { idProfesional },
+      })
       .then((res) => {
         setEvidencia(res.data);
         setEvidenciaSeleccionada(null);
-         mostrarMensaje("Búsqueda realizada correcamente", "success");
-      
+        mostrarMensaje("Búsqueda realizada correcamente", "success");
       })
       .catch(() => {
-        mostrarMensaje("No se encontraron evidencias con esos filtros.", "warning");
+        mostrarMensaje(
+          "No se encontraron evidencias con esos filtros.",
+          "warning"
+        );
         obtenerevidencia();
       });
   };
@@ -240,22 +264,31 @@ const ListadoEvidencias = () => {
     setEvidenciaSeleccionada(evidencia);
   };
   const InfoItem = ({ icon, label, value }) => (
-    <Box sx={{ display: 'flex', alignItems: 'flex-start', mb: 2 }}>
-      <Box sx={{
-        mr: 2,
-        color: '#355C7D',
-        display: 'flex',
-        alignItems: 'center',
-        minWidth: '24px',
-        mt: 0.5
-      }}>
+    <Box sx={{ display: "flex", alignItems: "flex-start", mb: 2 }}>
+      <Box
+        sx={{
+          mr: 2,
+          color: "#355C7D",
+          display: "flex",
+          alignItems: "center",
+          minWidth: "24px",
+          mt: 0.5,
+        }}
+      >
         {icon}
       </Box>
       <Box sx={{ flex: 1 }}>
-        <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.8rem' }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ fontSize: "0.8rem" }}
+        >
           {label}
         </Typography>
-        <Typography variant="body1" sx={{ fontWeight: 'medium', wordBreak: 'break-word' }}>
+        <Typography
+          variant="body1"
+          sx={{ fontWeight: "medium", wordBreak: "break-word" }}
+        >
           {value || "No especificado"}
         </Typography>
       </Box>
@@ -264,7 +297,8 @@ const ListadoEvidencias = () => {
 
   return (
     <Layout>
-      <Container maxWidth="md"
+      <Container
+        maxWidth="md"
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -272,42 +306,48 @@ const ListadoEvidencias = () => {
           mt: 4,
           pb: 4,
           minHeight: "100vh",
-        }}>
-
-        <Paper sx={{
-          p: { xs: 2, md: 4 },
-          borderRadius: 3,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          backgroundColor: "#F4F6F8",
-          width: "100%",
-          mx: "auto",
-          display: "flex",
-          flexDirection: "column",
-          gap: 3,
-        }}>
-          <Box sx={{
+        }}
+      >
+        <Paper
+          sx={{
+            p: { xs: 2, md: 4 },
+            borderRadius: 3,
+            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+            backgroundColor: "#F4F6F8",
+            width: "100%",
+            mx: "auto",
             display: "flex",
-            alignItems: "center",
-            gap: 1.5,
-            flex: 1,
-            justifyContent: { xs: "center", sm: "flex-start" },
-            textAlign: { xs: "center", sm: "left" },
+            flexDirection: "column",
+            gap: 3,
           }}
-
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 1.5,
+              flex: 1,
+              justifyContent: { xs: "center", sm: "flex-start" },
+              textAlign: { xs: "center", sm: "left" },
+            }}
           >
-            <AssignmentOutlined sx={{
-              color: "#092181",
-              fontSize: 36,
-              filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
-            }} />
-            <Typography variant="h4"
+            <AssignmentOutlined
+              sx={{
+                color: "#092181",
+                fontSize: 36,
+                filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))",
+              }}
+            />
+            <Typography
+              variant="h4"
               fontWeight="bold"
               sx={{
                 color: "#092181",
                 textAlign: "center",
                 letterSpacing: 0.5,
                 textTransform: "capitalize",
-              }}>
+              }}
+            >
               Listado de evidencias
             </Typography>
           </Box>
@@ -357,7 +397,7 @@ const ListadoEvidencias = () => {
                         onChange={() =>
                           setFiltrosActivos((prev) => ({
                             ...prev,
-                            [key]: !prev[key]
+                            [key]: !prev[key],
                           }))
                         }
                         sx={{
@@ -373,7 +413,6 @@ const ListadoEvidencias = () => {
                       </Typography>
                     }
                   />
-
                 ))}
               </Box>
               {/* Campos de filtros activos */}
@@ -385,42 +424,46 @@ const ListadoEvidencias = () => {
                 }}
               >
                 {filtrosActivos.nombre && (
-
                   <TextField
                     fullWidth
                     label="Nombre del paciente"
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, nombre: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        nombre: e.target.value,
+                      })
                     }
                     sx={textFieldEstilo}
                   />
-
                 )}
                 {filtrosActivos.actividad && (
                   <TextField
                     fullWidth
                     label="Nombre de la actividad"
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, actividad: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        actividad: e.target.value,
+                      })
                     }
                     sx={textFieldEstilo}
                   />
-
                 )}
 
                 {filtrosActivos.fecha && (
-
                   <TextField
                     fullWidth
                     type="date"
                     label="Fecha de realización"
                     InputLabelProps={{ shrink: true }}
                     onChange={(e) =>
-                      setValoresFiltro({ ...valoresFiltro, fecha: e.target.value })
+                      setValoresFiltro({
+                        ...valoresFiltro,
+                        fecha: e.target.value,
+                      })
                     }
                     sx={textFieldEstilo}
                   />
-
                 )}
 
                 {filtrosActivos.satisfaccion && (
@@ -429,28 +472,44 @@ const ListadoEvidencias = () => {
                     <Select
                       value={valoresFiltro.satisfaccion}
                       onChange={(e) =>
-                        setValoresFiltro({ ...valoresFiltro, satisfaccion: e.target.value })
+                        setValoresFiltro({
+                          ...valoresFiltro,
+                          satisfaccion: e.target.value,
+                        })
                       }
                       label="Nivel de satisfacción"
-
-                       renderValue={(selectedValue) =>{
-                            const selectedSatis = satisfaccionMap.find(
-                              (satisfaccion) => satisfaccion.value === selectedValue
-                            );
-                            if (selectedSatis) {
-                              return (
-                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                  <Box sx={{ color: selectedSatis.color, display: 'flex' }}>
-                                    {selectedSatis.icon}
-                                  </Box>
-                                  <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                    {selectedSatis.label}
-                                  </Typography>
-                                </Box>
-                              );
-                            }
-                            return "";
-                          }}
+                      renderValue={(selectedValue) => {
+                        const selectedSatis = satisfaccionMap.find(
+                          (satisfaccion) => satisfaccion.value === selectedValue
+                        );
+                        if (selectedSatis) {
+                          return (
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                              }}
+                            >
+                              <Box
+                                sx={{
+                                  color: selectedSatis.color,
+                                  display: "flex",
+                                }}
+                              >
+                                {selectedSatis.icon}
+                              </Box>
+                              <Typography
+                                variant="body1"
+                                sx={{ fontWeight: 500 }}
+                              >
+                                {selectedSatis.label}
+                              </Typography>
+                            </Box>
+                          );
+                        }
+                        return "";
+                      }}
                     >
                       {satisfaccionMap.map((item) => (
                         <MenuItem key={item.value} value={item.value}>
@@ -463,12 +522,9 @@ const ListadoEvidencias = () => {
                           />
                         </MenuItem>
                       ))}
-
                     </Select>
                   </FormControl>
-
                 )}
-
               </Box>
 
               {/* Botones */}
@@ -481,7 +537,6 @@ const ListadoEvidencias = () => {
                   mt: 1,
                 }}
               >
-
                 <Button
                   variant="contained"
                   startIcon={<Search />}
@@ -518,7 +573,6 @@ const ListadoEvidencias = () => {
             </Card>
           )}
 
-
           {/* Listado o Detalle */}
           {!evidenciaSeleccionada ? (
             <Tooltip
@@ -528,25 +582,31 @@ const ListadoEvidencias = () => {
             >
               <Box sx={{ width: "100%" }}>
                 {/* Header */}
-                <Box sx={{
-                  display: "flex",
-                  flexDirection: { xs: "column", sm: "row" },
-                  alignItems: { xs: "flex-start", sm: "center" },
-                  justifyContent: { xs: "center", sm: "space-between" },
-                  flexWrap: "wrap",
-                  gap: 2,
-                  mb: 3,
-                }}>
-                  {/* Título */}
-                  <Box sx={{
+                <Box
+                  sx={{
                     display: "flex",
-                    alignItems: "center",
-                    gap: 1.5,
-                    flex: 1,
-                    justifyContent: { xs: "center", sm: "flex-start" },
-                    textAlign: { xs: "center", sm: "left" },
-                  }}>
-                    <AssignmentOutlined sx={{ color: "#0D1B2A", fontSize: 34 }} />
+                    flexDirection: { xs: "column", sm: "row" },
+                    alignItems: { xs: "flex-start", sm: "center" },
+                    justifyContent: { xs: "center", sm: "space-between" },
+                    flexWrap: "wrap",
+                    gap: 2,
+                    mb: 3,
+                  }}
+                >
+                  {/* Título */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                      flex: 1,
+                      justifyContent: { xs: "center", sm: "flex-start" },
+                      textAlign: { xs: "center", sm: "left" },
+                    }}
+                  >
+                    <AssignmentOutlined
+                      sx={{ color: "#0D1B2A", fontSize: 34 }}
+                    />
                     <Typography
                       variant="h5"
                       sx={{
@@ -568,7 +628,6 @@ const ListadoEvidencias = () => {
                       backgroundColor: "#092181",
                       color: "#fff",
                       fontWeight: "bold",
-
                     }}
                   />
                 </Box>
@@ -622,7 +681,9 @@ const ListadoEvidencias = () => {
                             gap: 1.2,
                           }}
                         >
-                          <HealthAndSafetyIcon sx={{ color: "#092181", fontSize: 28 }} />
+                          <HealthAndSafetyIcon
+                            sx={{ color: "#092181", fontSize: 28 }}
+                          />
                           <Typography
                             variant="h6"
                             sx={{
@@ -642,7 +703,9 @@ const ListadoEvidencias = () => {
                             gap: 1.2,
                           }}
                         >
-                          <AssignmentTurnedInIcon sx={{ color: "#1E88E5", fontSize: 28 }} />
+                          <AssignmentTurnedInIcon
+                            sx={{ color: "#1E88E5", fontSize: 28 }}
+                          />
                           <Typography
                             variant="subtitle1"
                             sx={{
@@ -666,12 +729,16 @@ const ListadoEvidencias = () => {
                             py: 0.6,
                           }}
                         >
-                          <CalendarTodayIcon sx={{ fontSize: 18, color: "#5c6bc0" }} />
+                          <CalendarTodayIcon
+                            sx={{ fontSize: 18, color: "#5c6bc0" }}
+                          />
                           <Typography
                             variant="body2"
                             sx={{ color: "#374151", fontWeight: 500 }}
                           >
-                            {new Date(evidencia.fecha_realizada).toLocaleDateString("es-MX", {
+                            {new Date(
+                              evidencia.fecha_realizada
+                            ).toLocaleDateString("es-MX", {
                               year: "numeric",
                               month: "long",
                               day: "numeric",
@@ -693,7 +760,9 @@ const ListadoEvidencias = () => {
                                 mt: 1,
                               }}
                             >
-                              <Box sx={{ color: nivel?.color }}>{nivel?.icon}</Box>
+                              <Box sx={{ color: nivel?.color }}>
+                                {nivel?.icon}
+                              </Box>
                               <Typography
                                 variant="body1"
                                 sx={{
@@ -701,181 +770,191 @@ const ListadoEvidencias = () => {
                                   color: "#12275c",
                                 }}
                               >
-                                {nivel ? nivel.label : "Sin registro de satisfacción"}
+                                {nivel
+                                  ? nivel.label
+                                  : "Sin registro de satisfacción"}
                               </Typography>
                             </Box>
                           );
                         })()}
                       </CardContent>
                     </Card>
-
                   ))}
-                  </Box>
                 </Box>
-                </Tooltip>
-                ) : (
+              </Box>
+            </Tooltip>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 4,
+                width: "100%",
+                py: 2,
+              }}
+            >
+              {/* Título principal */}
+              <Typography
+                variant="h5"
+                fontWeight="bold"
+                sx={{ color: "#092181", textAlign: "center" }}
+              >
+                Detalle de la evidencia
+              </Typography>
+              <Divider sx={{ width: { xs: "80%", sm: "60%" }, mb: 3 }} />
+
+              {/* Contenedor de Cards */}
               <Box
                 sx={{
                   display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 4,
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  alignItems: "stretch",
+                  gap: 3,
                   width: "100%",
-                  py: 2,
                 }}
               >
-                {/* Título principal */}
-                <Typography
-                  variant="h5"
-                  fontWeight="bold"
-                  sx={{ color: "#092181", textAlign: "center" }}
-                >
-                  Detalle de la evidencia
-                </Typography>
-                <Divider sx={{ width: { xs: "80%", sm: "60%" }, mb: 3 }} />
-
-                {/* Contenedor de Cards */}
-                <Box
+                {/* Información del paciente */}
+                <Card
                   sx={{
+                    flex: "1 1 320px",
+                    maxWidth: 420,
+                    p: 3,
+                    borderRadius: 4,
+                    backgroundColor: "#f8f9ff",
+                    border: "1px solid #d8e0ff",
+                    boxShadow: "0 6px 18px rgba(9, 33, 129, 0.08)",
                     display: "flex",
-                    flexWrap: "wrap",
-                    justifyContent: "center",
-                    alignItems: "stretch",
-                    gap: 3,
-                    width: "100%",
+                    flexDirection: "column",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      boxShadow: "0 8px 24px rgba(9, 33, 129, 0.15)",
+                      transform: "translateY(-3px)",
+                    },
                   }}
                 >
-                  {/* Información del paciente */}
-                  <Card
-                    sx={{
-                      flex: "1 1 320px",
-                      maxWidth: 420,
-                      p: 3,
-                      borderRadius: 4,
-                      backgroundColor: "#f8f9ff",
-                      border: "1px solid #d8e0ff",
-                      boxShadow: "0 6px 18px rgba(9, 33, 129, 0.08)",
-                      display: "flex",
-                      flexDirection: "column",
-                      transition: "all 0.3s ease",
-                      "&:hover": {
-                        boxShadow: "0 8px 24px rgba(9, 33, 129, 0.15)",
-                        transform: "translateY(-3px)",
-                      },
-                    }}
-                  >
-                    <Box>
-                      <Box display="flex" alignItems="center" gap={1.5} mb={2}>
-                        <PeopleAltIcon sx={{ color: "#092181", fontSize: 28 }} />
-                        <Typography variant="h6" fontWeight="bold" sx={{ color: "#092181" }}>
-                          Información del paciente
-                        </Typography>
-                      </Box>
-                      <Divider sx={{ mb: 2 }} />
-                      <InfoItem
-                        icon={<PersonIcon />}
-                        label="Paciente"
-                        value={evidenciaSeleccionada.nombrePaciente}
-                      />
+                  <Box>
+                    <Box display="flex" alignItems="center" gap={1.5} mb={2}>
+                      <PeopleAltIcon sx={{ color: "#092181", fontSize: 28 }} />
+                      <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        sx={{ color: "#092181" }}
+                      >
+                        Información del paciente
+                      </Typography>
                     </Box>
-                  </Card>
+                    <Divider sx={{ mb: 2 }} />
+                    <InfoItem
+                      icon={<PersonIcon />}
+                      label="Paciente"
+                      value={evidenciaSeleccionada.nombrePaciente}
+                    />
+                  </Box>
+                </Card>
 
-                  {/* Información básica */}
-                  <Card
-                    sx={{
-                      flex: "1 1 320px",
-                      maxWidth: 420,
-                      p: 3,
-                      borderRadius: 4,
-                      backgroundColor: "#f9f9fc",
-                      border: "1px solid #e0e4fa",
-                      boxShadow: "0 6px 18px rgba(9, 33, 129, 0.05)",
-                      display: "flex",
-                      flexDirection: "column",
-                      transition: "all 0.3s ease",
-                      "&:hover": {
-                        boxShadow: "0 8px 24px rgba(9, 33, 129, 0.12)",
-                        transform: "translateY(-3px)",
-                      },
-                    }}
-                  >
-                    <Box>
-                      <Box display="flex" alignItems="center" gap={1.5} mb={2}>
-                        <PsychologyIcon sx={{ color: "#3949ab", fontSize: 28 }} />
-                        <Typography variant="h6" fontWeight="bold" sx={{ color: "#3949ab" }}>
-                          Información básica de la actividad
-                        </Typography>
-                      </Box>
-                      <Divider sx={{ mb: 2 }} />
-
-                      <InfoItem
-                        icon={<AssignmentTurnedInIcon />}
-                        label="Nombre de la actividad"
-                        value={evidenciaSeleccionada.nombreActividad}
-                      />
-
-                      <InfoItem
-                        icon={<CalendarTodayIcon />}
-                        label="Fecha en que se realizó"
-                        value={new Date(evidenciaSeleccionada.fecha_realizada).toLocaleDateString(
-                          "es-MX",
-                          { year: "numeric", month: "long", day: "numeric" }
-                        )}
-                      />
-
-                      {/* Nivel de satisfacción corregido */}
-                      {(() => {
-                        const nivel = satisfaccionMap.find(
-                          (s) => s.value === evidenciaSeleccionada.satisfaccion
-                        );
-                        return (
-                          <InfoItem
-                            icon={nivel?.icon}
-                            label="Nivel de satisfacción"
-                            value={nivel ? nivel.label : "Sin registro"}
-                            sx={{ color: nivel?.color }}
-                          />
-                        );
-                      })()}
-
-                      <InfoItem
-                        icon={<CommentIcon />}
-                        label="Comentario"
-                        value={evidenciaSeleccionada.comentario_Evidencia}
-                      />
+                {/* Información básica */}
+                <Card
+                  sx={{
+                    flex: "1 1 320px",
+                    maxWidth: 420,
+                    p: 3,
+                    borderRadius: 4,
+                    backgroundColor: "#f9f9fc",
+                    border: "1px solid #e0e4fa",
+                    boxShadow: "0 6px 18px rgba(9, 33, 129, 0.05)",
+                    display: "flex",
+                    flexDirection: "column",
+                    transition: "all 0.3s ease",
+                    "&:hover": {
+                      boxShadow: "0 8px 24px rgba(9, 33, 129, 0.12)",
+                      transform: "translateY(-3px)",
+                    },
+                  }}
+                >
+                  <Box>
+                    <Box display="flex" alignItems="center" gap={1.5} mb={2}>
+                      <PsychologyIcon sx={{ color: "#3949ab", fontSize: 28 }} />
+                      <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        sx={{ color: "#3949ab" }}
+                      >
+                        Información básica de la actividad
+                      </Typography>
                     </Box>
-                  </Card>
-                </Box>
+                    <Divider sx={{ mb: 2 }} />
 
-                {/* Botón de acción */}
-                <Box textAlign="center" mt={4}>
-                  <Button
-                    variant="outlined"
-                    startIcon={<ArrowBack />}
-                    onClick={() => setEvidenciaSeleccionada(null)}
-                    sx={{
-                      borderColor: "#092181",
-                      textTransform: "capitalize",
-                      color: "#092181",
-                      fontWeight: "bold",
-                      borderRadius: 3,
-                      px: 4,
-                      py: 1.2,
-                      "&:hover": {
-                        backgroundColor: "#092181",
-                        color: "#fff",
-                      },
-                    }}
-                  >
-                    Volver al listado
-                  </Button>
-                </Box>
+                    <InfoItem
+                      icon={<AssignmentTurnedInIcon />}
+                      label="Nombre de la actividad"
+                      value={evidenciaSeleccionada.nombreActividad}
+                    />
+
+                    <InfoItem
+                      icon={<CalendarTodayIcon />}
+                      label="Fecha en que se realizó"
+                      value={new Date(
+                        evidenciaSeleccionada.fecha_realizada
+                      ).toLocaleDateString("es-MX", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    />
+
+                    {/* Nivel de satisfacción corregido */}
+                    {(() => {
+                      const nivel = satisfaccionMap.find(
+                        (s) => s.value === evidenciaSeleccionada.satisfaccion
+                      );
+                      return (
+                        <InfoItem
+                          icon={nivel?.icon}
+                          label="Nivel de satisfacción"
+                          value={nivel ? nivel.label : "Sin registro"}
+                          sx={{ color: nivel?.color }}
+                        />
+                      );
+                    })()}
+
+                    <InfoItem
+                      icon={<CommentIcon />}
+                      label="Comentario"
+                      value={evidenciaSeleccionada.comentario_Evidencia}
+                    />
+                  </Box>
+                </Card>
               </Box>
 
-
+              {/* Botón de acción */}
+              <Box textAlign="center" mt={4}>
+                <Button
+                  variant="outlined"
+                  startIcon={<ArrowBack />}
+                  onClick={() => setEvidenciaSeleccionada(null)}
+                  sx={{
+                    borderColor: "#092181",
+                    textTransform: "capitalize",
+                    color: "#092181",
+                    fontWeight: "bold",
+                    borderRadius: 3,
+                    px: 4,
+                    py: 1.2,
+                    "&:hover": {
+                      backgroundColor: "#092181",
+                      color: "#fff",
+                    },
+                  }}
+                >
+                  Volver al listado
+                </Button>
+              </Box>
+            </Box>
           )}
-              </Paper>
-               {/*  Snackbar para mensajes */}
+        </Paper>
+        {/*  Snackbar para mensajes */}
         <Snackbar
           open={openSnackbar}
           autoHideDuration={4000}
@@ -891,9 +970,9 @@ const ListadoEvidencias = () => {
             {mensajeSnackbar}
           </Alert>
         </Snackbar>
-            </Container>
+      </Container>
     </Layout>
-        );
+  );
 };
 
-        export default ListadoEvidencias;
+export default ListadoEvidencias;

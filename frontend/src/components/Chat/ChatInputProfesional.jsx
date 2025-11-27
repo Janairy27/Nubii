@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Box, TextField, IconButton, Paper } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
@@ -30,7 +29,9 @@ const ChatInputProfesional = ({ onSend }) => {
         placeholder="Escribe un mensaje..."
         value={mensaje}
         onChange={(e) => setMensaje(e.target.value)}
-        onKeyPress={(e) => { if (e.key === "Enter") handleSend(); }}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") handleSend();
+        }}
         variant="outlined"
         size="small"
         sx={{

@@ -1,54 +1,72 @@
 import { db } from "../config/db.js";
 
 // Creación de profesionales
-export const createProfesional = async (id_usuario, especialidad, cedula, connection) => {
-    const [result] = await connection.query(
-        `INSERT INTO Profesional (idUsuario, especialidad, cedula)
+export const createProfesional = async (
+  id_usuario,
+  especialidad,
+  cedula,
+  connection
+) => {
+  const [result] = await connection.query(
+    `INSERT INTO Profesional (idUsuario, especialidad, cedula)
         VALUES (?, ?, ?)`,
-        [id_usuario, especialidad, cedula]
-    );
-    return result.insertId;
+    [id_usuario, especialidad, cedula]
+  );
+  return result.insertId;
 };
 
 // Actualizar información del profesional
-export const updateProfesional = async(id_usuario, especialidad, cedula, connection) => {
-    await connection.query(
-         `UPDATE Profesional SET especialidad = ?, cedula = ? WHERE idUsuario = ?`,
-        [especialidad, cedula, id_usuario]
-    );
+export const updateProfesional = async (
+  id_usuario,
+  especialidad,
+  cedula,
+  connection
+) => {
+  await connection.query(
+    `UPDATE Profesional SET especialidad = ?, cedula = ? WHERE idUsuario = ?`,
+    [especialidad, cedula, id_usuario]
+  );
 };
 
 // Eliminar relaciones entre profesionales
 export const deleteRelacionProfesional = async (id_usuario, connection) => {
-    await connection.query(`DELETE FROM Profesional WHERE idUsuario = ?`, [id_usuario]);
-}; 
+  await connection.query(`DELETE FROM Profesional WHERE idUsuario = ?`, [
+    id_usuario,
+  ]);
+};
 
 // Busqueda del profesional a travéz del id usuario
-export const findProfesionalByUsuario = async(idUsuario) => {
-    const[rows] = await db.query(`SELECT idProfesional,
+export const findProfesionalByUsuario = async (idUsuario) => {
+  const [rows] = await db.query(
+    `SELECT idProfesional,
         CONCAT(Nombre, ' ', aPaterno, ' ', aMaterno) AS nombre 
         FROM Usuario u
         INNER JOIN Profesional pr ON u.idUsuario = pr.idUsuario 
-        WHERE u.idUsuario = ?`, [idUsuario]);
-    return rows[0];
+        WHERE u.idUsuario = ?`,
+    [idUsuario]
+  );
+  return rows[0];
 };
 
 // Obtener id, especialidad y nombre de todos los profesionales
-export const FindProfesionales = async(especialidad) => {
-    const[rows] = await db.query(`
+export const FindProfesionales = async (especialidad) => {
+  const [rows] = await db.query(
+    `
         SELECT pr.idProfesional, CONCAT(u.Nombre, ' ', u.aPaterno, ' ', IFNULL(aMaterno, ' ')) AS nombreProfesional,
         pr.especialidad
         FROM Usuario u 
         INNER JOIN Profesional pr ON u.idUsuario = pr.idUsuario
-        WHERE pr.especialidad = ?`, [especialidad]);
-    return rows;
+        WHERE pr.especialidad = ?`,
+    [especialidad]
+  );
+  return rows;
 };
 
 export const getUsuarioByProfesional = async (idProfesional) => {
-    const [rows] = await db.query(
-        `SELECT idUsuario FROM Profesional WHERE idProfesional = ?`,
-        [idProfesional]
-    );
-    if (rows.length === 0) return null;
-    return rows[0].idUsuario;
+  const [rows] = await db.query(
+    `SELECT idUsuario FROM Profesional WHERE idProfesional = ?`,
+    [idProfesional]
+  );
+  if (rows.length === 0) return null;
+  return rows[0].idUsuario;
 };

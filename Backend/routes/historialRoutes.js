@@ -1,6 +1,10 @@
 import express from "express";
-import { registrarHistorial, obtenerInfo,obteneHistorialPac,
-     obtenerSintoma } from "../controllers/historialController.js";
+import {
+  registrarHistorial,
+  obtenerInfo,
+  obteneHistorialPac,
+  obtenerSintoma,
+} from "../controllers/historialController.js";
 
 const router = express.Router();
 

@@ -1,4 +1,4 @@
-// ChatWindowProfesional.jsx
+
 import React, { useEffect, useRef } from "react";
 import { Box, Typography, Avatar, Stack, Fade } from "@mui/material";
 import { motion, AnimatePresence } from "framer-motion";
@@ -27,43 +27,42 @@ const ChatWindowProfesional = ({ mensajes, usuarioActual }) => {
           backgroundColor: "#c5d3e9ff",
           borderRadius: "10px",
         },
-      }}    >
+      }}
+    >
       <AnimatePresence initial={false}>
-        
- 
         {mensajes.map((msg, index) => {
           const isMe = msg.enviado === "profesional";
           return (
-          <motion.div
-            key={index}
-            initial={{
-              opacity: 0,
-              y: 20,
-              x: msg.enviado === "profesional" ? 50 : -50, 
-            }}
-            animate={{
-              opacity: 1,
-              y: 0,
-              x: 0,
-            }}
-            exit={{
-              opacity: 0,
-              y: 20,
-              x: msg.enviado === "profesional" ? 50 : -50,
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 30,
-              duration: 0.3,
-            }}
-            style={{
-              display: "flex",
-              justifyContent:
-                msg.enviado === "profesional" ? "flex-end" : "flex-start",
-              marginBottom: "8px",
-            }}
-          >
+            <motion.div
+              key={index}
+              initial={{
+                opacity: 0,
+                y: 20,
+                x: msg.enviado === "profesional" ? 50 : -50,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                x: 0,
+              }}
+              exit={{
+                opacity: 0,
+                y: 20,
+                x: msg.enviado === "profesional" ? 50 : -50,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 30,
+                duration: 0.3,
+              }}
+              style={{
+                display: "flex",
+                justifyContent:
+                  msg.enviado === "profesional" ? "flex-end" : "flex-start",
+                marginBottom: "8px",
+              }}
+            >
               <Stack
                 direction={isMe ? "row-reverse" : "row"}
                 alignItems="flex-end"
@@ -73,7 +72,7 @@ const ChatWindowProfesional = ({ mensajes, usuarioActual }) => {
                 {/* Avatar del emisor */}
                 <Avatar
                   sx={{
-                    bgcolor: isMe? "#67121A" : "#355C7D",
+                    bgcolor: isMe ? "#67121A" : "#355C7D",
                     width: 36,
                     height: 36,
                     boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
@@ -86,8 +85,7 @@ const ChatWindowProfesional = ({ mensajes, usuarioActual }) => {
                     p: 1.5,
                     borderRadius: "18px",
                     maxWidth: "70%",
-                    background: isMe ? "#F5E3E9 "
-                      : " #e5eef7ff",
+                    background: isMe ? "#F5E3E9 " : " #e5eef7ff",
                     //bgcolor: msg.enviado === "profesional" ? "#4e8cff" : "#e5e5ea",
                     color: isMe ? "#090909ff" : "#000",
                     borderTopRightRadius: isMe ? "6px" : "18px",
@@ -106,43 +104,38 @@ const ChatWindowProfesional = ({ mensajes, usuarioActual }) => {
                     }}
                   >
                     {msg.nombre || (isMe ? "Profesional" : "Paciente")}
-                    </Typography>
-                    {/* Texto del mensaje */}
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontSize: "0.95rem",
-                        lineHeight: 1.4,
-                        whiteSpace: "pre-wrap",
-                        color: "#080808ff"
-                      }}
-                    >
-                      {msg.mensaje}
-                    </Typography>
+                  </Typography>
+                  {/* Texto del mensaje */}
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontSize: "0.95rem",
+                      lineHeight: 1.4,
+                      whiteSpace: "pre-wrap",
+                      color: "#080808ff",
+                    }}
+                  >
+                    {msg.mensaje}
+                  </Typography>
 
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        bottom: 0,
-                        width: 0,
-                        height: 0,
-                        borderStyle: "solid",
-                        borderWidth:
-                          isMe
-                            ? "10px 0 0 10px"
-                            : "10px 10px 0 0",
-                        borderColor:
-                          isMe
-                            ? "transparent transparent transparent #4e8cff"
-                            : "transparent #e5e5ea transparent transparent",
-                        right: isMe ? "-10px" : "auto",
-                        left: isMe ? "auto" : "-10px",
-                      }}
-                    />
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      bottom: 0,
+                      width: 0,
+                      height: 0,
+                      borderStyle: "solid",
+                      borderWidth: isMe ? "10px 0 0 10px" : "10px 10px 0 0",
+                      borderColor: isMe
+                        ? "transparent transparent transparent #4e8cff"
+                        : "transparent #e5e5ea transparent transparent",
+                      right: isMe ? "-10px" : "auto",
+                      left: isMe ? "auto" : "-10px",
+                    }}
+                  />
                 </Box>
               </Stack>
-
-          </motion.div>
+            </motion.div>
           );
         })}
       </AnimatePresence>

@@ -24,23 +24,22 @@ import {
   Menu as MenuIcon,
   ExitToApp,
   Dashboard,
-  CheckCircle
+  CheckCircle,
 } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import BackupIcon from '@mui/icons-material/Backup';
+import BackupIcon from "@mui/icons-material/Backup";
 import BackspaceIcon from "@mui/icons-material/Backspace";
 import UpdateIcon from "@mui/icons-material/Update";
 import HealingIcon from "@mui/icons-material/Healing";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import AssessmentIcon from "@mui/icons-material/Assessment";
-import WarningAmberIcon from '@mui/icons-material/WarningAmber';
-import GroupIcon from '@mui/icons-material/Group';
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import GroupIcon from "@mui/icons-material/Group";
 import ReminderIcon from "@mui/icons-material/AccessAlarm";
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import { AnimatePresence, motion } from "framer-motion";
-
 
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Badge from "@mui/material/Badge";
@@ -99,7 +98,6 @@ export default function Header() {
     setOpenLogoutConfirm(false);
   };
 
-
   const handleDelete = async () => {
     const url = `http://localhost:4000/api/auth/delete/${idUsuario}`;
     try {
@@ -116,35 +114,55 @@ export default function Header() {
   const isActive = (path) => location.pathname === path;
 
   const menuItems = [
-    { text: "Ver Actividades", path: "/filtro-actividades", icon: <AssignmentTurnedInIcon /> },
-    { text: "Historial Emocional", path: "/listado-sintomaAd", icon: <HealingIcon /> },
+    {
+      text: "Ver Actividades",
+      path: "/filtro-actividades",
+      icon: <AssignmentTurnedInIcon />,
+    },
+    {
+      text: "Historial Emocional",
+      path: "/listado-sintomaAd",
+      icon: <HealingIcon />,
+    },
     { text: "Test Fisico", path: "/listado-test", icon: <AssessmentIcon /> },
     { text: "Citas", path: "/listado-citas", icon: <ReminderIcon /> },
     { text: "Usuarios", path: "/listado-usuarios", icon: <GroupIcon /> },
-
   ];
 
-
   const userMenuItems = [
-    { text: "Respaldo y restauración", icon: <BackupIcon />, path: "/respaldo-restauracion" },
+    {
+      text: "Respaldo y restauración",
+      icon: <BackupIcon />,
+      path: "/respaldo-restauracion",
+    },
     { text: "Dashboard", icon: <Dashboard />, path: "/dashboardAdmin" },
-    { text: "Eliminar Cuenta", icon: <BackspaceIcon />, action: handleOpenConfirm },
-    { text: "Actualizar Información", icon: <UpdateIcon />, path: "/actualizar-admin" },
+    {
+      text: "Eliminar Cuenta",
+      icon: <BackspaceIcon />,
+      action: handleOpenConfirm,
+    },
+    {
+      text: "Actualizar Información",
+      icon: <UpdateIcon />,
+      path: "/actualizar-admin",
+    },
     { text: "Cerrar Sesión", icon: <ExitToApp />, action: handleLogout },
   ];
 
   const submenuData = {
     reportes: [
-      { text: "Reporte de citas profesional ", path: "/reporte-citas-profesional" },
+      {
+        text: "Reporte de citas profesional ",
+        path: "/reporte-citas-profesional",
+      },
       { text: "Reporte de citas", path: "/reporte-citas-profesional" },
       { text: "Reporte de uso", path: "/reporte-uso" },
-      { text: "Reporte de profesional agendado", path: "/reporte-profesionales-agendados" },
+      {
+        text: "Reporte de profesional agendado",
+        path: "/reporte-profesionales-agendados",
+      },
     ],
-
-
   };
-
-
 
   const handleMenuOpen = (setter) => (event) => setter(event.currentTarget);
   const handleMenuClose = () => {
@@ -203,7 +221,13 @@ export default function Header() {
           >
             {isActive(item.path) && (
               <Box
-                sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: "#092181", mr: 1 }}
+                sx={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: "50%",
+                  bgcolor: "#092181",
+                  mr: 1,
+                }}
               />
             )}
             {item.text}
@@ -226,11 +250,24 @@ export default function Header() {
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           {/* Logo */}
           <Box
-            sx={{ display: "flex", alignItems: "center", cursor: "pointer", gap: 1 }}
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+              gap: 1,
+            }}
             onClick={() => navigate("/")}
           >
-            <Avatar src="/logo.png" sx={{ bgcolor: "#092181", width: 40, height: 40 }}>N</Avatar>
-            <Typography variant="h6" sx={{ fontWeight: "bold", color: "#092181" }}>
+            <Avatar
+              src="/logo.png"
+              sx={{ bgcolor: "#092181", width: 40, height: 40 }}
+            >
+              N
+            </Avatar>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: "bold", color: "#092181" }}
+            >
               Nubii
             </Typography>
           </Box>
@@ -257,7 +294,9 @@ export default function Header() {
                         py: 1.2,
                         borderRadius: "12px",
                         backgroundColor: active ? "#F5E3E9" : "transparent",
-                        boxShadow: active ? "0 4px 12px rgba(9,33,129,0.1)" : "none",
+                        boxShadow: active
+                          ? "0 4px 12px rgba(9,33,129,0.1)"
+                          : "none",
                         transition: "all 0.35s ease",
                         display: "flex",
                         alignItems: "center",
@@ -267,11 +306,27 @@ export default function Header() {
                           color: "#092181",
                           boxShadow: "0 4px 15px rgba(9,33,129,0.15)",
                         },
-                        "& svg": { transition: "all 0.3s ease", color: "#67121A" },
-                        "&:hover svg": { transform: "rotate(-10deg) scale(1.2)", color: "#092181" },
+                        "& svg": {
+                          transition: "all 0.3s ease",
+                          color: "#67121A",
+                        },
+                        "&:hover svg": {
+                          transform: "rotate(-10deg) scale(1.2)",
+                          color: "#092181",
+                        },
                       }}
                     >
-                      {active && <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: "#092181", mr: 1 }} />}
+                      {active && (
+                        <Box
+                          sx={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: "50%",
+                            bgcolor: "#092181",
+                            mr: 1,
+                          }}
+                        />
+                      )}
                       {text}
                     </Button>
                   </motion.div>
@@ -280,7 +335,11 @@ export default function Header() {
 
               {/*Submenús */}
               {[
-                { label: "Reportes", icon: <AssignmentIcon />, setter: setAnchorElReportes },
+                {
+                  label: "Reportes",
+                  icon: <AssignmentIcon />,
+                  setter: setAnchorElReportes,
+                },
               ].map(({ label, icon, setter }) => (
                 <motion.div
                   key={label}
@@ -306,8 +365,14 @@ export default function Header() {
                         backgroundColor: "#F5E3E9",
                         color: "#092181",
                       },
-                      "& svg": { transition: "all 0.3s ease", color: "#67121A" },
-                      "&:hover svg": { transform: "rotate(-10deg) scale(1.2)", color: "#092181" },
+                      "& svg": {
+                        transition: "all 0.3s ease",
+                        color: "#67121A",
+                      },
+                      "&:hover svg": {
+                        transform: "rotate(-10deg) scale(1.2)",
+                        color: "#092181",
+                      },
                     }}
                   >
                     {label}
@@ -326,17 +391,24 @@ export default function Header() {
                   <Badge
                     badgeContent={notificaciones.length}
                     color="error"
-                    sx={{ "& .MuiBadge-badge": { fontSize: "0.75rem", height: 18, minWidth: 18 } }}
+                    sx={{
+                      "& .MuiBadge-badge": {
+                        fontSize: "0.75rem",
+                        height: 18,
+                        minWidth: 18,
+                      },
+                    }}
                   >
                     <NotificationsIcon sx={{ color: "#67121A" }} />
                   </Badge>
                 </IconButton>
               </motion.div>
 
-
-
               {/* Configuración */}
-              <motion.div whileHover={{ scale: 1.1 }} transition={{ type: "spring", stiffness: 300 }}>
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 300 }}
+              >
                 <IconButton
                   size="large"
                   edge="end"
@@ -348,7 +420,10 @@ export default function Header() {
                     "&:hover": {
                       backgroundColor: "#F5E3E9",
                       transform: "translateY(-2px) scale(1.05)",
-                      "& svg": { color: "#092181", transform: "rotate(-15deg) scale(1.2)" },
+                      "& svg": {
+                        color: "#092181",
+                        transform: "rotate(-15deg) scale(1.2)",
+                      },
                     },
                     "& svg": { color: "#67121A ", transition: "all 0.3s ease" },
                   }}
@@ -361,7 +436,10 @@ export default function Header() {
 
           {/* Mobile */}
           {isMobile && (
-            <IconButton color="inherit" onClick={(e) => setMobileMoreAnchorEl(e.currentTarget)}>
+            <IconButton
+              color="inherit"
+              onClick={(e) => setMobileMoreAnchorEl(e.currentTarget)}
+            >
               <MenuIcon />
             </IconButton>
           )}
@@ -374,7 +452,12 @@ export default function Header() {
         open={Boolean(anchorElNotif)}
         onClose={() => setAnchorElNotif(null)}
         PaperProps={{
-          sx: { borderRadius: "12px", mt: 1, minWidth: 300, backgroundColor: "#FFFFFF" },
+          sx: {
+            borderRadius: "12px",
+            mt: 1,
+            minWidth: 300,
+            backgroundColor: "#FFFFFF",
+          },
         }}
       >
         <Typography
@@ -420,17 +503,25 @@ export default function Header() {
         )}
       </Menu>
 
-
-
       {/* Menú usuario */}
       <Menu
         anchorEl={anchorElProfile}
         open={Boolean(anchorElProfile)}
         onClose={handleMenuClose}
-        PaperProps={{ sx: { borderRadius: "12px", mt: 1, minWidth: 220, backgroundColor: "#FFFFFF" } }}
+        PaperProps={{
+          sx: {
+            borderRadius: "12px",
+            mt: 1,
+            minWidth: 220,
+            backgroundColor: "#FFFFFF",
+          },
+        }}
       >
         <Box sx={{ px: 2, py: 1 }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: "bold", color: "#092181" }}>
+          <Typography
+            variant="subtitle1"
+            sx={{ fontWeight: "bold", color: "#092181" }}
+          >
             {Nombre} {aPaterno}
           </Typography>
         </Box>
@@ -441,14 +532,16 @@ export default function Header() {
             onClick={() => handleNavigation(item.path, item.action)}
             sx={{
               transition: "all 0.3s ease",
-              "&:hover": { transform: "translateX(4px)", backgroundColor: "#F5E3E9" },
+              "&:hover": {
+                transform: "translateX(4px)",
+                backgroundColor: "#F5E3E9",
+              },
             }}
           >
             <ListItemIcon>{item.icon}</ListItemIcon>
             {item.text}
           </MenuItem>
         ))}
-
       </Menu>
 
       {/* Animate para el diálogo de confirmación */}
@@ -515,7 +608,10 @@ export default function Header() {
                 >
                   Cancelar
                 </Button>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Button
                     onClick={handleDelete}
                     variant="contained"
@@ -556,10 +652,11 @@ export default function Header() {
                 },
               }}
             >
-              <CheckCircle
-                sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }}
-              />
-              <Typography variant="h6" sx={{ color: "#092181", fontWeight: 600 }}>
+              <CheckCircle sx={{ color: "#2E7D32", fontSize: 60, mb: 2 }} />
+              <Typography
+                variant="h6"
+                sx={{ color: "#092181", fontWeight: 600 }}
+              >
                 Cuenta eliminada correctamente
               </Typography>
               <Typography variant="body2" sx={{ color: "#555", mt: 1 }}>
@@ -616,7 +713,8 @@ export default function Header() {
 
               <DialogContent>
                 <DialogContentText sx={{ color: "#333", mt: 1 }}>
-                  Tu sesión actual se cerrará y deberás volver a iniciar sesión para continuar.
+                  Tu sesión actual se cerrará y deberás volver a iniciar sesión
+                  para continuar.
                 </DialogContentText>
               </DialogContent>
 
@@ -632,7 +730,10 @@ export default function Header() {
                 >
                   Cancelar
                 </Button>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
                   <Button
                     onClick={confirmLogout}
                     variant="contained"
@@ -653,24 +754,29 @@ export default function Header() {
         )}
       </AnimatePresence>
 
-
-
-
-
-
-
       {/* Menú móvil */}
       <Menu
         anchorEl={mobileMoreAnchorEl}
         open={Boolean(mobileMoreAnchorEl)}
         onClose={handleMenuClose}
-        PaperProps={{ sx: { borderRadius: "12px", mt: 1, minWidth: 180, backgroundColor: "#FFFFFF" } }}
+        PaperProps={{
+          sx: {
+            borderRadius: "12px",
+            mt: 1,
+            minWidth: 180,
+            backgroundColor: "#FFFFFF",
+          },
+        }}
       >
         {[
           { label: "Reportes", setter: setAnchorElReportes, path: "/reportes" },
           { label: "Usuario", setter: setAnchorElProfile },
         ].map(({ label, setter, path }) => (
-          <motion.div key={label} whileHover={{ scale: 1.05, x: 4 }} transition={{ type: "spring", stiffness: 300 }}>
+          <motion.div
+            key={label}
+            whileHover={{ scale: 1.05, x: 4 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <MenuItem
               onClick={handleMenuOpen(setter)}
               sx={{
@@ -681,15 +787,20 @@ export default function Header() {
               }}
             >
               {path && isActive(path) && (
-                <Box sx={{ width: 8, height: 8, borderRadius: "50%", bgcolor: "#092181" }} />
+                <Box
+                  sx={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    bgcolor: "#092181",
+                  }}
+                />
               )}
               {label}
             </MenuItem>
           </motion.div>
         ))}
-
       </Menu>
     </Box>
-
   );
 }

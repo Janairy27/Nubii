@@ -1,4 +1,3 @@
-
 import { createContext, useState, useEffect, useContext } from "react";
 import axios from "axios";
 
@@ -49,6 +48,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
 
 export const useAuth = () => useContext(AuthContext);

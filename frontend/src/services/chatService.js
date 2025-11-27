@@ -21,4 +21,3 @@ export const obtenerChat = async (idPaciente, idProfesional) => {
     throw error;
   }
 };
-
